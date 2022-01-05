@@ -1,0 +1,46 @@
+<!--creo link para agregar un Periodo -->
+<a class="button small" href="<?php $d=''; echo $this->url(array('controller' =>'Periodo',
+            'action' => 'agregar')); ?>">Agregar Periodo</a>
+
+<!--creo una tabla para mostrar los datos-->
+<table class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>Periodo</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+        
+    </tr>
+    </thead>
+
+<!--    recorro el arreglo de datos-->
+    <?php foreach ($this->dato as $d) : ?>
+
+
+<!--           por cada fila, muestro sus datos -->
+        <tr>
+
+            <td>
+                <?php echo $d->nombrePeriodo ?>
+            </td>
+
+        
+        
+         <td>
+             <!--                   enlace para editar el Periodo-->
+             <a class="button small green" href="<?php echo $this->url(array('controller' => 'Periodo',
+            'action' => 'editar', 'id' => $d->idPeriodo)); ?>">Editar</a>
+             
+         </td>
+
+        <td>
+            <!--                   enlace para borrar el Periodo-->
+
+            <a class="button small red" href="<?php echo $this->url(array('controller' => 'Periodo',
+                       'action' => 'eliminar', 'id' => $d->idPeriodo)); ?>">Eliminar</a>
+            </td>
+        
+        </tr>
+<!--    fin del for-->
+    <?php endforeach; ?>
+</table>

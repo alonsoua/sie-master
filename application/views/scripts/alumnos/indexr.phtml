@@ -1,0 +1,115 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+
+<?php
+
+$cargo = new Zend_Session_Namespace('cargo');
+$rol = $cargo->cargo;
+
+if($rol!=2){
+
+    ?>
+
+    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'agregar')); ?>">Agregar Alumno</a>
+
+    <a class="button small blue" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'index')); ?>">Lista Alumnos Activos</a>
+
+    <a class="button small red" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'indexr'), 'default', true); ?>">Lista Alumnos Retirados</a>
+
+
+    <a class="button small blue" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'indexa'), 'default', true); ?>">Lista Apoderados</a>
+
+    <a class="button small green" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'subiralumnos'), 'default', true); ?>">Subir Alumnos</a>
+
+<?php } elseif ($rol==2){ ?>
+
+    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'agregar')); ?>">Agregar Alumno</a>
+
+    <a class="button small blue" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'index')); ?>">Lista Alumnos Activos</a>
+
+    <a class="button small red" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'indexr'), 'default', true); ?>">Lista Alumnos Retirados</a>
+
+
+
+<?php  } ?>
+
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Estudiante</th>
+            <th>Establecimiento</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Reincorporar</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="alt first last">
+
+            <?php $i = 1;
+            foreach ($this->paginator as $d): ?>
+
+
+            <td><?php echo $i; ?></td>
+
+            <td> <?php echo $d['rutAlumno']; ?> </td>
+
+            <td><?php echo $d['apaterno'].' '.$d['amaterno'].' '.$d['nombres']; ?></td>
+
+            <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+            <td><?php echo $d['nombreGrado']; ?></td>
+
+            <td><?php echo $d['letra']; ?></td>
+
+            <td>
+
+                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Alumnos',
+                    'action' => 'reincorporar', 'id' => $d['idAlumnosActual']), 'default', true); ?>">Reincorporar</a>
+
+            </td>
+
+        </tr>
+
+
+        </tr>
+
+        <?php $i++;
+        endforeach; ?>
+
+        </tbody>
+
+    </table>

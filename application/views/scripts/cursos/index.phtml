@@ -1,0 +1,96 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Cursos',
+    'action' => 'agregarcurso')); ?>">Agregar Curso</a>
+
+<a class="button medium green" href="<?php $d = '';
+echo $this->url(array('controller' => 'Cursos',
+    'action' => 'combinarcursos')); ?>">Combinar Cursos</a>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+
+            <th>Enseñanza</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Establecimiento</th>
+            <th>Asignaturas</th>
+            <th>Profesor Jefe</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+
+        </tr>
+        </thead>
+
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+                <td><?php echo $d->nombreTipoEnsenanza; ?></td>
+
+                <td><?php echo $d->nombreGrado; ?></td>
+
+                <td><?php echo $d->letra; ?></td>
+
+
+                <td><?php echo $d->nombreEstablecimiento; ?></td>
+
+                <td>
+                    <?php if($d->combinado){ ?>
+
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+                            'action' => 'asignaturas', 'id' => $d->idCursos), 'default', true); ?>">Asignaturas</a>
+
+                    <?php }else{ ?>
+
+                        <a class="button small" disabled="disabled">Asignaturas</a>
+                    <?php } ?>
+
+                </td>
+
+                <td>
+                    <?php
+                    if ($d->idCuentaJefe == 0 || empty($d->idCuentaJefe)) {
+                        echo 'Sin Asignar';
+                    } else {
+
+                        echo $d->nombrescuenta . ' ' . $d->paternocuenta . ' ' . $d->maternocuenta;
+                    } ?>
+                </td>
+
+
+                <td>
+                    <a class="button small green" href="<?php echo $this->url(array('controller' => 'Cursos',
+                        'action' => 'editarcurso', 'id' => $d->idCursos), 'default', true); ?>">Editar</a>
+                </td>
+
+                <td>
+                    <a class="button small red" href="#">Eliminar</a>
+                </td>
+
+            </tr>
+
+        <?php endforeach; ?>
+    </table>

@@ -1,0 +1,236 @@
+<script lang="javascript">
+    $(document).ready(function () {
+        var codigos = [];
+        var conceptos = [];
+        var descripcion = [];
+        var datosconcepto = [];
+        var texto;
+        var auxconcepto = [];
+        var ajax = $.ajax({
+            type: "GET",
+            url: "../../../../getconceptosparvularia",
+            async: true,
+            dataType: "json",
+            beforeSend: function (x) {
+                if (x && x.overrideMimeType) {
+                    x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+            },
+            success: function (data) {
+
+                if (data != '') {
+                    datosconcepto = data;
+                    texto = '';
+                    if (data[0]['concepto'] == null) {
+                        $('#contenido').append('<div class="error mensajes">Este Curso no posee los conceptos creados para este período</div>');
+                        $(document).ready(function () {
+                            setTimeout(function () {
+                                $(".mensajes").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300).remove();
+                            }, 3000);
+                        });
+                        window.stop();
+                    } else {
+                        $("#concepto").html('');
+                        $("#concepto").append('<h5>Lista de Conceptos</h5><ul id="listaconcepto"></ul>');
+
+                        for (var i = 0; i < data.length; i++) {
+
+                            codigos[i] = data[i].concepto.charCodeAt(0);
+                            conceptos[i] = data[i].concepto;
+                            auxconcepto[i] = data[i].concepto.slice(0, 1);
+                            descripcion[i] = data[i].descripcionConcepto;
+                            $("#concepto").find('ul').append('<li>'+data[i].concepto+':'+data[i].descripcionConcepto+'</li>');
+                        }
+
+                        var temp = {};
+                        var temp2 = {};
+                        for (var i = 0; i < auxconcepto.length; i++) {
+                            var obj = auxconcepto[i];
+                            if (temp[obj] >= 0) {
+                                temp2[i] = obj;
+                                auxconcepto.splice(i, 1);
+                                i--;
+                            }
+                            temp[obj] = i;
+                        }
+
+
+                        for (var i = 0; i < data.length; i++) {
+                            if (temp2[i]) {
+                                codigos[i] = data[i].concepto.slice(1, 2).charCodeAt(0);
+
+
+                            } else {
+                                codigos[i] = data[i].concepto.charCodeAt(0);
+                            }
+
+                            conceptos[i] = data[i].concepto;
+                            auxconcepto[i] = data[i].concepto.slice(0, 1);
+                            texto += 'event.which===' + codigos[i] + ' || ';
+                        }
+                        texto = texto.slice(0, -3);
+                    }
+
+
+                } else {
+                    $('#contenido').append('<div class="error mensajes">Este Curso no posee los conceptos creados para este período</div>');
+                    $(document).ready(function () {
+                        setTimeout(function () {
+                            $(".mensajes").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300).remove();
+                        }, 3000);
+                    });
+                    window.stop();
+                }
+
+
+            }
+
+
+        });
+
+        $('.notas').live('keyup', function (event) {
+
+            if (event.which === 40) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).next('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+
+            if (event.which === 38) {
+
+                var padre = $(this).closest('tr');
+                var obj = $(padre).prev('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+        });
+
+
+        $(".notas").live('keydown', function (event) {
+
+            if (codigos.length > 0) {
+                if (eval(texto) || (event.which > 36 && event.which < 41) || event.which === 8) {
+                    for (var i = 0; i < codigos.length; i++) {
+
+                        eval("if(event.which === codigos[i]){if(conceptos[i].length==2){$(this).val(conceptos[i])}else{$(this).val(conceptos[i]);}}");
+
+                    }
+
+                } else {
+                    return false;
+                }
+
+
+            } else {
+                return false;
+            }
+
+        });
+
+
+        $("input").live('focus', function () {
+            $(this).closest('tr').css("background-color", "green");
+
+
+        });
+        $("input").live('focusout', function () {
+            $(this).closest('tr').css("background-color", "");
+        });
+
+    });
+
+
+</script>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notasnuevopre'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+<style>
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+
+    }
+    #listaconcepto{
+        list-style: none;
+    }
+
+
+</style>
+
+
+
+<?php
+$roles = new Zend_Session_Namespace('cargo');
+$rol = $roles->cargo;
+
+$idtipoev = new Zend_Session_Namespace('tipoevaluacion');
+$idtevalucacion = $idtipoev->tipoevaluacion;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+if ($this->messages) {
+?>
+<div class="error">
+    <p>
+    <?php foreach ($this->messages as $msg): ?>
+    <?php echo $msg; ?>
+    <?php endforeach; ?>
+
+
+    </p>
+
+    </div>
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } else {
+?>
+<?php echo $this->form;?>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/notasnuevopreeditar.js?v3"></script>
+<div id="concepto" style="border: 1px solid gray;list-style:none;padding:5px;"></div>
+
+<div id="alumnos" style="height: 500px;overflow-y: auto; margin-top: 20px;">
+    <input type="hidden" id="ida" value="<?php echo $this->id; ?>">
+    <input type="hidden" id="seg" value="<?php echo $this->s; ?>">
+    <?php
+
+    echo '<table class="striped sortable" style="margin-top:30px;"><th>Indicador</th><th>Concepto</th>';
+    if(!$this->check){
+        for ($i = 0; $i < count($this->notas); $i++) {
+
+            echo '<tr><td><input type="hidden" value="' . $this->notas[$i]['idAsignatura'] . '"  /><ul class="breadcrumbs"><li><a style="color:#000000">' . $this->notas[$i]['nombreAmbito'] . '</a></li><li><a style="color:#000000">' . $this->notas[$i]['nombreNucleo'] . '</a></li></ul>' . $this->notas[$i]['nombreAsignatura'] . '</td><td><input  onpaste="return false" type="text" size="5" maxlength="1" class="notas" id="' . $this->notas[$i]['idNotas'] . '" value="' . $this->notas[$i]['nota'] . '" name="' . $this->notas[$i]['idAsignatura'] . '"/></td></tr>';
+        }
+    }else{
+        for ($i = 0; $i < count($this->notas); $i++) {
+
+            echo '<tr><td><input type="hidden" value="' . $this->notas[$i]['idAsignatura'] . '"  /><ul class="breadcrumbs"><li><a style="color:#000000">' . $this->notas[$i]['nombreAmbito'] . '</a></li><li><a style="color:#000000">' . $this->notas[$i]['nombreNucleo'] . '</a></li></ul>' . $this->notas[$i]['nombreAsignatura'] . '</td><td><input  onpaste="return false" type="text" size="5" maxlength="1" class="notas" name="' . $this->notas[$i]['idAsignatura'] . '" /></td></tr>';
+        }
+    }
+
+    ?>
+    </table>
+</div>
+<div style="margin-top: 20px;"><input type="button" value="Guardar" id="guardarnotas"></div>
+<?php } ?>

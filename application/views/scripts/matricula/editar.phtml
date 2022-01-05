@@ -1,0 +1,159 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/jquery.datetimepicker.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/calendario/css/jquery.ui.all.css" type="text/css">
+
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.core.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery.datetimepicker.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+
+        $("#id3").datepicker({
+            <?php $periodo = new Zend_Session_Namespace('periodo');
+            ?>
+
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-70:+1"
+        });
+
+        jQuery('#horario').datetimepicker({
+            datepicker: false,
+            format: 'H:i',
+            allowTimes: [
+                '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00',
+                '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00',
+                '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'
+
+            ]
+        });
+
+        $("#idApoderado").chosen({no_results_text: "Búsqueda no encontrada"});
+        $("#idApoderadoS").chosen({no_results_text: "Búsqueda no encontrada"});
+        $("#comuna").chosen({no_results_text: "Búsqueda no encontrada"});
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+
+
+        $('#idEstablecimiento').change(function () {
+
+
+            $('#idcurso').html('');
+
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: "../../getcurso/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].idCursos + '">' + data[i].nombreGrado + ' ' + data[i].letra + '</option>';
+                    }
+                    $('#idcurso').html(options);
+                }
+            });
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#foto").on("change", function () {
+            var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+            if (/^image/.test(files[0].type)) { // only image file
+                var reader = new FileReader(); // instance of the FileReader
+                reader.readAsDataURL(files[0]); // read the local file
+
+                reader.onloadend = function () { // set image data as background of div
+                    $("#imagePreview").css("background-image", "url(" + this.result + ")");
+                }
+            }
+        });
+    });
+</script>
+<style>
+    #fieldset-botones label {
+        display: none;
+
+    }
+
+    #fieldset-botones {
+        margin-bottom: 20px;
+    }
+
+    input {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px
+    }
+
+    select {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px
+    }
+
+    label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        float: left;
+        padding-top: 5px;
+        text-align: right;
+        width: 240px;
+    }
+
+    #imagePreview {
+        width: 150px;
+        height: 150px;
+        background-position: center center;
+        background-size: cover;
+        -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+        display: inline-block;
+        margin-left: 20px;
+    }
+
+
+</style>
+
+<?php if ($this->messages) : ?>
+    <div class="t_a_message">
+        <ul>
+            <?php foreach ($this->messages as $msg) : ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+<div id="imagePreview"></div>
+<div class="col_12 column center"><?php echo $this->form ?></div>

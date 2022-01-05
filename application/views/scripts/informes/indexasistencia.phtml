@@ -1,0 +1,28 @@
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'indexasistenciaalumno'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe Asistencia Alumno</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'indexasistencia'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe Asistencia Curso</a>
+
+
+
+<div style="margin-top: 20px;">
+
+    <h4>Generar Informe Asistencia Curso</h4>
+
+    <?php
+    $form=$this->form;?>
+    <form method="<?php echo $form->getMethod() ?>" action="<?php echo
+    $form->getAction()?>" target="_blank">
+    <?php
+    echo $form->idCursos->renderLabel() . $form->idCursos->renderViewHelper();
+    echo $form->meses->renderLabel() . $form->meses->renderViewHelper();
+    echo $form->pdf->renderViewHelper();
+    echo $form->excel->renderViewHelper();
+    ?>
+    </form>
+
+</div>
+
+

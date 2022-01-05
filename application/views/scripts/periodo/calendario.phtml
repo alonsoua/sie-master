@@ -1,0 +1,43 @@
+<a class="button medium blue"
+   href="<?php echo $this->url(array('controller' => 'Periodo', 'action' => 'agregarcalendario')); ?>">Nuevo
+    Calendario</a>
+
+<div style="overflow-x:auto;">
+    <table class="striped sortable" style="margin-top: 10px">
+        <caption></caption>
+        <thead>
+        <tr>
+            <th scope="col">Establecimiento</th>
+            <th scope="col">Código Calendario</th>
+            <th scope="col">Descripción Calendario</th>
+            <th scope="col">Eventos</th>
+            <th scope="col">Calendario Cursos</th>
+            <th scope="col">Editar</th>
+        </tr>
+        </thead>
+        <?php foreach ($this->dato as $d) : ?>
+
+            <tr>
+                <td><?php echo $d->nombreEstablecimiento ?></td>
+
+                <td><?php echo (empty($d->codigoCalendario)) ? "Sin Calendario" : $d->codigoCalendario ?></td>
+
+                <td><?php echo (empty($d->descripcionCalendario)) ? "No Creado" : $d->descripcionCalendario ?></td>
+
+                <td><a class="button small blue" href="<?php echo $this->url(array('controller' => 'Periodo',
+                        'action' => 'evento', 'id' => $d->idCalendario)); ?>"> Eventos</a></td>
+
+                <td><a class="button small orange" href="<?php echo $this->url(array('controller' => 'Periodo',
+                        'action' => 'calendariocurso', 'id' => $d->idEstablecimiento)); ?>"> Calendario Cursos</a></td>
+
+
+                <td><a class="button small green" href="<?php echo $this->url(array('controller' => 'Periodo',
+                        'action' => 'editarcalendario', 'id' => $d->idCalendario)); ?>">Editar</a></td>
+
+
+            </tr>
+
+        <?php endforeach; ?>
+
+    </table>
+</div>

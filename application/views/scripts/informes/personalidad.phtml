@@ -1,0 +1,281 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'personalidad'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe
+    Personalidad por Alumno</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'personalidadcurso'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe
+    Personalidad por Curso</a>
+
+<style>
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+</style>
+
+<?php $cargo = new Zend_Session_Namespace('cargo');
+
+$rol = $cargo->cargo;
+$idtipoev = new Zend_Session_Namespace('tipoevaluacion');
+$idtevalucacion = $idtipoev->tipoevaluacion;
+
+$est = new Zend_Session_Namespace('establecimiento');
+$idestablecimiento = $est->establecimiento;
+?>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Grado</th>
+            <th>Letra Curso</th>
+            <th>Establecimiento</th>
+            <?php if ($rol == '2') { ?>
+                <th>Crear Informe</th>
+            <?php } ?>
+
+               <th>Opciones</th>
+            <?php if ($rol == '2') { ?>
+                <th>Editar</th>
+            <?php } ?>
+        </tr>
+        </thead>
+
+
+        <?php
+
+
+        if ($this->variable == 1) {
+            for ($i = 0; $i < count($this->datos); $i++) {
+
+                foreach ($this->datos[$i] as $d[$i]) : ?>
+                    <tr>
+                        <td><?php echo $d[$i]['nombres']; ?></td>
+                        <td><?php echo $d[$i]['apaterno']; ?></td>
+                        <td><?php echo $d[$i]['amaterno']; ?></td>
+                        <td><?php echo $d[$i]['nombreGrado']; ?></td>
+                        <td><?php echo $d[$i]['letra']; ?></td>
+                        <td><?php echo $d[$i]['nombreEstablecimiento']; ?>
+                        </td>
+                        <?php if ($rol == '2') { ?>
+
+
+                                <td>
+
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'agregapersonalidad', 'id' => $d[$i]['idAlumnos']), 'default', true); ?>"><i
+                                                class="icon-plus"></i> Crear Informe Personalidad</a>
+
+                                </td>
+
+
+                            <?php if($d[$i]['tipoModalidad']==1){?>
+
+
+                                <td>
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generapersonalidad', 'id' => $d[$i]['idAlumnosActual'], 'p' => 1), 'default', true); ?>"><i
+                                                    class="icon-eye-open"></i> Generar I Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generapersonalidad', 'id' => $d[$i]['idAlumnosActual'], 'p' => 2), 'default', true); ?>"><i
+                                                    class="icon-eye-open"></i> Generar II Semestre</a>
+                                    </div>
+                                </td>
+
+                            <?php } else{?>
+                                <td>
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generapersonalidad', 'id' => $d[$i]['idAlumnosActual'], 'p' => 3), 'default', true); ?>"><i
+                                                    class="icon-eye-open"></i> Generar I Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generapersonalidad', 'id' => $d[$i]['idAlumnosActual'], 'p' => 4), 'default', true); ?>"><i
+                                                    class="icon-eye-open"></i> Generar II Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generapersonalidad', 'id' => $d[$i]['idAlumnosActual'], 'p' => 5), 'default', true); ?>"><i
+                                                    class="icon-eye-open"></i> Generar III Trimestre</a>
+                                    </div>
+                                </td>
+
+
+
+                            <?php } ?>
+
+
+                                <td>
+
+
+                                    <a class="button small green"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'editarpersonalidad', 'id' => $d[$i]['idAlumnos']), 'default', true); ?>"><i
+                                                class="icon-plus"></i> Editar</a>
+
+
+                                </td>
+                            <?php } ?>
+
+                    </tr>
+
+                <?php endforeach;
+            }
+
+        } else {
+
+
+            foreach ($this->datos as $d) : ?>
+                <tr>
+                    <td><?php echo $d['nombres']; ?></td>
+                    <td><?php echo $d['apaterno']; ?></td>
+                    <td><?php echo $d['amaterno']; ?></td>
+                    <td><?php echo $d['nombreGrado']; ?></td>
+                    <td><?php echo $d['letra']; ?></td>
+                    <td><?php echo $d['nombreEstablecimiento']; ?>
+                    </td>
+                    <?php if ($rol == '2') { ?>
+
+                            <td>
+
+
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'agregapersonalidad', 'id' => $d['idAlumnos']), 'default', true); ?>"><i
+                                            class="icon-plus"></i> Crear Informe Personalidad</a>
+
+
+                            </td>
+
+                        <?php if($d['tipoModalidad']==1 || $d['tipoModalidad']==0){ ?>
+
+                            <td>
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 1), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar I Semestre</a>
+                                </div>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 2), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar II Semestre</a>
+                                </div>
+                            </td>
+
+                        <?php }else{ ?>
+                            <td>
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 3), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar I Trimestre</a>
+                                </div>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 4), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar II Trimestre</a>
+                                </div>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 5), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar III Trimestre</a>
+                                </div>
+                            </td>
+
+                        <?php } ?>
+
+
+                            <td>
+
+
+                                <a class="button small green"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'editarpersonalidad', 'id' => $d['idAlumnos']), 'default', true); ?>"><i
+                                            class="icon-plus"></i> Editar</a>
+
+
+                            </td>
+
+
+
+                    <?php }else{
+
+                        if($d['tipoModalidad']==1 || $d['tipoModalidad']==0){ ?>
+                        <td>
+                            <div class="ventana">
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 1), 'default', true); ?>"><i
+                                            class="icon-eye-open"></i> Generar I Semestre</a>
+                            </div>
+
+                            <div class="ventana">
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 2), 'default', true); ?>"><i
+                                            class="icon-eye-open"></i> Generar II Semestre</a>
+                            </div>
+                        </td>
+                    <?php }else{ ?>
+
+                            <td>
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 3), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar I Trimestre</a>
+                                </div>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 4), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar II Trimestre</a>
+                                </div>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidad', 'id' => $d['idAlumnosActual'], 'p' => 5), 'default', true); ?>"><i
+                                                class="icon-eye-open"></i> Generar III Trimestre</a>
+                                </div>
+                            </td>
+
+                        <?php }
+                    } ?>
+
+                </tr>
+
+            <?php endforeach;} ?>
+
+    </table>

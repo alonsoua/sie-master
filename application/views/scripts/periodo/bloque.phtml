@@ -1,0 +1,43 @@
+<!--creo link para agregar un Periodo -->
+<a class="button medium blue"
+   href="<?php echo $this->url(array('controller' => 'Periodo', 'action' => 'agregarbloque')); ?>">Crear Bloque</a>
+
+
+<table class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>Establecimiento</th>
+        <th>Nombre Bloque</th>
+        <th>Hora Inicio</th>
+        <th>Hora Termino</th>
+        <th>Tipo</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+
+    </tr>
+    </thead>
+    <?php foreach ($this->dato as $d) : ?>
+
+        <tr>
+            <td><?php echo $d->nombreEstablecimiento ?></td>
+
+            <td><?php echo (empty($d->nombreBloque)) ? "Sin Nombre" : $d->nombreBloque ?></td>
+
+            <td><?php echo $d->tiempoInicio; ?></td>
+            <td><?php echo $d->tiempoTermino; ?></td>
+            <td><?php echo ($d->tipoBloque==1) ? "Mañana" : "Tarde" ?></td>
+
+
+            <td><a class="button small green" href="<?php echo $this->url(array('controller' => 'Periodo',
+                    'action' => 'editarbloque', 'id' => $d->idBloque, 'ide' => $d->idEstablecimiento)); ?>">Editar</a>
+            </td>
+
+            <td><a class="button small red" href="<?php echo $this->url(array('controller' => 'Periodo',
+                    'action' => 'eliminarbloque', 'id' => $d->idBloque, 'ide' => $d->idEstablecimiento)); ?>">Eliminar</a>
+            </td>
+
+        </tr>
+
+    <?php endforeach; ?>
+
+</table>

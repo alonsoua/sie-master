@@ -1,0 +1,23 @@
+<div id="content">
+    <div id="wrapper">
+        <?php if ($this->messages) : ?>
+            <div class="t_a_message">
+                <ul>
+                    <?php foreach ($this->messages as $msg) : ?>
+                        <li class="error mensaje"><?php echo $msg; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+        <?php endif; ?>
+        <ul class="tabs center">
+            <li><a href="#tabc1">Establecimiento</a></li>
+            <li><a href="#tabc2"><i class="icon-folder-open"></i>Subvención</a></li>
+            <li><a href="#tabc3">Sostenedor</a></li>
+            <li><a href="#tabc4">Opciones</a></li>
+        </ul>
+        <div id="tabc1" class="tab-content"><?php echo $this->form->getDisplayGroup('establecimiento'); ?> </div>
+        <div id="tabc2" class="tab-content">Tab2 has an icon.</div>
+        <div id="tabc3" class="tab-content">Tab3</div>
+
+

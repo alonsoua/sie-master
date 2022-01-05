@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configdata>
+    <nav>
+        <home>
+            <label>Inicio</label>
+            <controller>index</controller>
+            <action>index</action>
+            <pages>
+                <sostenedor>
+                    <label>Sostenedor</label>
+                    <controller>Sostenedor</controller>
+                    <action>index</action>
+                    <resource>Sostenedor</resource>
+
+                    <pages>
+                        <agregar>
+                            <label>Agregar</label>
+                            <controller>Sostenedor</controller>
+                            <action>agregar</action>
+                        </agregar>
+                        <editar>
+                            <label>Editar</label>
+                            <controller>Sostenedor</controller>
+                            <action>editar</action>
+                        </editar>
+                    </pages>
+                </sostenedor>
+
+
+                 <alumnos>
+                    <label>Alumnos</label>
+                    <controller>Alumnos</controller>
+                    <action>index</action>
+                    <resource>Alumnos</resource>
+
+                    <pages>
+                        <agregar>
+                            <label>Agregar Alumno</label>
+                            <controller>Alumnos</controller>
+                            <action>agregar</action>
+                        </agregar>
+
+
+
+                        <editar>
+                            <label>Editar</label>
+                            <controller>Alumnos</controller>
+                            <action>editar</action>
+                        </editar>
+
+                        <listar>
+                            <label>Lista Alumnos Retirado</label>
+                            <controller>Alumnos</controller>
+                            <action>indexr</action>
+                        </listar>
+
+
+                    </pages>
+                </alumnos>
+
+
+                <apoderados>
+                    <label>Apoderados</label>
+                    <controller>Alumnos</controller>
+                    <action>indexa</action>
+                    <resource>Alumnos</resource>
+
+                    <pages>
+
+
+                        <agregara>
+                            <label>Agregar Apoderado</label>
+                            <controller>Alumnos</controller>
+                            <action>agregarapoderado</action>
+                        </agregara>
+
+
+
+                        <editara>
+                            <label>Editar Apoderado</label>
+                            <controller>Alumnos</controller>
+                            <action>editarapoderado</action>
+                        </editara>
+                    </pages>
+                </apoderados>
+
+
+                <usuario>
+                    <label>Usuario</label>
+                    <controller>usuarios</controller>
+                    <action>index</action>
+                    <resource>index</resource>
+
+
+
+                </usuario>
+
+                <establecimiento>
+                    <label>Establecimiento</label>
+                    <controller>Establecimiento</controller>
+                    <action>index</action>
+                    <pages>
+                        <agregar>
+                            <label>Agregar</label>
+                            <controller>establecimiento</controller>
+                            <action>agregar</action>
+                        </agregar>
+
+                        <editar>
+                            <label>Editar</label>
+                            <controller>establecimiento</controller>
+                            <action>editar</action>
+                        </editar>
+
+                    </pages>
+                </establecimiento>
+
+
+                 <asignaturas>
+                    <label>Asignaturas</label>
+                    <controller>Asignaturas</controller>
+                    <action>index</action>
+                    <pages>
+                        <agregar>
+                            <label>Agregar</label>
+                            <controller>Asignaturas</controller>
+                            <action>agregar</action>
+                        </agregar>
+
+                        <editar>
+                            <label>Editar</label>
+                            <controller>Asignaturas</controller>
+                            <action>editar</action>
+                        </editar>
+
+                    </pages>
+                </asignaturas>
+
+                  <cursos>
+                    <label>Cursos</label>
+                    <controller>Cursos</controller>
+                    <action>index</action>
+                    <pages>
+                        <agregar>
+                            <label>Agregar</label>
+                            <controller>Cursos</controller>
+                            <action>agregar</action>
+                        </agregar>
+
+                        <editar>
+                            <label>Editar</label>
+                            <controller>Cursos</controller>
+                            <action>editar</action>
+                        </editar>
+
+                        <asignaturascurso>
+                            <label>Asignaturas</label>
+                            <controller>Cursos</controller>
+                            <action>asignaturas</action>
+                            <pages>
+                                <agregarasignatura>
+                                    <label>Agregar Asignatura</label>
+                                    <controller>Cursos</controller>
+                                    <action>agregarasignaturas</action>
+                                </agregarasignatura>
+                            </pages>
+                        </asignaturascurso>
+
+                    </pages>
+                </cursos>
+
+                 <periodos>
+                    <label>Periodo</label>
+                    <controller>Periodo</controller>
+                    <action>index</action>
+                    <pages>
+                        <agregar>
+                            <label>Agregar</label>
+                            <controller>Periodo</controller>
+                            <action>agregar</action>
+                        </agregar>
+
+                        <editar>
+                            <label>Editar</label>
+                            <controller>Periodo</controller>
+                            <action>editar</action>
+                        </editar>
+
+                    </pages>
+                </periodos>
+
+                <calendario>
+                    <label>Calendarios</label>
+                    <controller>Periodo</controller>
+                    <action>calendario</action>
+                    <pages>
+                        <agregar>
+                            <label>Agregar Calendario</label>
+                            <controller>Periodo</controller>
+                            <action>agregarcalendario</action>
+                        </agregar>
+
+                        <editar>
+                            <label>Editar Calendario</label>
+                            <controller>Periodo</controller>
+                            <action>editarcalendario</action>
+                        </editar>
+
+                        <eventos>
+                            <label>Eventos Calendario</label>
+                            <controller>Periodo</controller>
+                            <action>evento</action>
+                            <pages>
+                                <agregarevento>
+                                    <label>Agregar Evento</label>
+                                    <controller>Periodo</controller>
+                                    <action>agregarevento</action>
+                                </agregarevento>
+
+                            </pages>
+                        </eventos>
+                        <calendariocurso>
+                            <label>Calendarios Cursos</label>
+                            <controller>Periodo</controller>
+                            <action>calendariocurso</action>
+                            <pages>
+                                <agregar>
+                                    <label>Agregar Calendario Curso</label>
+                                    <controller>Periodo</controller>
+                                    <action>agregarcalendariocurso</action>
+                                </agregar>
+                                <listaevento>
+                                    <label>Eventos Curso</label>
+                                    <controller>Periodo</controller>
+                                    <action>eventocurso</action>
+                                </listaevento>
+                            </pages>
+                        </calendariocurso>
+
+                    </pages>
+                </calendario>
+                <horario>
+                    <label>Horarios</label>
+                    <controller>Horarios</controller>
+                    <action>index</action>
+                    <pages>
+                        <crea>
+                            <label>Crea o Modifica Horario</label>
+                            <controller>Horarios</controller>
+                            <action>horario</action>
+                        </crea>
+
+                    </pages>
+                </horario>
+
+                 <Cuentausuario>
+                            <label>Cuentas de Usuario</label>
+                            <controller>Cuentausuario</controller>
+                            <action>index</action>
+
+                            <pages>
+                                <agregar>
+                                <label>Agregar</label>
+                                <controller>Cuentausuario</controller>
+                                <action>agregar</action>
+                                </agregar>
+                                <cambiarpassword>
+                                    <label>Restablecer Contraseña</label>
+                                    <controller>Cuentausuario</controller>
+                                    <action>restablecer</action>
+                                </cambiarpassword>
+                            </pages>
+                </Cuentausuario>
+
+                <Libro>
+                           <label>Libros</label>
+                            <controller>Libro</controller>
+                            <action>index</action>
+
+                            <pages>
+                            <abrir>
+                            <label>Abierto</label>
+                            <controller>Libro</controller>
+                            <action>abrir</action>
+                            <pages>
+                            <notas>
+                            <label>Notas por Evaluación</label>
+                            <controller>Libro</controller>
+                            <action>notas</action>
+                            </notas>
+
+                            <notasc>
+                            <label>Notas</label>
+                            <controller>Libro</controller>
+                            <action>notasnuevo</action>
+                                <pages>
+                                    <publicar>
+                                        <label>Publicar Notas</label>
+                                        <controller>Libro</controller>
+                                        <action>publicarnotas</action>
+                                    </publicar>
+                                    <monitoreo>
+                                        <label>Monitoreo Evaluación</label>
+                                        <controller>Libro</controller>
+                                        <action>monitoreo</action>
+
+                                    </monitoreo>
+                                </pages>
+                            </notasc>
+
+
+
+                                <controlasistencia>
+                                    <label>Control Asistencia</label>
+                                    <controller>Libro</controller>
+                                    <action>controlasistencias</action>
+                                    <pages>
+                                        <registrar>
+                                            <label>Registrar Asistencia</label>
+                                            <controller>Libro</controller>
+                                            <action>registrarasistencia</action>
+                                        </registrar>
+                                        <editar>
+                                            <label>Editar Asistencia</label>
+                                            <controller>Libro</controller>
+                                            <action>editarcontrolasistencia</action>
+                                        </editar>
+                                        <ver>
+                                            <label>Ver Asistencia</label>
+                                            <controller>Libro</controller>
+                                            <action>vercontrolasistencia</action>
+                                        </ver>
+                                    </pages>
+                                </controlasistencia>
+
+                                <controlclases>
+                                    <label>Control Clases</label>
+                                    <controller>Libro</controller>
+                                    <action>controlregistros</action>
+                                    <pages>
+                                        <registrar>
+                                            <label>Registrar Clase</label>
+                                            <controller>Libro</controller>
+                                            <action>registrarcontenido</action>
+                                        </registrar>
+                                        <editar>
+                                            <label>Editar Clase</label>
+                                            <controller>Libro</controller>
+                                            <action>editarcontenido</action>
+                                        </editar>
+                                        <ver>
+                                            <label>Ver Clase</label>
+                                            <controller>Libro</controller>
+                                            <action>vercontrolcontenido</action>
+                                        </ver>
+                                    </pages>
+                                </controlclases>
+
+
+                            <asistencia>
+                            <label>Asistencia</label>
+                            <controller>Libro</controller>
+                            <action>asistencia</action>
+                            </asistencia>
+
+                                <asistenciames>
+                                    <label>Asistencia</label>
+                                    <controller>Libro</controller>
+                                    <action>asistenciames</action>
+                                </asistenciames>
+
+                            <observaciones>
+                            <label>Observaciones</label>
+                            <controller>Libro</controller>
+                            <action>observaciones</action>
+                                <pages>
+                                    <nuevaobservacion>
+                                        <label>Nueva Observación</label>
+                                        <controller>Libro</controller>
+                                        <action>nuevaobservacion</action>
+                                    </nuevaobservacion>
+                                    <editarobservacion>
+                                        <label>Editar Observación</label>
+                                        <controller>Libro</controller>
+                                        <action>editar</action>
+                                    </editarobservacion>
+                                    <listaobservaciones>
+                                        <label>Lista Observaciones Alumno</label>
+                                        <controller>Libro</controller>
+                                        <action>verobservaciones</action>
+                                    </listaobservaciones>
+                                </pages>
+                            </observaciones>
+
+                            <pruebas>
+                            <label>Evaluaciones</label>
+                            <controller>Libro</controller>
+                            <action>pruebas</action>
+                            </pruebas>
+
+
+
+
+                            </pages>
+                            </abrir>
+
+
+
+                            </pages>
+
+                </Libro>
+
+              <Informes>
+                            <label>Informes</label>
+                            <controller>Informes</controller>
+                            <action>index</action>
+
+                            <pages>
+
+                            <personalidad>
+                            <label>Personalidad</label>
+                            <controller>Informes</controller>
+                            <action>personalidad</action>
+                                <pages>
+
+                            <personalidada>
+                            <label>Certificado Personalidad por Alumnos</label>
+                            <controller>Informes</controller>
+                            <action>personalidad</action>
+                            </personalidada>
+
+                            <personalidadcurso>
+                            <label>Certificado Personalidad por Curso</label>
+                            <controller>Informes</controller>
+                            <action>personalidadcurso</action>
+                            </personalidadcurso>
+
+                            <agregar>
+                            <label>Nuevo Informe Personalidad</label>
+                            <controller>Informes</controller>
+                            <action>agregapersonalidad</action>
+                            </agregar>
+
+                            <editar>
+                            <label>Modificar Informe Personalidad</label>
+                            <controller>Informes</controller>
+                            <action>editarpersonalidad</action>
+                            </editar>
+
+                                </pages>
+
+
+                            </personalidad>
+
+
+                            <notas>
+                            <label>Notas</label>
+                            <controller>Informes</controller>
+                            <action>informenotas</action>
+                             <pages>
+
+                            <notasa>
+                            <label>Notas por Alumnos</label>
+                            <controller>Informes</controller>
+                            <action>informenotas</action>
+                            </notasa>
+
+                            <notasc>
+                            <label>Notas por Curso</label>
+                            <controller>Informes</controller>
+                            <action>informecurso</action>
+                            </notasc>
+
+                             </pages>
+
+                            </notas>
+
+                            <cert>
+                            <label>Certificado Alumno</label>
+                            <controller>Informes</controller>
+                            <action>certificadoalumno</action>
+                            </cert>
+
+                                <ranking>
+                                    <label>Informe Ranking</label>
+                                    <controller>Informes</controller>
+                                    <action>ranking</action>
+                                </ranking>
+
+                                <planilla>
+                                    <label>Planilla Curso</label>
+                                    <controller>Informes</controller>
+                                    <action>indexplanilla</action>
+                                </planilla>
+
+                                <informeasistencia>
+                                    <label>Informe Asistencia</label>
+                                    <controller>Informes</controller>
+                                    <action>indexasistenciaalumno</action>
+                                    <pages>
+                                        <indexasistenciaalumno>
+                                            <label>Informe Asistencia Alumno</label>
+                                            <controller>Informes</controller>
+                                            <action>indexasistenciaalumno</action>
+                                        </indexasistenciaalumno>
+
+                                        <indexasistenciacurso>
+                                            <label>Informe Asistencia Curso</label>
+                                            <controller>Informes</controller>
+                                            <action>indexasistencia</action>
+                                        </indexasistenciacurso>
+                                    </pages>
+                                </informeasistencia>
+
+                                <informeobservacion>
+                                    <label>Informe Observación</label>
+                                    <controller>Informes</controller>
+                                    <action>indexobservacionalumno</action>
+                                </informeobservacion>
+
+
+
+                            <matricula>
+                            <label>Ficha Matrícula</label>
+                            <controller>Informes</controller>
+                            <action>matriculas</action>
+                            </matricula>
+
+                                <certmatricula>
+                                    <label>Certificado Matrícula</label>
+                                    <controller>Informes</controller>
+                                    <action>certificadomatriculas</action>
+                                </certmatricula>
+
+                                <indexaccidente>
+                                    <label>Lista Accidentes</label>
+                                    <controller>Informes</controller>
+                                    <action>indexaccidente</action>
+                                    <pages>
+                                        <nuevoaccidente>
+                                            <label>Nuevo Accidente</label>
+                                            <controller>Informes</controller>
+                                            <action>nuevoaccidente</action>
+                                        </nuevoaccidente>
+                                    </pages>
+                                </indexaccidente>
+
+
+
+                            </pages>
+                </Informes>
+            </pages>
+        </home>
+
+    </nav>
+
+</configdata>
+
+
+

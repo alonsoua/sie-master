@@ -1,0 +1,47 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+
+
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Rut</th>
+        <th style="text-align: center">Digito Verificador</th>
+        <th>Nombre Alumno</th>
+        <th>Estado</th>
+
+    </tr>
+    </thead>
+    <?php
+
+
+    $var0 = $this->detalle;
+    if (!empty($var0)) {
+
+
+        ?>
+
+        <?php foreach ($this->detalle as $d) : ?>
+
+
+            <tr>
+
+                <td><?php echo substr($d['rutAlumno'], 0, -1); ?></td>
+                <td style="text-align: center"><?php echo substr($d['rutAlumno'], -1); ?></td>
+
+                <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?>
+                </td>
+                <?php if ($d['estadoComunicacion'] == 0) { ?>
+                    <td style="background: red;">No Enviado</td>
+                <?php } else { ?>
+                    <td>Enviado</td>
+                <?php } ?>
+            </tr>
+
+        <?php endforeach;
+    } ?>
+
+
+</table>

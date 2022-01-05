@@ -1,0 +1,108 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+</style>
+<?php
+
+$datos = $this->datos;
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$roles = new Zend_Session_Namespace('cargo');
+$rol = $roles->cargo;
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+?>
+<?php if ($rol == '2') { ?>
+
+    <a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'registrarcontenido'), null, TRUE);
+    ?>"> <i class="icon-plus"></i> Registrar Contenido</a>
+
+
+<?php } ?>
+
+<?php if ($rol == '1' || $rol == '3' || $rol == '6') { ?>
+
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } ?>
+
+
+<h4>Curso: <?php echo $nombre_curso; ?></h4>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar"><i class="icon-search"></i> Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>
+                <table>
+                    <tr>
+                        <th style="width: 40%;border: none;">Asignatura</th>
+                        <th style="width: 40%;border: none;">Contenido</th>
+                        <th style="width: 10%;border: none;">Bloque/Hora</th>
+                        <?php if ($rol == 2) { ?>
+                            <th style="width: 10%;border: none;">Editar</th>
+                        <?php } ?>
+                    </tr>
+                </table>
+            </th>
+
+        </tr>
+
+        <?php foreach ($datos as $i => $value) { ?>
+            <tr>
+
+                <td><?php echo $value['fechaControl']; ?></td>
+                <td>
+                    <table>
+
+                        <?php
+
+                        foreach ($value['bloques'] as $j => $d) { ?>
+                                <tr>
+                                <td style="width: 40%;"><?php echo $d['nombreAsignatura']; ?></td>
+                                <td style="width: 40%;"><?php echo ucfirst($d['contenidos']); ?></td>
+                                <td style="width: 10%;"><?php echo $d['tiempoInicio'].'-'.$d['tiempoTermino']; ?></td>
+                                <?php if ($rol == 2) { ?>
+                                    <td style="width: 10%;"><a class="button small green"
+                                                               href="<?php echo $this->url(array('controller' => 'Libro', 'action' => 'editarcontenido', 'id' => $d['idControlContenidoDetalle']), 'default', true); ?>">Editar</a>
+                                    </td></tr>
+
+                                    <?php
+                                }
+
+
+                        } ?>
+                    </table>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        <?php } ?>
+
+    </table>
+

@@ -1,0 +1,99 @@
+    <script>
+
+$("button" +"#eliminaobservacion").click(function () {
+     var rutalumno= $('#rutalumno').val();
+     var valor=$(this).val();
+     
+      $ (function(){
+      $.ajax({
+       type: "POST",
+       url: "../../../observaciones/eliminar/id/" + valor,
+       dataType: "html",
+       success: function(msg){
+         alert( "Eliminado Correctamente" ); 
+         cargalista(rutalumno);
+       }
+     });
+        
+     });  
+     valor='';
+    });
+
+</script>
+
+<h5>Lista de Observaciones</h5>
+<!--creo una tabla para mostrar los datos-->
+<table class="striped sortable" id="tablaobservaciones" style="overflow-y: scroll;">
+     <thead>
+        <tr class="alt first last">
+        <th>Id</th>
+        <th>Nombres</th>
+        <th>A Paterno</th>
+        <th>A Materno</th>
+        <th>Curso</th>
+        <th>Subsector</th>
+        <th>Observacion</th>
+        <th>Fecha</th>
+        <th>Eliminar</th>
+        
+    </tr>
+     </thead>
+<!--    recorro el arreglo de datos-->
+    <?php foreach($this->paginator as $record)
+    { ?>
+<!--           por cada fila, muestro sus datos -->
+
+        <tr>
+<!--            nombre del Establecimiento, con un enlace para editar el Establecimiento-->
+            <td>
+                
+                   <?php echo $record[idObservaciones]; ?>
+            
+        </td>
+        
+        <!--            nombre del Establecimiento, con un enlace para editar el Establecimiento-->
+            <td>
+                
+                <?php echo $record[nombres]; ?>   
+            
+        </td>
+        
+        <!--                   nombre Curso-->
+        <td><?php echo $record[apaterno]; ?>   </td>
+        
+          <!--                   nombre Curso-->
+        <td><?php echo $record[amaterno]; ?>   </td>
+
+<!--                   nombre Curso-->
+        <td><?php echo $record[nombre_curso]; ?> </td>
+       
+<!--                   nombre Curso-->
+        <td><?php echo $record[nombre_asignatura]; ?>   </td>
+        <!--                   nombre Curso-->
+        <td><?php echo $record[comentarios]; ?>   </td>
+        <!--                   nombre Curso-->
+        <td><?php
+        $fechainicial=$record[fecha];
+        $fecha= new Zend_Date($fechainicial,'yyyy-mm-dd');
+        echo $fecha->get('dd-mm-yyyy'); ?></td>
+        
+        <td>
+            <!--                   enlace para borrar el Libro-->
+
+            <button class="button small red" id="eliminaobservacion" value="<?php echo $d[idObservaciones]?>">Eliminar</button>
+            </td>
+        
+        
+        
+            
+        
+        </tr>
+       
+<!--    fin del for-->
+    <?php } ?>
+<? echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+</table>
+
+
+
+    

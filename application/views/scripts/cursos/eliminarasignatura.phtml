@@ -1,0 +1,13 @@
+<?php if ($this->messages) : ?>
+    <div class="error">
+        <?php foreach ($this->messages as $msg) : ?>
+            <?php echo $msg; ?>
+        <?php endforeach; ?>
+
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+            'action' => 'asignaturas', 'id' => $this->dato), null, true);
+        ?>">Volver</a>
+    </div>
+
+
+<?php endif; ?>

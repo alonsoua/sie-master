@@ -1,0 +1,195 @@
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<script>
+    $(document).ready(function () {
+
+        function noSunday(date) {
+            var day = date.getDay();
+            return [(day > 0), ''];
+        }
+
+
+        $("#fechaInicioClase").datepicker({
+            <?php $periodo = new Zend_Session_Namespace('nombreperiodo');
+            ?>
+            //autoSize: true,
+            beforeShowDay: noSunday,
+            minDate: new Date(<?php echo $periodo->nombreperiodo ?>, 1, 1),
+            maxDate: new Date(<?php echo $periodo->nombreperiodo ?>, 11, 31),
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            defaultDate: new Date(<?php echo $periodo->nombreperiodo ?>, 1, 1),
+            numberOfMonths: 3,
+
+
+            onSelect: function (selected) {
+                $("#fechaTerminoClase").datepicker("option", "minDate", selected);
+            }
+
+        });
+
+
+        $("#fechaTerminoClase").datepicker({
+            beforeShowDay: noSunday,
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            numberOfMonths: 3,
+            defaultDate: new Date(<?php echo $periodo->nombreperiodo ?>, 10, 1),
+            minDate: new Date(<?php echo $periodo->nombreperiodo ?>, 2, 1),
+            maxDate: new Date(<?php echo $periodo->nombreperiodo ?>, 11, 31),
+            onSelect: function (selected) {
+                $("#fechaInicioClase").datepicker("option", "maxDate", selected);
+            }
+
+
+        });
+
+    });
+</script>
+<?php
+$form = $this->form;
+
+if ($this->messages) : ?>
+
+    <div class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-md text-red-700 bg-red-100 border border-red-300 ">
+        <div slot="avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-octagon w-5 h-5 mx-2">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+        </div>
+
+        <div class="text-xl font-normal  max-w-full flex-initial">
+            <?php foreach ($this->messages as $msg) : ?>
+                <?php echo $msg; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+
+
+<div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+        <div class="max-w-md mx-auto">
+            <div class="flex items-center space-x-5">
+                <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+                    <h2 class="leading-relaxed">Crear Calendario Curso</h2>
+                </div>
+            </div>
+            <form enctype="application/x-www-form-urlencoded" method="post">
+                <?php echo $form->idCalendario->renderViewHelper(); ?>
+                <div class="divide-y divide-gray-200">
+                    <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Establecimiento</label>
+                            <?php echo $form->idEstablecimiento->renderViewHelper(); ?>
+                        </div>
+                        <?php if ($form->idEstablecimiento->getMessages()) { ?>
+                            <div class="flex flex-col">
+                              <span class="text-red-700 text-xs italic">
+                                <?php echo $form->idEstablecimiento->getMessages()['isEmpty']; ?>
+                              </span>
+                            </div>
+
+                        <?php } ?>
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Código Calendario</label>
+                            <?php echo $form->codigoCalendario->renderViewHelper(); ?>
+                        </div>
+                        <?php if ($form->codigoCalendario->getMessages()) { ?>
+                            <div class="flex flex-col">
+                              <span class="text-red-700 text-xs italic">
+                                <?php echo $form->codigoCalendario->getMessages()['isEmpty']; ?>
+                              </span>
+                            </div>
+
+                        <?php } ?>
+
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Descripción Calendario</label>
+                            <?php echo $form->descripcionCalendario->renderViewHelper(); ?>
+                        </div>
+                        <?php if ($form->descripcionCalendario->getMessages()) { ?>
+                            <div class="flex flex-col">
+                              <span class="text-red-700 text-xs italic">
+                                <?php echo $form->descripcionCalendario->getMessages()['isEmpty']; ?>
+                              </span>
+                            </div>
+
+                        <?php } ?>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex flex-col">
+                                <label class="leading-loose">Fecha Inicio Clases</label>
+                                <div class="relative focus-within:text-gray-600 text-gray-400">
+                                    <?php echo $form->fechaInicioClase->renderViewHelper(); ?>
+                                    <div class="absolute left-3 top-2">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="leading-loose">Fecha Termino Clases</label>
+                                <div class="relative focus-within:text-gray-600 text-gray-400">
+                                    <?php echo $form->fechaTerminoClase->renderViewHelper(); ?>
+                                    <div class="absolute left-3 top-2">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="flex flex-col">
+                                <?php if ($form->fechaInicioClase->getMessages()) { ?>
+                                    <span class="text-red-700 text-xs italic">
+                                        <?php echo $form->fechaInicioClase->getMessages()['isEmpty']; ?>
+                                      </span>
+
+
+                                <?php } ?>
+                                <span></span>
+
+                            </div>
+                            <div class="flex flex-col">
+                                <?php if ($form->fechaTerminoClase->getMessages()) { ?>
+                                    <span class="text-red-700 text-xs italic">
+                                        <?php echo $form->fechaTerminoClase->getMessages()['isEmpty']; ?>
+                                      </span>
+
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-4 flex items-center space-x-4">
+                        <?php
+                        echo $form->volver->renderViewHelper();
+                        ?>
+
+                        <?php
+                        echo $form->submit->renderViewHelper();
+                        ?>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

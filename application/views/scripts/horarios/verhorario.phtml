@@ -1,0 +1,136 @@
+
+<h4>Curso: <?php echo $this->curso[0]['nombreGrado'] . ' ' . $this->curso[0]['letra']; ?></h4>
+
+<h2><?php echo $this->title; ?></h2>
+<?php $form = $this->dato; ?>
+<div style="width:100%;">
+    <h5>Profesor Jefe:</h5>
+
+
+    <?php $horario = $this->horario;
+    ?>
+
+    <?php if ($this->messages) : ?>
+        <div class="alert alert-danger">
+
+            <?php foreach ($this->messages as $msg) : ?>
+                <h5 class="center"><?php echo $msg; ?></h5>
+            <?php endforeach; ?>
+
+        </div>
+    <?php endif; ?>
+
+    <div class="right">
+        <input type="hidden" id="curso" value="<?php echo $this->curso[0]['idCursos']; ?>">
+        <table id="horarios">
+            <tr>
+                <th scope="col" class="blank">Hora</th>
+                <th scope="col" class="title">Lunes</th>
+                <th scope="col" class="title">Martes</th>
+                <th scope="col" class="title">Miercoles</th>
+                <th scope="col" class="title">Jueves</th>
+                <th scope="col" class="title">Viernes</th>
+            </tr>
+
+            <?php  for ($i = 0; $i < count($this->bloques); $i++) { //bloque ?>
+                <tr>
+                    <td class="time" style="width: 5%;"><p><?php echo date ('H:i',strtotime($this->bloques[$i]['tiempoInicio'])).' - '.date ('H:i',strtotime($this->bloques[$i]['tiempoTermino'])); ?> hrs.</p></td>
+
+                    <?php for ($j = 1; $j < 6; $j++) {//Dias
+                        $aux[$i][$j] = false;
+
+                        for ($d = 0; $d < count($horario); $d++) {
+
+                            if ($horario[$d]['tiempoInicio'] == $this->bloques[$i]['tiempoInicio'] && $horario[$d]['dia'] == $j) { ?>
+
+                                <td class="drop" style="width: 13%;" data-html="true">
+                                    <div id="datos"><div><p><?php echo $horario[$d]['nombrescuenta'].' '.$horario[$d]['paternocuenta'].' '.$horario[$d]['maternocuenta']; ?></p><p><?php echo $horario[$d]['nombreAsignatura']; ?></p></div></div>
+                                </td>
+
+                                <?php $aux[$i][$j] = true; ?>
+                            <?php } ?>
+
+                        <?php } ?>
+
+                        <?php
+
+                        if (!$aux[$i][$j]) { ?>
+                            <td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true">
+                                <div id="datos"></div>
+                            </td>
+
+                        <?php } ?>
+
+                    <?php } ?>
+
+                </tr>
+            <?php } ?>
+
+
+        </table>
+
+    </div>
+</div>
+
+
+<style type="text/css">
+
+
+    .right {
+        width: 100%;
+    }
+
+    .right table {
+        background: #E0ECFF;
+        width: 100%;
+    }
+
+    .right td {
+        background: #fafafa;
+        color: #444;
+        text-align: center;
+        padding: 2px;
+    }
+
+    .right td {
+        background: #E0ECFF;
+    }
+
+    .right td.drop {
+        background: #fafafa;
+        width: 100px;
+        height: 40px;
+        border: 1px solid #ddd;
+    }
+
+    .right td.over {
+        background: #FBEC88;
+    }
+
+    .item {
+        text-align: center;
+        border: 1px solid #499B33;
+        background: #fafafa;
+        color: #444;
+        width: 140px;
+    }
+
+    .open {
+        background: blue;
+    }
+
+    select {
+        width:170px;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+
+
+</style>
+
+
+
+
+
+

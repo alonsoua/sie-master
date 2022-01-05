@@ -1,0 +1,142 @@
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+
+<?php
+$form = $this->form;
+
+if ($this->messages) : ?>
+
+    <div class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-md text-red-700 bg-red-100 border border-red-300 ">
+        <div slot="avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="feather feather-alert-octagon w-5 h-5 mx-2">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+        </div>
+
+        <div class="text-xl font-normal  max-w-full flex-initial">
+            <?php foreach ($this->messages as $msg) : ?>
+                <?php echo $msg; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+
+<div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+        <div class="max-w-md mx-auto">
+            <div class="flex items-center space-x-5">
+                <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+                    <h2 class="leading-relaxed">Combinar Cursos</h2>
+                </div>
+            </div>
+            <form enctype="application/x-www-form-urlencoded" method="post">
+                <div class="divide-y divide-gray-200">
+                    <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                        <div class="flex flex-col">
+                            <label for="idEstablecimiento" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-500">Establecimiento:</label>
+                            <?php echo $form->idEstablecimiento->renderViewHelper(); ?>
+                        </div>
+
+                        <?php if ($form->idEstablecimiento->getMessages()) { ?>
+                            <div class="flex flex-col">
+                              <span class="text-red-700 text-xs italic">
+                                <?php echo $form->idEstablecimiento->getMessages()['isEmpty']; ?>
+                              </span>
+                            </div>
+
+                        <?php } ?>
+
+                        <div class="flex flex-col">
+                            <label for="idCursos" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-500">Cursos a
+                                combinar:</label>
+                            <?php echo $form->idCursos->renderViewHelper(); ?>
+                        </div>
+
+                        <?php if ($form->idCursos->getMessages()) { ?>
+                            <div class="flex flex-col">
+                              <span class="text-red-700 text-xs italic">
+                                <?php echo $form->idCursos->getMessages()['isEmpty']; ?>
+                              </span>
+                            </div>
+
+                        <?php } ?>
+
+                    </div>
+                    <div class="pt-4 flex items-center space-x-4">
+                        <button class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none">
+                            Guardar
+                        </button>
+                        <button type="button" onclick="window.location ='<?php echo $this->url(array('controller' => 'Cursos', 'action' => 'index'), null, TRUE); ?>'"
+                                class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none">
+                            Volver
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#idCursos").chosen({no_results_text: "Búsqueda no encontrada"});
+
+        $('#idEstablecimiento').change(function (e) {
+            $('#idCursos').html('');
+            $.ajax({
+                type: "GET",
+                url: "getcursos/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option name="'+ data[i].idCodigo +'" class="'+ data[i].idGrado +'" value="' + data[i].idCursos + '">(' + data[i].idGrado + ') ' + data[i].nombreGrado + ' ' + data[i].letra +' </option>';
+                    }
+
+                    $('#idCursos').append(options);
+                    $("#idCursos").val([]).trigger('chosen:updated')
+                }
+            });
+            e.stopImmediatePropagation();
+        });
+
+        $('#idCursos').change(function (e) {
+
+            var codigo=$(this).find('option:selected').attr('name');
+            var grado=$(this).find('option:selected').attr('class');
+            if(codigo==110){
+                $("#idCursos option[name=10]").attr('disabled',true);
+                if(grado<=6){
+                    $("#idCursos option[name=110][class=7]").attr('disabled',true);
+                    $("#idCursos option[name=110][class=8]").attr('disabled',true);
+                }else if(grado>6){
+                    for (var i=1;i<7;i++){
+                        $("#idCursos option[name=110][class="+i+"]").attr('disabled',true);
+                    }
+                }
+
+            }else if(codigo==10){
+                $("#idCursos option[name=110]").attr('disabled',true);
+            }else if(codigo==undefined){
+                $("#idCursos option").removeAttr('disabled');
+            }
+            $("#idCursos").trigger('chosen:updated')
+            e.stopImmediatePropagation();
+        });
+    });
+</script>

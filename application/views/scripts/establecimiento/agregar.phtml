@@ -1,0 +1,23 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#comuna").chosen({no_results_text: "Búsqueda no encontrada"});
+    });
+</script>
+
+<div id="content">
+    <div id="wrapper">
+        <?php if ($this->messages): ?>
+            <div class="t_a_message">
+                <ul>
+                    <?php foreach ($this->messages as $msg): ?>
+                        <li class="error"><?php echo $msg; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+        <?php endif; ?>
+
+        <div><?php echo $this->form ?></div>
+    </div>
+</div>

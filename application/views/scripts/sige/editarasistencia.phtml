@@ -1,0 +1,92 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<style>
+
+    .unavailable span {
+        color: green !important;
+    / / muestra rojos los festivos background-color: blue;
+    }
+
+    .unavailable {
+        background-color: blue;
+    }
+
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'asistencia'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<?php echo $this->form; ?>
+
+<div style="position:relative" class="info mensajes">Nota: -La Asistencia marcada corresponde a los ausentes<br> -
+    Marque los ausentes</div>
+
+
+<div id="asistencia">
+    <div id="divTabla" style="margin-top: 20px;">
+                        <label for="txtBuscar">Buscar Alumno: </label>
+                        <input type="text" id="txtBuscar" autofocus
+                               placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    </div>
+
+    <input type="hidden" id="ida" value="<?php echo base64_encode($this->datos[0]['idAsistencia']); ?>" />
+
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Alumnos</th>
+            <th>Asistencia</th>
+
+        </tr>
+        </thead>
+        <tr>
+            <?php
+            $i=1;
+            foreach ($this->datos as $d) : ?>
+            <td><?php echo $i; ?></td>
+
+            <td><?php echo substr($d['rutAlumno'], 0, -1) . '-' . substr($d['rutAlumno'], -1) ?></td>
+
+            <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?></td>
+            <?php if ($d['valor'] == 1) { ?>
+                <td>
+                    <input type="checkbox" checked="checked" class="cambiar"/>
+                </td>
+            <?php } ?>
+
+            <?php if ($d['valor'] == 2) { ?>
+                <td>
+                    <input type="checkbox" class="cambiar"/>
+                </td>
+            <?php } ?>
+
+
+
+        </tr>
+        <?php
+        $i++;
+        endforeach; ?>
+        <tr><th>Presentes</th><th>Ausentes</th><th>Matriculas</th></tr>
+        <table>
+<input type="button" id="guardarasistencia" value="Guardar" />
+
+</div>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/asistenciaeditarsige.js"></script>

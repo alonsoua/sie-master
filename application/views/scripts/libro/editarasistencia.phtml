@@ -1,0 +1,94 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<style>
+
+    .unavailable span {
+        color: green !important;
+     background-color: blue;
+    }
+
+    .unavailable {
+        background-color: blue;
+    }
+
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'asistenciames'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<?php echo $this->form; ?>
+
+<div style="position:relative" class="info mensajes">Nota: -La Asistencia marcada corresponde a los ausentes<br> -
+    Marque los ausentes</div>
+
+
+<div id="asistencia">
+    <div id="divTabla" style="margin-top: 20px;">
+                        <label for="txtBuscar">Buscar Alumno: </label>
+                        <input type="text" id="txtBuscar" autofocus
+                               placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    </div>
+
+    <input type="hidden" id="ida" value="<?php echo base64_encode($this->idAsistencia); ?>" />
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Alumnos</th>
+            <th>Asistencia</th>
+
+        </tr>
+        </thead>
+        <tr>
+            <?php
+            $i=1;
+
+            foreach ($this->datos as $d) : ?>
+            <td><?php echo $i; ?></td>
+
+            <td><?php echo substr($d['rutAlumno'], 0, -1) . '-' . substr($d['rutAlumno'], -1) ?></td>
+
+            <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?></td>
+            <?php if ($d['asistencia'][0]['valor'] == 1) { ?>
+                <td>
+                    <input type="checkbox" checked="checked" value="<?php echo $d['asistencia'][0]['idAsistenciaValores']; ?>" id="<?php echo $d['idAlumnos']; ?>" class="cambiar"/>
+                </td>
+            <?php } ?>
+
+            <?php if ($d['asistencia'][0]['valor'] == 2) { ?>
+                <td>
+                    <input type="checkbox" value="<?php echo $d['asistencia'][0]['idAsistenciaValores']; ?>" id="<?php echo $d['idAlumnos']; ?>"  class="cambiar"/>
+                </td>
+            <?php } ?>
+
+
+
+        </tr>
+        <?php
+        $i++;
+        endforeach; ?>
+
+        <table>
+<input type="button" id="guardarasistencia" value="Guardar" />
+
+</div>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/asistenciaeditar.js"></script>

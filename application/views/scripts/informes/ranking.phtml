@@ -1,0 +1,95 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<style>
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+
+            <th>Grado</th>
+            <th>Letra Curso</th>
+            <th>Establecimiento</th>
+            <th>Generar I Semestre</th>
+            <th>Generar II Semestre</th>
+            <th>Generar Final</th>
+        </tr>
+        </thead>
+        <?php
+        $cargo = new Zend_Session_Namespace('cargo');
+        $rol = $cargo->cargo;
+        if ($rol == '1' || $rol == '2' || $rol == '3' || $rol=='6') {
+
+            $var0 = $this->datos;
+            if (!empty($var0)) {
+
+
+                ?>
+                <?php foreach ($this->datos as $d) : ?>
+
+                    <tr>
+                        <td><?php echo $d['nombreGrado']; ?></td>
+                        <td><?php echo $d['letra']; ?></td>
+                        <td><?php echo $d['nombreEstablecimiento']; ?></td>
+                        <?php if ($d['idCodigoTipo'] == 10) { ?>
+                            <td>
+                                <a class="button small"
+                                   href="#" disabled="disabled"><i
+                                            class="icon-hand-up"></i> Generar I Semestre</a>
+                            </td>
+                            <td>
+                                <a class="button small"
+                                   href="#" disabled="disabled"><i
+                                            class="icon-hand-up"></i> Generar II Semestre</a>
+                            </td>
+                            <td>
+                                <a class="button small"
+                                   href="#" disabled="disabled"><i
+                                            class="icon-hand-up"></i> Generar Final</a>
+                            </td>
+                        <?php } else { ?>
+                            <td>
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generarrankingseg', 'id' => $d['idCursos'],'s' =>1 ), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Generar I Semestre</a>
+                                </div>
+
+                            </td>
+                            <td>
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generarrankingseg', 'id' => $d['idCursos'],'s' =>2 ), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Generar II Semestre</a>
+                                </div>
+
+                            </td>
+                            <td>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generarranking', 'id' => $d['idCursos']), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Generar Final</a>
+                                </div>
+
+
+                            </td>
+
+                        <?php } ?>
+
+                    </tr>
+                <?php endforeach;
+            }
+        } ?>
+    </table>

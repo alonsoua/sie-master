@@ -1,0 +1,150 @@
+<link href="<?php echo $this->baseUrl;?>/css/fullcalendar/main.min.css" rel='stylesheet'>
+<script src="<?php echo $this->baseUrl;?>/css/fullcalendar/main.min.js"></script>
+
+<?php
+
+$datos = $this->datos;
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$roles = new Zend_Session_Namespace('cargo');
+$rol = $roles->cargo;
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+?>
+<?php if ($rol == '2') { ?>
+
+    <a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'registrarasistencia'), null, TRUE);
+    ?>"> <i class="icon-plus"></i> Registrar Asistencia</a>
+
+
+<?php } ?>
+
+<?php if ($rol == '1' || $rol == '3' || $rol == '6') { ?>
+
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } ?>
+
+
+<h4>Curso: <?php echo $nombre_curso; ?></h4>
+
+<div id='calendar'></div>
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            allDayText:'Horas',
+            slotMinTime:'07:00:00',
+            slotMaxTime:'20:00:00',
+            headerToolbar: {
+                left: 'dayGridMonth,timeGridWeek,timeGridDay',
+                center: 'title',
+                right: 'prev,next'
+            },
+            buttonText:{
+                today:    'Hoy',
+                month:    'Mes',
+                week:     'Semana',
+                day:      'Día',
+                list:     'Lista'
+            },
+            locale: 'es',
+            hiddenDays: [<?php echo implode(',', $this->dias) ?>],
+            validRange: {
+                start: "<?php echo $this->datoscurso[0]['fechaInicioClase']; ?>",
+                end: "<?php echo $this->datoscurso[0]['fechaTerminoClase']; ?>"
+            },
+            dateClick: function(info) {
+
+                var elemento=$(info.dayEl).find('.fc-event').css('background-color')=='rgb(255, 0, 0)';
+                if(!elemento){
+                    calendar.changeView('timeGridDay', info.dateStr);
+                }
+
+            },
+
+
+            events: <?php echo $this->json; ?>,
+            eventTimeFormat: { // like '14:30:00'
+                hour: '2-digit',
+                minute: '2-digit',
+                meridiem: false
+            },
+            eventClick: function(info) {
+                var eventObj = info.event;
+
+                if (eventObj.url) {
+                    window.location.replace(eventObj.url);
+                    info.jsEvent.preventDefault();
+                }
+            },
+            eventConstraint: {
+                start: '2021-03-03T07:00:00',
+                end: '2021-03-03T19:00:00'
+            },
+        });
+        calendar.render();
+    });
+
+
+
+</script>
+
+<style>
+
+    #calendar {
+        max-width: 100%;
+        margin: 20px auto;
+    }
+    tr:hover { background: none; }
+
+    .fc-button-primary{
+        color: #b4ccce;
+        background: #1D6DC1;
+    }
+    .fc-button-primary:hover{
+        color: #b4ccce;
+        background: #0000CC;
+    }
+    .fc-button-primary:active{
+        color: #b4ccce;
+        background: #0000CC;
+    }
+    .fc-scroller {
+        overflow-y: hidden !important;
+    }
+
+    .fc .fc-scrollgrid-liquid {
+        height: 60%;
+    }
+
+    .fc-event-title{
+        font-size: 12px;
+
+    }
+    .fc-view-harness {
+        height: auto;
+    }
+    .fc-view-harness-active{
+        height: auto;
+    }
+
+</style>

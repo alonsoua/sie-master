@@ -1,0 +1,86 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<input type="hidden" name="" value="<?php echo $this->datocurso; ?>" id="curso">
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'asignaturas', 'id' => $this->idcurso), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'configuracionconcepto', 'id' => $this->idasignatura, 'c' => $this->idcurso), 'default', true); ?>">Agregar
+    Concepto</a>
+
+
+<h4>Asignatura: <?php echo $this->nombre[0]['nombreAsignatura']; ?></h4>
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Concepto</th>
+            <th>Rango</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+                <td><?php echo $d['concepto'] ?></td>
+
+                <td>
+
+                    <?php
+
+                    echo 'Desde '.$d['desde'].'- Hasta '.$d['hasta'];
+                    ?>
+
+                </td>
+
+                <td>
+
+
+                            <a class="button small green"
+                               href="<?php echo $this->url(array('controller' => 'Cursos',
+                                   'action' => 'editarconcepto', 'id' => $d['idConcepto'],'as' => $this->idasignatura, 'c' => $this->idcurso), 'default', true); ?>">
+                                Editar</a>
+
+
+
+                </td>
+
+
+                <td>
+
+                    <a class="button small red" href="<?php echo $this->url(array('controller' => 'Cursos',
+                        'action' => 'eliminarconcepto', 'id' => $d['idConcepto'],'as' => $this->idasignatura, 'c' => $this->idcurso), 'default', true); ?>"
+                       onclick="return confirm('¿Quiere eliminar ésta Asignatura?');">Eliminar</a>
+
+                </td>
+
+
+            </tr>
+
+
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+
+
+
+
+
+

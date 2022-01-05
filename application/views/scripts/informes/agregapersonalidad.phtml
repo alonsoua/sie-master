@@ -1,0 +1,49 @@
+
+<div id="content">
+            <div id="wrapper">
+                    <?php if ($this->messages) : ?>
+<div class="t_a_message">
+   <ul>
+   <?php foreach ($this->messages as $msg) : ?>
+      <li><?php echo $msg; ?></li>
+   <?php endforeach; ?>
+   </ul>
+</div>
+<?php endif; ?> 
+                <div id="steps">
+                <table>
+                <tr>
+                <td><?php echo $this->datos[0][nombres];?></td>
+                <td><?php echo $this->datos[0][apaterno];?></td>
+                <td><?php echo $this->datos[0][amaterno];?></td>
+                </tr>
+                   
+                </table>
+                 
+
+                 <?php echo $this->form; ?>   
+                    
+                </div>
+                <div id="navigation" style="display:none;">
+                    <ul>
+                        <li class="selected">
+                            <a href="#">Datos Generales</a>
+                        </li>
+                        <li>
+                            <a href="#">Clinicos</a>
+                        </li>
+                        <li>
+                            <a href="#">Nucleo</a>
+                        </li>
+                        <li>
+                            <a href="#">Apoderado</a>
+                        </li>
+						<li>
+                            <a href="#">Enviar</a>
+                        </li>
+                    </ul>
+                </div>
+                
+               
+        </div>
+  </div>

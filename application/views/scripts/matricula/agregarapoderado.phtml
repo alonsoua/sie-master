@@ -1,0 +1,109 @@
+
+<script type="text/javascript">
+    $(function(){
+       $('#item_region').change(function(){
+           
+       
+            $('#item_provincia').html('');
+             $('#item_comuna').html('');
+       
+          var ajax = $.ajax({
+             type: "GET",
+             url: "getprovincia/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].idProvincia + '">' + data[i].nombreProvincia + '</option>';
+                   }
+                   $('#item_provincia').html(options);
+             }
+        });
+      });
+      $('#item_provincia').change(function(){
+          var ajax = $.ajax({
+             type: "GET",
+             url: "getcomuna/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].idComuna + '">' + data[i].nombreComuna + '</option>';
+                   }
+                   $('#item_comuna').html(options);
+             }
+        });
+      });
+      
+       $('#idEstablecimiento').change(function(){
+           
+       
+            $('#idcurso').html('');
+             
+       
+          var ajax = $.ajax({
+             type: "GET",
+             url: "getcurso/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].idCursos + '">' + data[i].nombreCursos + '</option>';
+                   }
+                   $('#idcurso').html(options);
+             }
+        });
+      });
+      
+    });
+ </script>
+
+<div id="content">
+            <div id="wrapper">
+                    <?php if ($this->messages) : ?>
+<div class="t_a_message">
+   <ul>
+   <?php foreach ($this->messages as $msg) : ?>
+      <li><?php echo $msg; ?></li>
+   <?php endforeach; ?>
+   </ul>
+</div>
+<?php endif; ?> 
+                <div id="steps">
+                 <?php echo $this->form; ?>   
+                    
+                </div>
+                <div id="navigation" style="display:none;">
+                    <ul>
+                      
+                        <li>
+                            <a href="#">Apoderado</a>
+                        </li>
+						<li>
+                            <a href="#">Enviar</a>
+                        </li>
+                    </ul>
+                </div>
+                
+               
+        </div>
+  </div>
+

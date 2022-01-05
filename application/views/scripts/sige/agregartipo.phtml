@@ -1,0 +1,22 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/jquery-timepicker/jquery.timepicker.css" type="text/css">
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery-timepicker/jquery.timepicker.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.horario').timepicker({ 'timeFormat': 'H:i','step': 5  });
+
+        $( "#fechaAutorizacion" ).datepicker({
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-70:+1"
+        });
+
+    });
+</script>
+<?php echo $this->form; ?>

@@ -1,0 +1,52 @@
+<a id="saludolink" href="#">Saludar a</a><span id="saludospan"></span>
+<!--al presionar este boton, se mostraran ,los albumes-->
+<input type="button"  id="veralbumes" value="Ver albumes usando ajax" />
+<div id="albumesdiv">
+
+</div>
+
+<script type="text/javascript">
+
+    //version onClic de jquery para el elemento de id=saludolink
+    $('#saludolink').click(function(event)
+    {
+
+        
+
+            //LLAMADA AJAX(). llama a la url guardada en ajaxurl, y lo que devuelva lo coloca
+            //en el elemento id= saludospan
+            $("#saludospan").load(ajaxurl, function ()
+            {
+                //function() se llama despues de que se ha hecho la llamada a ajax
+                //y el servidor ha devuelto datos
+                alert("datos recibidos desde servidor");
+            });
+        });
+
+        //cuando hago clic en el boton id=veralbumes
+        $('#veralbumes').click(function(event){
+
+            event.preventDefault();
+
+            var url = "<?php echo $this->url(array('controller' => 'alumnos',
+    'action' => 'listarajax')); ?>";
+
+            var datos = "";
+            //funcion que hace llamada a ajax esperando un
+            // arreglo json de respuesta
+            $.getJSON(url,  function(data)
+            {
+                //por cada elemento
+                //(recordar que recibimos un arreglo de arreglos)
+                $.each(data, function(i,row){
+                    //guardo sus datos en un texto
+                    var fila = i + ')' + row.id + " - " + row.artista_id + " - " + row.nombre + " - " + row.fecha;
+
+                    datos += fila + '<br/>';
+                });
+                //coloco resultado en capa id=albumesdiv
+                $('#albumesdiv').html(datos);
+            });
+        });
+
+</script>

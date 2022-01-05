@@ -1,0 +1,389 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery.twosidedmultiselect.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/comunicaciones.js"></script>
+<style>
+    .tsmsselect {
+                        width: 25%;
+                        float: left;
+                }
+                
+                .tsmsselect select {
+                        width: 100%;
+                }
+                
+                .tsmsoptions {
+                        width: 20%;
+                        float: left;
+                }
+                
+                .tsmsoptions p {
+                        margin: 2px;
+                        text-align: center;
+                        font-size: larger;
+                        cursor: pointer;
+                }
+                
+                .tsmsoptions p:hover {
+                        color: White;
+                        background-color: Silver;
+                }
+    
+</style>
+                <script type="text/javascript">
+			window.onload = function() { 
+				datagrid = new DatabaseGrid();
+                                datagridsegundo = new DatabaseGridsegundo();
+                                datagridtercer = new DatabaseGridtercer();
+                                datagridasis = new DatabaseGridasis();
+                                datagridfebrero = new DatabaseGridfebrero();
+                                datagridmarzo = new DatabaseGridmarzo();
+                                datagridabril = new DatabaseGridabril();
+                                datagridmayo = new DatabaseGridmayo();
+                                datagridjunio = new DatabaseGridjunio();
+                                datagridjulio = new DatabaseGridjulio();
+                                datagridagosto = new DatabaseGridagosto();
+                                datagridseptiembre = new DatabaseGridseptiembre();
+                                datagridoctubre = new DatabaseGridoctubre();
+                                datagridnoviembre = new DatabaseGridnoviembre();
+                                datagriddiciembre = new DatabaseGriddiciembre();
+                                
+			}; 
+                        
+      
+		</script>
+ 
+  <?php $recuperando = new Zend_Session_Namespace('test');?>
+       
+   <!-- Tabs Center -->
+<ul class="tabs center">
+<li><a href="#tabc0">Inicio</a></li>
+<li><a href="#tabc1">Asistencia</a></li>
+<li><a href="#tabc2"><i class="icon-folder-open"></i>Notas</a></li>
+<li><a href="#tabc3">Observaciones</a></li>
+<li><a href="#tabc4">Pruebas y Exámenes</a></li>
+<li><a href="#tabc5">Comunicaciones y Citaciones</a></li>
+</ul>
+   <div id="tabc0" class="tab-content">
+       
+   </div>
+
+<div id="tabc1" class="tab-content"><div id="lista_alumnos"></div> 
+      <h1>Asistencia</h1> 
+    <ul class="tabs center">
+<li><a href="#tabenero">Enero</a></li>
+<li><a href="#tabfebrero">Febrero</a></li>
+<li><a href="#tabmarzo">Marzo</a></li>
+<li><a href="#tababril">Abril</a></li>
+<li><a href="#tabmayo">Mayo</a></li>
+<li><a href="#tabjunio">Junio</a></li>
+<li><a href="#tabjulio">Julio</a></li>
+<li><a href="#tabagosto">Agosto</a></li>
+<li><a href="#tabsept">Septiembre</a></li>
+<li><a href="#taboctubre">Octubre</a></li>
+<li><a href="#tabnoviembre">Noviembre</a></li>
+<li><a href="#tabdiciembre">Diciembre</a></li>
+</ul>
+    <div id="tabenero" class="tab-content">
+      
+       <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciaenero"></div>
+		
+			
+		</div>   
+   </div>
+    <div id="tabfebrero" class="tab-content">
+         <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciafebrero"></div>
+		
+			
+		</div>  
+   </div>
+    <div id="tabmarzo" class="tab-content">
+         <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciamarzo"></div>
+		
+			
+		</div>
+       
+   </div>
+    <div id="tababril" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciaabril"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabmayo" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciamayo"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabjunio" class="tab-content">
+       <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciajunio"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabjulio" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciajulio"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabagosto" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciaagosto"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabsept" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciaseptiembre"></div>
+		
+			
+		</div>
+   </div>
+    <div id="taboctubre" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciaoctubre"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabnoviembre" class="tab-content">
+        <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistencianoviembre"></div>
+		
+			
+		</div>
+   </div>
+    <div id="tabdiciembre" class="tab-content">
+       <div id="wrap" style="max-width:980px; overflow-x: scroll; white-space: nowrap;">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+                        <!-- Grid filter -->
+			<label for="filter">Filtro :</label>
+			<input type="text" id="filter"/>
+
+
+			<!-- Grid contents -->
+			<div id="asistenciadiciembre"></div>
+		
+			
+		</div> 
+   </div>
+   
+		
+		
+
+
+		
+</div>   
+    
+  </div>
+<div id="tabc2" class="tab-content"><div id="notas"></div> 
+    
+<ul class="tabs center">
+<li><a href="#tabprimer">Primer Trimestre</a></li>
+<li><a href="#tabsegundo">Segundo Trimestre</a></li>
+<li><a href="#tabtercero">Tercer Trimestre</a></li>
+
+<div id="tabprimer" class="tab-content">
+     <div id="wrap">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+
+			<!-- Grid contents -->
+			<div id="notaprimer"></div>
+		
+			<!-- Paginator control -->
+			<div id="paginator"></div>
+		</div>   
+   </div>
+    <div id="tabsegundo" class="tab-content">
+         <div id="wrap">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+
+			<!-- Grid contents -->
+			<div id="notasegundo"></div>
+		
+			<!-- Paginator control -->
+			<div id="paginator"></div>
+         </div>
+   </div>
+    <div id="tabtercero" class="tab-content">
+        <div id="wrap">
+		
+		
+			<!-- Feedback message zone -->
+			<div id="message"></div>
+
+			<!-- Grid contents -->
+			<div id="notatercer"></div>
+		
+			<!-- Paginator control -->
+			<div id="paginator"></div>
+        </div> 
+   </div>
+</ul>
+     		
+</div>
+  
+    
+<div id="tabc3" class="tab-content"><div id="observacion"></div>  
+    
+        <?php
+	echo $this->formob;
+        ?>
+
+    <div id="cargaobservaciones" style="margin-top: 30px;"></div>
+
+</div>
+    
+    <div id="tabc4" class="tab-content"><? $this->partial('asistencia/uploadguia.phtml');?></div>
+    <div id="tabc5" class="tab-content">
+     
+     
+        <?php
+	echo $this->formcomunicaciones;
+        ?>
+      <div id="cargacitaciones" style="margin-top: 30px;"></div>
+       <script type="text/javascript">
+
+        $(".multiselect").twosidedmultiselect();
+        cargacitaciones('1');
+
+        </script>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+

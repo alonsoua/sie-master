@@ -1,0 +1,105 @@
+<script type="text/javascript">
+    $(function(){
+
+
+
+        $('#idCodigoTipo').change(function(e){
+
+            $('#idcurso').html('');
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: "../../getnivel/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function(x) {
+                    if(x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function(data){
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].idCodigoGrado + '">('+data[i].idGrado +') ' + data[i].nombreGrado + '</option>';
+                    }
+                    console.log(options);
+                    $('#nivel').html(options);
+                }
+            });
+            e.stopImmediatePropagation();
+        });
+
+        $('#codigoSector').change(function(e){
+
+            $('#CodigoEspecialidad').html('');
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: "../../getespecialidad/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function(x) {
+                    if(x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function(data){
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].idCodigoEspecialidad + '">('+data[i].idCodigoEspecialidad+') ' + data[i].nombreEspecialidad + '</option>';
+                    }
+                    console.log(options);
+                    $('#codigoEspecialidad').html(options);
+                }
+            });
+            e.stopImmediatePropagation();
+        });
+
+        $('#combinado').change(function(e){
+
+            if($(this).val()=='1'){
+                $("#numeroCurso").closest('tr').show();
+                $("#numeroCurso").show();
+                $("#numeroCurso-label").show();
+
+            }else{
+                $("#numeroCurso").val('');
+                $("#numeroCurso").closest('tr').hide();
+                $("#numeroCurso").hide();
+                $("#numeroCurso-label").hide();
+            }
+            e.stopImmediatePropagation();
+        });
+
+        $('#idEstablecimiento').change(function(e){
+
+            $('#idCuentaJefe').html('');
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: "../../getdocente/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function(x) {
+                    if(x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function(data){
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].idCuenta + '">'+data[i].usuario +'-' + data[i].nombrescuenta + ' '+ data[i].paternocuenta + ' ' + data[i].maternocuenta + ' </option>';
+                    }
+
+                    $('#idCuentaJefe').append(options);
+
+                }
+            });
+            e.stopImmediatePropagation();
+        });
+
+
+    });
+
+</script>
+<?php echo $this->form; ?>

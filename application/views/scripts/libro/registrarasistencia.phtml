@@ -1,0 +1,57 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.8.7/chosen.min.css" type="text/css">
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.8.7/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<style>
+
+    .unavailable span {
+        color: red !important;
+    }
+
+    .unavailable {
+        background-color: blue;
+    }
+
+    .complete span {
+        color: green !important;
+    }
+
+    .complete {
+        background-color: green;
+    }
+
+    .alert {
+        position: relative;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+    }
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .alert-danger hr {
+        border-top-color: #f1b0b7;
+    }
+
+    .alert-danger .alert-link {
+        color: #491217;
+    }
+</style>
+<a class="button medium" href="<?php echo $this->url(array('controller' => 'Libro','action' => 'controlasistencias'), null, TRUE); ?>"><i class="icon-hand-left"></i> Volver</a>
+
+<div id="informacion"></div>
+
+<?php echo $this->form; ?>
+<script src="<?php echo $this->baseUrl; ?>/javascript/asistencia.js"></script>
+
+<script>
+    //$("#bloque").chosen();
+    $("#bloque").chosen({width: "40%"});
+
+</script>
+
+<div id="asistencia"></div>

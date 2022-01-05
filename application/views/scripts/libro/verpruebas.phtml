@@ -1,0 +1,31 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css"  rel="stylesheet" />
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet" />
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet" />
+
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        
+        <th>Contenido</th>
+        <th>Link Descarga</th>
+        
+        
+    </tr>
+    </thead> 
+<?php $var0=$this->listapruebas;
+if(!empty($var0)){?>
+    <tr>
+        <td><?php echo $var0["contenido"]; ?></td>
+    
+        <td><a href="<?php echo $this->url(array('controller' => 'Libro',
+                       'action' => 'download', 'filename'=>$var0["guia"]), 'default', true); ?>"class="button small gray"><i class="icon-download-alt"></i> Descargar</a>  </td>
+        
+        
+
+</tr>
+</table>
+<?php 
+
+}?>
+

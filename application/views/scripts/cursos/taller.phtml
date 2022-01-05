@@ -1,0 +1,131 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<input type="hidden" name="" value="<?php echo $this->datocurso; ?>" id="curso">
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'asignaturas', 'id' => $this->idcurso), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'configuraciontaller', 'id' => $this->idasignatura, 'c' => $this->idcurso), 'default', true); ?>">Agregar
+    Configuración</a>
+
+
+<h4>Taller: <?php echo $this->nombre[0]['nombreAsignatura']; ?></h4>
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Asignatura Destino</th>
+            <th>Tipo</th>
+            <th>Periodo</th>
+            <th>Opción Periodo</th>
+            <th>Lista Alumnos</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+                <td><?php echo $d['nombreAsignatura'] ?></td>
+
+                <td>
+
+                    <?php
+                    if ($d['forma'] == 1) {
+                        $seleccionar = 'Ultima Nota';
+                    }
+                    if ($d['forma'] == 2) {
+                        $seleccionar = '' . $d['porcentaje'] . ' % ';
+                    }
+
+                    echo $seleccionar;
+                    ?>
+
+                </td>
+                <td>
+                    <?php
+                    if ($d['tiempoTaller'] == 1) {
+                        $seleccionar = 'Anual';
+                        $opcion = 'No Aplica';
+                    }
+                    if ($d['tiempoTaller'] == 2) {
+                        $seleccionar = 'Semestral';
+                        if ($d['tiempoOpcion'] == 1) {
+                            $opcion = 'Primer Semestre';
+                        }
+                        if ($d['tiempoOpcion'] == 2) {
+                            $opcion = 'Segundo Semestre';
+                        }
+                    }
+                    if ($d['tiempoTaller'] == 3) {
+                        $seleccionar = 'Trimestral';
+                        if ($d['tiempoOpcion'] == 1) {
+                            $opcion = 'Primer Trimestre';
+                        }
+                        if ($d['tiempoOpcion'] == 2) {
+                            $opcion = 'Segundo Trimestre';
+                        }
+                        if ($d['tiempoOpcion'] == 3) {
+                            $opcion = 'Tercer Trimestre';
+                        }
+                    }
+                    echo $seleccionar;
+                    ?>
+                </td>
+                <td><?php echo $opcion; ?></td>
+                <td>
+                    <?php
+                    if ($d['tipoAjuste'] == 2) { ?>
+
+                        <div class="ventana">
+                            <a class="button small blue"
+                               href="<?php echo $this->url(array('controller' => 'Cursos',
+                                   'action' => 'listaalumnos', 'id' => $d['idConfiguracionTaller'], 's' => 1), 'default', true); ?>">
+                                Lista de Alumnos</a>
+                        </div>
+                    <?php } else { ?>
+
+                        <a class="button small gray" href="#" disabled="disabled">Lista de Alumnos</a>
+
+                    <?php }
+                    ?>
+
+                </td>
+
+
+                <td>
+
+                    <a class="button small red" href="<?php echo $this->url(array('controller' => 'Cursos',
+                        'action' => 'eliminartaller', 'id' => $this->idasignatura, 'c' => $this->idcurso, 't' => $d['idConfiguracionTaller']), 'default', true); ?>"
+                       onclick="return confirm('¿Quiere eliminar ésta Asignatura?');">Eliminar</a>
+
+                </td>
+
+
+            </tr>
+
+
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+
+
+
+
+
+

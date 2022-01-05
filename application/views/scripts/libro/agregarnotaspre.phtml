@@ -1,0 +1,298 @@
+  <?php Zend_Debug::dump($this->tipo); ?>
+<script lang="javascript">
+ $(function(){
+      <?php
+
+     $periodo= new Zend_Session_Namespace('nombreperiodo');
+        $idperiodo=$periodo->nombreperiodo;
+     $codigos = new Zend_Session_Namespace('codigo');
+     $codigo = $codigos->codigo;
+        ?>
+                var ano=<?php echo $idperiodo?>;
+
+
+      
+      var fechain='01-03-'+ano;
+      var fechate='31-12-'+ano;
+    
+    
+  
+  function noSunday(date){
+     var day = date.getDay();
+     return [(day > 0), ''];
+  }
+  
+   function cambiarfecha(tipo) {
+        
+     
+      
+      if(tipo=='1'){
+      fechain='01-03-'+ano;
+      fechate='31-08-'+ano;  
+      }
+      
+       if(tipo=='2'){
+      fechain='01-07-'+ano;
+      fechate='31-12-'+ano;  
+      }
+       if(tipo=='3'){
+      fechain='01-03-'+ano;
+     fechate='31-05-'+ano;  
+      }
+       if(tipo=='4'){
+      fechain='01-05-'+ano;
+     fechate='30-09-'+ano;  
+      }
+       if(tipo=='5'){
+      fechain='01-09-'+ano;
+    fechate='31-12-'+ano;  
+      }
+    }
+  
+   $("#tipoEvaluacionPrueba").live('change',function (e) {
+       $("#fecha").val('');
+       $('#fecha').datepicker('destroy');
+       cambiarfecha($(this).val());
+       // $('#fecha').datepicker('show');
+       
+       $("#fecha").datepicker({ 
+     //autoSize: true,
+            showOn: "button",
+            buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+            buttonImageOnly: true,
+            minDate: fechain,
+            maxDate:fechate,
+            beforeShowDay: noSunday,
+            numberOfMonths: 3,
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true
+            });
+         e.stopImmediatePropagation();    
+       });
+      
+      
+ 
+  
+            
+      
+$('#tipoEvaluacionPrueba').trigger( "change" ); 
+  
+  });
+
+  $(document).ready(function() {
+
+  
+
+
+$('.notas').live('keyup', function(event) {
+  
+if(event.which === 40) {
+
+  
+var padre=$(this).closest('tr');
+
+  
+var obj=$(padre).next('tr').find('input');
+
+if(obj.length==0){
+  return false;
+}else{
+  obj.focus();
+}
+
+}
+
+if(event.which === 38) {
+
+  
+var padre=$(this).closest('tr');
+
+  
+var obj=$(padre).prev('tr').find('input');
+
+if(obj.length==0){
+  return false;
+}else{
+  obj.focus();
+}
+
+}
+});
+
+
+
+   });
+ var codigo=<?php echo $this->tipo ?>;
+
+if(codigo==4){
+    $(".notas").live('keydown',function (event) {
+
+        if(event.which === 48 || event.which === 49 || event.which === 50 || event.which === 51 || event.which === 96 || event.which === 97 || event.which === 98 || event.which === 99 || event.which === 40 || event.which === 38 || event.which === 8 ) {
+
+            if(event.which === 48 || event.which === 49 || event.which === 50 || event.which === 51 || event.which === 96 || event.which === 97 || event.which === 98 || event.which === 99){
+                $(this).val(String.fromCharCode(event.which));
+
+            }
+        }else{
+            return false;
+        }
+
+    });
+}else{
+    $(".notas").live('keydown',function (event) {
+
+        if(event.which === 76 || event.which === 40 || event.which === 38 || event.which === 8 ) {
+
+            if(event.which === 76 ){
+                $(this).val(String.fromCharCode(event.which));
+
+            }
+        }else if(event.which === 77 || event.which === 78 || event.which === 86 || event.which === 40 || event.which === 38 || event.which === 8 ){
+
+
+            if(event.which === 77){
+
+                $(this).val("ML");
+
+            }
+
+            if(event.which === 86){
+
+                $(this).val("VL");
+
+            }
+
+            if(event.which === 78){
+
+                $(this).val("NE");
+
+            }
+
+        }else{
+            return false;
+        }
+
+    });
+}
+
+
+    $( "input" ).live('focus',function() {
+  $( this ).closest('tr').css( "background-color","green" );
+
+
+
+
+});
+     $( "input" ).live('focusout',function() {
+  $( this ).closest('tr').css( "background-color","" );
+});
+
+
+</script>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notas'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+
+<style>
+
+  #divTabla input[type="text"]{
+      padding: 5px;
+      width: 595px;
+      
+    }
+
+
+</style>
+
+<script type="text/javascript">
+    $(function(){
+       
+      
+       $('#nombreAmbito').change(function(){
+           
+       
+            $('#nombreNucleo').html('');
+            $('#idAsignatura').html('');
+          var idambito=$(this).val();  
+          
+          var ajax = $.ajax({
+             type: "GET",
+             url: "getnucleo/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+              var nucleos=[];
+                var options = '<option value="todo">Mostrar Todos</option>';
+                   for (var i = 0; i < data.length; i++) {
+                      nucleos[i]=data[i].idNucleo;
+                      options += '<option class="'+data[i].idAmbito +'" value="' + data[i].idNucleo + '">' + data[i].nombreNucleo + '</option>';
+                   }
+                   $('#nombreNucleo').html(options);
+                    
+          if(idambito=='todo'){
+            asig(idambito);
+            }else{
+             asig(nucleos);
+            }
+          }
+        });
+         
+        
+      });
+
+
+        $('#nombreNucleo').change(function(){
+           
+            $('#idAsignatura').html('');
+            asig($(this).val());
+             
+      });
+      
+      function asig(id){
+             var ajax = $.ajax({
+             type: "GET",
+             url: "getasignaturaspre/id/" + id,
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '<option value="Null">Seleccione Indicador</option>';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].idAsignatura + '">' + data[i].nombreAsignatura + '</option>';
+                   }
+                   $('#idAsignatura').html(options);
+             }
+        });
+      }
+      
+    
+      
+    });
+    
+
+ </script>
+
+
+<?php echo $this->form;?>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/notaspre.js"></script>
+
+ <div id="alumnos"></div>

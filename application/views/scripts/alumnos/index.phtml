@@ -1,0 +1,146 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<?php
+
+$cargo = new Zend_Session_Namespace('cargo');
+$rol = $cargo->cargo;
+
+if ($rol != 2) {
+
+
+    ?>
+
+
+    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'agregar')); ?>">Agregar Alumno</a>
+
+    <a class="button small blue" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'index')); ?>">Lista Alumnos Activos</a>
+
+    <a class="button small red" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'indexr'), 'default', true); ?>">Lista Alumnos Retirados</a>
+
+
+    <a class="button small blue" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'indexa'), 'default', true); ?>">Lista Apoderados</a>
+
+    <a class="button small green" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'subiralumnos'), 'default', true); ?>">Subir Alumnos</a>
+
+    <?php if ($rol == 1) { ?>
+
+        <a class="button small orange" href="<?php echo $this->url(array('controller' => 'Alumnos',
+            'action' => 'activar')); ?>">Activar Alumnos</a>
+
+    <?php }
+    } elseif ($rol == 2) { ?>
+
+    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'agregar')); ?>">Agregar Alumno</a>
+
+    <a class="button small blue" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'index')); ?>">Lista Alumnos Activos</a>
+
+    <a class="button small red" href="<?php $d = '';
+    echo $this->url(array('controller' => 'Alumnos',
+        'action' => 'indexr'), 'default', true); ?>">Lista Alumnos Retirados</a>
+
+
+<?php } ?>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Estudiante</th>
+            <th>Establecimiento</th>
+            <th>Enseñanza</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Estado App</th>
+            <th>Editar</th>
+            <th>Retirar</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="alt first last">
+
+            <?php $i = 1;
+            foreach ($this->paginator as $d): ?>
+
+
+            <td><?php echo $i; ?></td>
+
+            <td> <?php echo $d['rutAlumno']; ?> </td>
+
+            <td><?php echo $d['apaterno'].' '.$d['amaterno'].' '.$d['nombres']; ?></td>
+
+            <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+            <td><?php echo $d['nombreTipoEnsenanza']; ?></td>
+
+            <td><?php echo $d['nombreGrado']; ?></td>
+
+            <td><?php echo $d['letra']; ?></td>
+
+            <td><?php echo '', (empty($d['idEstadoApp']) || $d['idEstadoApp'] == 6 ? '<p style="color: red">Inactivo</p>' : '<p style="color: green">Activo</p>'); ?></td>
+
+            <td>
+
+                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Alumnos',
+                    'action' => 'editar', 'id' => $d['idAlumnos']), 'default', true); ?>">Editar</a>
+
+            </td>
+
+            <td>
+
+                <a class="button small red" href="<?php echo $this->url(array('controller' => 'Alumnos',
+                    'action' => 'retirar', 'id' => $d['idAlumnos']), 'default', true); ?>">Retirar</a>
+
+            </td>
+
+
+        </tr>
+
+
+        </tr>
+
+        <?php $i++;
+        endforeach; ?>
+
+        </tbody>
+
+    </table>

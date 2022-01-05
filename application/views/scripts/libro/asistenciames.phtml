@@ -1,0 +1,161 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+    table{
+        font-size:11px;
+        width:100%;
+        height:auto;
+        margin:10px 0 10px 0;
+        border-collapse:collapse;
+        text-align:center;
+        text-justify:inter-word;
+        color:#000000;
+    }
+
+    table td,th{
+        border:1px solid black;
+
+    }
+
+    table th{
+        background-color: #ccc;
+        text-align: center;
+    }
+
+    table td{
+        text-align:left;
+        padding:2px;
+        text-align: center;
+    }
+    table a
+    {
+        display:block;
+        text-decoration:none;
+    }
+
+</style>
+<?php
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$roles = new Zend_Session_Namespace('cargo');
+$rol = $roles->cargo;
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+?>
+<?php if ($rol == '2') { ?>
+
+    <?php if ($ingresonota == 1) { ?>
+
+        <a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <?php } else { ?>
+
+        <a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso . '-' . $id_detalle_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <?php } ?>
+
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'agregarasistencia'), null, TRUE);
+    ?>"> <i class="icon-plus"></i> Agregar Asistencia</a>
+
+
+
+
+<?php } ?>
+
+<?php if ($rol == '1' || $rol == '3' || $rol == '6') { ?>
+
+    <a class="button medium" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } ?>
+
+
+<h4>Curso: <?php echo $nombre_curso; ?></h4>
+
+<ul class="tabs left" id="listas">
+    <?php
+    $mescurrent = date("n");
+    $mes = ['Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    $indice=1;
+    foreach ($mes as $c => $key) :
+        if($indice==$mescurrent-1){
+            echo '<li class="current"><a class="meses" name="'.($indice+1).'" href="#"> '.$key.' </a></li>';
+        }else{
+            echo '<li><a class="meses" name="'.($indice+1).'" href="#"> '.$key.' </a></li>';
+        }
+
+
+
+    $indice++; endforeach;
+    ?>
+</ul>
+
+    <?php
+    setlocale(LC_TIME, 'es_CL.UTF-8');
+
+    //echo $this->html;
+
+   ?>
+
+<div id="tablaasistencia"></div>
+
+
+<script>
+    $(function () {
+
+        if($('.current')){
+            console.log('activo');
+            datos($('.current').find('a').attr('name'));
+        }
+
+
+        $('.meses').live('click', function (e) {
+            if($(this).attr('name')>1){
+                datos($(this).attr('name'));
+            }
+
+            e.stopImmediatePropagation();
+        });
+
+        function datos(id) {
+            $.ajax({
+                type: "GET",
+                url: "getasistenciames/id/" + id,
+                async: true,
+                dataType: "html",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    $('#tablaasistencia').html(data);
+                }
+            });
+
+        }
+    });
+</script>
+
+
+</div>

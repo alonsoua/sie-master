@@ -1,0 +1,50 @@
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $("#agregar").live('click', function() {
+        if($("#tablacon").children('tbody').children('tr').length<7){
+            var $tr    = $("#tablacon").children('tbody').children('tr:last').prev('tr');
+            var nombre= parseInt($tr.children('td:first').text().substring(12,13));
+            var $clone = $tr.clone();
+            $clone.children('td:first').text('Concepto Nº '+parseInt(nombre+1)+':');
+            console.log(nombre);
+            $clone.find(':text').val('');
+            $tr.after($clone);
+        }else{
+            return false;
+        }
+
+    });
+
+    $("#eliminar").live('click', function() {
+        if($("#tablacon").children('tbody').children('tr').length>2){
+            $("#tablacon").children('tbody').children('tr:last').prev('tr').remove();
+        }else{
+            return false;
+        }
+
+    });
+
+    $("#concepto").live('keyup',function () {
+
+        $(this).val($(this).val().toUpperCase());
+
+    });
+  });
+
+ </script>
+
+ <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action'                                                                      => 'asignaturas', 'id' => $this->dato), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<?php if ($this->messages): ?>
+<div class="t_a_message">
+   <ul>
+   <?php foreach ($this->messages as $msg): ?>
+      <li><?php echo $msg; ?></li>
+   <?php endforeach;?>
+   </ul>
+</div>
+<?php endif;?>
+
+ <div class="col_12 column "><a class="button medium blue" id="agregar"> Agregar</a> <a class="button medium red" id="eliminar"> Eliminar</a><?php echo $this->form ?></div>

@@ -1,0 +1,220 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'index'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'agregartipo'), null, true);
+?>"><i class="icon-hand-up"></i>Agregar Tipo de Enseñanza</a>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Establecimiento</th>
+            <th>Rbd</th>
+            <th>Periodo</th>
+            <th>Código</th>
+            <th>Estado Tipo</th>
+            <th>Número Autorización</th>
+            <th>Fecha Autorización</th>
+            <th>Centro de Padres</th>
+            <th>Persona Jurídica</th>
+            <th>Número Grupos</th>
+            <th>Horario Inicio Mañana</th>
+            <th>Horario Termino Mañana</th>
+            <th>Horario Inicio Tarde</th>
+            <th>Horario Termino Tarde</th>
+            <th>Horario Inicio Mañana Tarde</th>
+            <th>Horario Termino Mañana Tarde</th>
+            <th>Horario Inicio Vespertino</th>
+            <th>Horario Termino Vespertino</th>
+            <th>Validar</th>
+            <th>Ver Historial</th>
+
+
+        </tr>
+        </thead>
+
+        <!--    recorro el arreglo de datos-->
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+
+                <td><?php echo $d->nombreEstablecimiento; ?></td>
+                <td><?php echo $d->rbd; ?></td>
+                <td><?php echo $d->nombrePeriodo; ?></td>
+                <td><?php echo $d->idCodigoTipo; ?></td>
+                <td><?php echo $d->estadoTipo; ?></td>
+                <td><?php echo $d->autorizacion; ?></td>
+                <td>
+                    <?php
+                    echo date('d-m-Y', strtotime($d->fechaAutorizacion)); ?>
+                </td>
+                <td><?php
+                    if($d->centro==1){
+                      echo 'SI';
+                    }else{
+                        echo 'No';
+                    }
+
+                    ?></td>
+                <td><?php
+                    if($d->juridica==1){
+                        echo 'SI';
+                    }else{
+                        echo 'No';
+                    }
+
+                    ?></td>
+                <td><?php echo $d->numeroGrupo; ?></td>
+                <td><?php echo $d->inicioManana; ?></td>
+                <td><?php echo $d->terminoManana; ?></td>
+                <td><?php echo $d->inicioTarde; ?></td>
+                <td><?php echo $d->terminoTarde; ?></td>
+                <td><?php echo $d->inicioMananaTarde; ?></td>
+                <td><?php echo $d->terminoMananaTarde; ?></td>
+                <td><?php echo $d->inicioVespertino; ?></td>
+                <td><?php echo $d->terminoVespertino; ?></td>
+
+                <?php
+                $data = [
+                    $d->idEstablecimiento,
+                    $d->idPeriodo,
+                    $d->idTipo,
+                    $d->nombrePeriodo,
+                    $d->rbd,
+                    $d->idCodigoTipo,
+                    $d->estadoTipo,
+                    $d->autorizacion,
+                    $d->fechaAutorizacion,
+                    $d->centro,
+                    $d->juridica,
+                    $d->numeroGrupo,
+                    $d->inicioManana,
+                    $d->terminoManana,
+                    $d->inicioTarde,
+                    $d->terminoTarde,
+                    $d->inicioMananaTarde,
+                    $d->terminoMananaTarde,
+                    $d->inicioVespertino,
+                    $d->terminoVespertino
+                ];
+                ?>
+                <td>
+                    <button class="button small red"
+                            onclick="validarTipo('<?php echo implode("', '", $data); ?>')">
+                        Validar
+                    </button>
+                </td>
+
+                <td>
+                    <div class="ventana">
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Sige',
+                            'action' => 'verhistorialtipo', 'id' => $d->idTipo), 'default', true); ?>"><i
+                                    class="icon-eye-open"></i> Ver Historial</a>
+
+                    </div>
+                </td>
+
+
+            </tr>
+            <!--    fin del for-->
+        <?php endforeach; ?>
+    </table>
+
+    <script type="text/javascript">
+        var validarTipo = function (idestablecimiento, iperiodo, idtipo, nombreperiodo, rbd, codigo, estado, autorizacion, fecha, centro, juridica, numero, iniciom, terminom, iniciot, terminot, iniciomt, terminomt, iniciov, terminov) {
+
+            $.ajax({
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../Sige/validartipo/',
+                data: JSON.stringify({
+                    est: idestablecimiento,
+                    per: iperiodo,
+                    idtipo: idtipo,
+                    idperiodo: nombreperiodo,
+                    rbd: rbd,
+                    idcodigo: codigo,
+                    estado: estado,
+                    autorizacion: autorizacion,
+                    fecha: fecha,
+                    centro: centro,
+                    juridica: juridica,
+                    numero: numero,
+                    iniciom: iniciom,
+                    terminom: terminom,
+                    iniciot: iniciot,
+                    terminot: terminot,
+                    iniciomt: iniciomt,
+                    terminomt: terminomt,
+                    iniciov: iniciov,
+                    terminov: terminov
+                }),
+                beforeSend: function (data) {
+                    $('#div_cliente').html('<label>Validando...</label>');
+                },
+                success: function (data) {
+                    if (parseInt(data.response) === 1) {
+                        switch (parseInt(data.status)) {
+                            case 1:
+                                alert('Operación/Acción ejecutada exitosamente.');
+                                break;
+                            case 2:
+                                alert('Error(es) de validación(es) de Negocio.');
+                                break;
+                            case 3:
+                                alert('RBD NO tiene servicio disponible.');
+                                break;
+                            case 4:
+                                alert('Convenio NO tiene asociado el RBD.');
+                                break;
+                            case 5:
+                                alert('Servicio NO disponible.');
+                                break;
+                            case 6:
+                                alert('Semilla de operación NO válida o ha caducado (renovar semilla).');
+                                break;
+                            case 7:
+                                alert('Error interno de servicio.');
+                                break;
+
+                        }
+                    } else if (parseInt(data.response) === 0) {
+                        alert('El Alumno NO es válido!!');
+                    } else {
+                        alert('Ha ocurrido un error intente mas tarde')
+                    }
+                },
+                error: function () {
+                    alert('Ha ocurrido un error intente mas tarde')
+                }
+            });
+        }
+    </script>

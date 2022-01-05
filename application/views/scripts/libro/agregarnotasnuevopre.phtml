@@ -1,0 +1,120 @@
+<script lang="javascript">
+    $(function () {
+        <?php
+
+        $periodo = new Zend_Session_Namespace('nombreperiodo');
+        $idperiodo = $periodo->nombreperiodo;
+        $codigos = new Zend_Session_Namespace('codigo');
+        $codigo = $codigos->codigo;
+        ?>
+
+    });
+
+    $(document).ready(function () {
+
+
+        $('.notas').live('keyup', function (event) {
+
+            if (event.which === 40) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).next('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+
+            if (event.which === 38) {
+
+                var padre = $(this).closest('tr');
+                var obj = $(padre).prev('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+        });
+
+
+    });
+
+
+        $(".notas").live('keydown', function (event) {
+
+            if (event.which === 65 || event.which === 73 || event.which === 40 || event.which === 38 || event.which === 8) {
+
+                if (event.which === 65 || event.which === 73) {
+                    $(this).val(String.fromCharCode(event.which));
+
+                }
+            } else if (event.which === 77 || event.which === 78 || event.which === 40 || event.which === 38 || event.which === 8) {
+
+
+                if (event.which === 77) {
+
+                    $(this).val("MA");
+
+                }
+                if (event.which === 78) {
+
+                    $(this).val("NE");
+
+                }
+
+
+            } else {
+                return false;
+            }
+
+        });
+
+
+
+    $("input").live('focus', function () {
+        $(this).closest('tr').css("background-color", "green");
+
+
+    });
+    $("input").live('focusout', function () {
+        $(this).closest('tr').css("background-color", "");
+    });
+
+
+</script>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notasnuevopre'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+<style>
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+
+    }
+
+
+</style>
+
+
+</script>
+
+
+<?php echo $this->form;?>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/notasnuevopre.js"></script>
+
+<div id="alumnos"></div>

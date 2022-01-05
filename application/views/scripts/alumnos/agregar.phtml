@@ -1,0 +1,1217 @@
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/jquery.datetimepicker.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/calendario/css/jquery.ui.all.css" type="text/css">
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" type="text/css">
+
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.core.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery.rut.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+
+<script>
+    $(document).ready(function () {
+
+        $("#rutAlumno")
+            .rut({formatOn: 'keyup',validateOn: 'keyup change'})
+            .on('rutInvalido', function () {
+                $(this).addClass("errorinput")
+            })
+            .on('rutValido', function () {
+                $(this).removeClass("errorinput")
+            });
+
+        $("#rutApoderado")
+            .rut({formatOn: 'keyup',validateOn: 'keyup change'})
+            .on('rutInvalido', function () {
+                $(this).addClass("errorinput")
+            })
+            .on('rutValido', function () {
+                $(this).removeClass("errorinput")
+            });
+
+
+
+
+        //$('label[for=letra], select#letra').hide();
+        $("#letra").attr('disabled', 'disabled');
+        //$("#letra-label").hide();
+
+        $("#fechanacimiento").datepicker({
+            <?php $periodo = new Zend_Session_Namespace('periodo');
+            ?>
+
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-70:+1"
+        });
+
+        $("#fechaInscripcion").datepicker({
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-70:+1"
+        });
+
+        jQuery('#horario').datetimepicker({
+            datepicker: false,
+            format: 'H:i',
+            allowTimes: [
+                '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00',
+                '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00',
+                '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'
+
+            ]
+        });
+
+        $("#idApoderado").chosen({no_results_text: "Búsqueda no encontrada"});
+        $("#idApoderadoS").chosen({no_results_text: "Búsqueda no encontrada"});
+        $("#comuna").chosen({no_results_text: "Búsqueda no encontrada"});
+
+
+        $('#buscador').keyup(function (e) {
+
+            var search = $(this).val();
+            if (search.length > 2) {
+                $.ajax({
+                    global: false,
+                    type: "GET",
+                    url: "getalumno",
+                    data: {'search': search},
+                    dataType: "json",
+                    beforeSend: function (x) {
+                        if (x && x.overrideMimeType) {
+                            x.overrideMimeType("application/j-son;charset=UTF-8");
+                        }
+                    },
+                    success: function (data) {
+                        if (data.response == 'error') {
+
+                        } else {
+
+                            $("#alumnos").empty();
+                            for (var i = 0; i < data.length; i++) {
+                                if (data[i].rut) {
+                                    $("#alumnos").append("<option data-value='" + data[i].id + " '>" + data[i].rut + " - " + data[i].apaterno + " " + data[i].amaterno + " " + data[i].nombres + "</option>");
+
+                                } else {
+                                    $("#alumnos").append("<option data-value='" + data[i].id + " '>" + data[i].apaterno + " " + data[i].amaterno + " " + data[i].nombres + "</option>");
+
+                                }
+                            }
+                        }
+
+                    }
+                });
+            }
+            e.stopImmediatePropagation();
+        });
+
+
+        $('#prevision').change(function (e) {
+
+            if ($(this).val() == '1') {
+                $('#letra').removeAttr('disabled');
+
+            } else {
+                $("#letra").attr('disabled', 'disabled');
+            }
+
+            e.stopImmediatePropagation();
+        });
+
+
+        $('#tipoIdentificacion').change(function (e) {
+
+            if ($(this).val() == '1') {
+                $('#rutAlumno').parent().find('label').text('RUT *:');
+                $('#rutAlumno').trigger('keyup');
+
+
+            } else if ($(this).val() == '2') {
+                $('#rutAlumno').parent().find('label').text('IPE *:');
+                $('#rutAlumno').removeClass('errorinput');
+                $('#rutAlumno').val($('#rutAlumno').val().replace(/[\-\.]/g, ''));
+            }
+
+            e.stopImmediatePropagation();
+        });
+
+
+        $('#idEstablecimiento').on('change', function (e, curso) {
+            $.ajax({
+                type: "GET",
+                url: "getcurso/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].idCursos + '">' + data[i].nombreGrado + ' ' + data[i].letra + '</option>';
+                    }
+                    $('#idCursos').html(options);
+                    if (curso > 0) {
+                        $('#idCursos').val(curso);
+                    }
+                }
+            });
+            e.stopImmediatePropagation();
+        });
+
+
+        var datosalumnos;
+
+        $('#buscador').on('input', function (e) {
+
+            var userText = $(this).val();
+
+            $("#alumnos").find("option").each(function () {
+
+                if ($(this).val() == userText) {
+                    //$('#rutAlumno').val($(this).attr('data-value'));
+                    var id = $(this).attr('data-value');
+
+                    //Generamos el ajax con los datos que necesitamos y los asignamos a los input y select correspondientes
+                    $.ajax({
+                        global: false,
+                        type: "GET",
+                        url: "getalumnoid",
+                        data: {'id': id},
+                        //async: true,
+                        dataType: "json",
+                        beforeSend: function (x) {
+                            if (x && x.overrideMimeType) {
+                                x.overrideMimeType("application/j-son;charset=UTF-8");
+                            }
+                        },
+                        success: function (data) {
+
+                            if (data.response == 'error' || data.length == 0) {
+                            } else {
+                                datosalumnos = data;
+                                var names = Object.keys(data[0]);
+                                var curso = 0;
+                                for (var i = 0; i < names.length; i++) {
+                                    if (names[i] != 'foto') {
+                                        if (names[i] == 'idEstablecimiento') {
+                                            $("#" + names[i]).val(data[0][names[i]]);
+
+                                        }
+                                        if (names[i] == 'idCursos') {
+                                            curso = data[0][names[i]];
+
+                                        }
+
+
+                                        //Verificamos cuales son checkbox
+                                        if ($("#" + names[i]).attr('type') == 'checkbox') {
+                                            if (data[0][names[i]] == 1) {
+                                                $("#" + names[i]).attr('checked', 'checked')
+
+                                            }
+
+                                        } else {
+                                            $("#" + names[i]).val(data[0][names[i]]);
+                                        }
+
+
+                                    }
+
+                                }
+
+                                $("#idEstablecimiento").trigger("change", [curso]);
+
+                                $("#comuna").trigger("liszt:updated")
+                                $("#pdf").replaceWith('<div class="ventana" style="display:inline"><a href="' + data[1].url + '"  id="pdf" class="button medium"><i class="icon-print"></i> Imprimir</a></div>');
+
+                                $('.ventana').each(function (i) {
+                                    $(this).find('a').attr('rel', 'ventana' + i)
+                                        .fancybox({
+                                            overlayOpacity: 0.2,
+                                            overlayColor: '#000',
+                                            type: 'iframe',
+                                            'width': 1000,
+                                            'height': 900,
+                                            'transitionIn': 'elastic', // this option is for v1.3.4
+                                            'transitionOut': 'elastic', // this option is for v1.3.4
+                                            'fitToView': false
+                                        });
+                                });
+
+                            }
+
+
+                        }
+
+                    });
+
+
+                }
+
+            });
+
+
+            e.stopImmediatePropagation();
+        });
+
+
+        $('.cp').click(function (e) {
+
+            if ($(this).attr('id') == 1 || $(this).attr('id') == 2) {
+                var nombres = ['rutApoderado', 'nombreApoderado', 'paternoApoderado', 'maternoApoderado', 'telefonoApoderado'];
+
+            } else {
+                var nombres = ['rutApoderadoSuplente', 'nombreApoderadoSuplente', 'paternoApoderadoSuplente', 'maternoApoderadoSuplente', 'telefonoApoderadoSuplente'];
+
+            }
+
+            if ($(this).attr('id') == 1 || $(this).attr('id') == 3) {
+
+                var elementos = $("#tabr1").find('input');
+            }
+            if ($(this).attr('id') == 2 || $(this).attr('id') == 4) {
+
+                var elementos = $("#tabr2").find('input');
+            }
+
+
+            for (var i = 0; i < 5; i++) {
+                if (elementos[i].value != null || elementos[i].value != undefined) {
+                    $("#" + nombres[i]).val(elementos[i].value);
+
+                }
+
+            }
+
+
+            e.stopImmediatePropagation();
+        });
+
+        $('.cpe').click(function (e) {
+            console.log($(this).attr('id'));
+
+            if ($(this).attr('id') == 1) {
+
+                var elementos = $("#telefonomadre");
+                var llamar = 'Madre';
+            }
+            if ($(this).attr('id') == 2) {
+
+                var elementos = $("#telefonopadre");
+                var llamar = 'Padre';
+            }
+
+
+
+            if (elementos[0].value != null || elementos[0].value != undefined) {
+                $("#telefonoEmergencia").val(elementos[0].value);
+
+            }
+            $("#personaEmergencia").val(llamar);
+
+
+            e.stopImmediatePropagation();
+        });
+
+
+        //Guardamos los datos
+
+        $('#guardar').click(function (e) {
+
+            var elementos = $("#matricula").find('input,select,checkbox');
+            var datos;
+            var datos = {};
+
+            for (var i = 0; i < elementos.length; i++) {
+                if (elementos[i].getAttribute("id") != null) {
+                    if (elementos[i].type == "checkbox") {
+                        if (elementos[i].checked == true) {
+                            datos[elementos[i].getAttribute("id")] = 1;
+                        } else {
+                            datos[elementos[i].getAttribute("id")] = 2;
+                        }
+
+
+                    } else {
+                        datos[elementos[i].getAttribute("id")] = elementos[i].value;
+                    }
+
+                }
+
+            }
+
+            if ($('#rutAlumno').hasClass('errorinput') || $('#rutApoderado').hasClass('errorinput')) {
+
+                const errorss = Swal.mixin({
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                errorss({
+                    type: 'error',
+                    title: 'El RUT no es válido'
+                })
+
+                return false;
+
+            } else {
+
+                $.ajax({
+                    cache: false,
+                    async: true,
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded',
+                    url: 'guardamatricula',
+                    data: JSON.stringify(datos),
+                    success: function (data) {
+                        if (parseInt(data.response) === 1) {
+
+                            swal({
+                                title: "Guardado",
+
+                                type: "success"
+                            }).then(okay => {
+                                if (okay) {
+                                    window.location.href = data.url;
+                                }
+                            });
+
+                        } else if (parseInt(data.response) === 0) {
+                            switch (parseInt(data.status)) {
+                                case 1:
+                                    const errors = Swal.mixin({
+                                        toast: true,
+                                        position: 'top',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+
+                                    errors({
+                                        type: 'error',
+                                        title: 'Reinicie su Sesión '
+                                    })
+                                    break;
+                                case 2:
+                                    const error = Swal.mixin({
+                                        toast: true,
+                                        position: 'top',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+
+                                    error({
+                                        type: 'error',
+                                        title: 'Error al ingresar los datos '
+                                    })
+                                    break;
+
+                                case 3:
+                                    const errorss = Swal.mixin({
+                                        toast: true,
+                                        position: 'top',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+
+                                    errorss({
+                                        type: 'error',
+                                        title: 'Complete todos los campos (*)'
+                                    })
+
+                                    break;
+
+
+                            }
+                        } else {
+                            const error = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            error({
+                                type: 'error',
+                                title: 'Error al ingresar los datos '
+                            })
+                        }
+                    },
+                    error: function () {
+                        const error = Swal.mixin({
+                            toast: true,
+                            position: 'top',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        error({
+                            type: 'error',
+                            title: 'Error al ingresar los datos '
+                        })
+                    }
+                });
+
+            }
+
+
+            e.stopImmediatePropagation();
+        });
+
+
+    });
+
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#foto").on("change", function () {
+            var files = !!this.files ? this.files : [];
+            if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+            if (/^image/.test(files[0].type)) { // only image file
+                var reader = new FileReader(); // instance of the FileReader
+                reader.readAsDataURL(files[0]); // read the local file
+
+                reader.onloadend = function () { // set image data as background of div
+                    $("#imagePreview").css("background-image", "url(" + this.result + ")");
+                }
+            }
+        });
+    });
+</script>
+<style>
+    #imagePreview {
+        width: 90px;
+        height: 80px;
+        background-position: center center;
+        background-size: cover;
+        -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
+        display: inline-block;
+        margin-left: 20px;
+    }
+
+    .buscador {
+        padding: 5px;
+        width: 595px;
+    }
+
+    p#texto {
+        text-align: center;
+        color: white;
+        padding-top: 4px;
+
+    }
+
+    div#div_file {
+        position: relative;
+        margin-left: 45px;
+        height: 25px;
+        width: 70px;
+        background-color: #2499e3;
+
+    }
+
+    input#foto {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+
+    input, select {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px;
+        max-width: 40%;
+    }
+
+    .chzn-container {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px;
+        max-width: 40%;
+    }
+
+    label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        padding-top: 3px;
+        text-align: right;
+        width: 120px;
+    }
+
+    input[type="checkbox"] + label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        padding-top: 3px;
+        text-align: right;
+        width: 120px;
+    }
+
+    .botones {
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+
+    .tab-content {
+        height: 120px;
+        max-height: 140px;
+    }
+
+    h5 {
+        margin: 0 0 10px 0;
+    }
+
+    .errorinput {
+        color: red;
+    }
+
+
+</style>
+<?php
+$form = $this->form;
+?>
+
+
+<input type="hidden" value="<?php echo $idalumno; ?>" id="idalumnos">
+<div class="col_12 column center" id="matricula">
+    <div style="width: 100%;display: inline-flex;">
+        <div class="col_2">
+            <div id="imagePreview"></div>
+            <div id="div_file">
+                <p id="texto">Subir Foto</p>
+                <?php
+                echo $form->foto->renderFile();
+                ?>
+            </div>
+
+        </div>
+        <div class="col_10 aligned_form" style="border: 1px solid #efefef;">
+            <div class="col_5" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->fechaInscripcion->renderLabel() . $form->fechaInscripcion->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->idEstablecimiento->renderLabel() . $form->idEstablecimiento->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->idCursos->renderLabel() . $form->idCursos->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->tipoIdentificacion->renderLabel() . $form->tipoIdentificacion->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->rutAlumno->renderLabel() . $form->rutAlumno->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nombres->renderLabel() . $form->nombres->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->apaterno->renderLabel() . $form->apaterno->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->amaterno->renderLabel() . $form->amaterno->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->fechanacimiento->renderLabel() . $form->fechanacimiento->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->paisNacimiento->renderLabel() . $form->paisNacimiento->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->ciudadNacimiento->renderLabel() . $form->ciudadNacimiento->renderViewHelper();
+                    ?>
+                </div>
+
+
+
+
+
+                <div>
+                    <?php
+                    echo $form->nacionalidad->renderLabel() . $form->nacionalidad->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->vive->renderLabel() . $form->vive->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->etnia->renderLabel() . $form->etnia->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->religion->renderLabel() . $form->religion->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->junaeb->renderLabel() . $form->junaeb->renderViewHelper();
+                    ?>
+                </div>
+
+
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->idEstadoActual->renderLabel() . $form->idEstadoActual->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->sexo->renderLabel() . $form->sexo->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->calle->renderLabel() . $form->calle->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->numeroCasa->renderLabel() . $form->numeroCasa->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->villa->renderLabel() . $form->villa->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->comunaActual->renderLabel() . $form->comunaActual->renderViewHelper();
+                    ?>
+                </div>
+
+
+                <div>
+                    <?php
+                    echo $form->ciudadActual->renderLabel() . $form->ciudadActual->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->telefono->renderLabel() . $form->telefono->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->celular->renderLabel() . $form->celular->renderViewHelper();
+                    ?>
+                </div>
+
+
+                <div>
+                    <?php
+                    echo $form->correo->renderLabel() . $form->correo->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->repitencia->renderLabel() . $form->repitencia->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->prioritario->renderLabel() . $form->prioritario->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->beneficio->renderLabel() . $form->beneficio->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->pie->renderLabel() . $form->pie->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->autorizacion->renderLabel() . $form->autorizacion->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->aprendizaje->renderLabel() . $form->aprendizaje->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->transporte->renderLabel() . $form->transporte->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="col_12 column center">
+        <ul class="tabs left">
+            <li class="first current"><a href="#tabr1">Datos Madre </a></li>
+            <li><a href="#tabr2">Datos Padre</a></li>
+            <li><a href="#tabr3">Datos Apoderado</a></li>
+            <li><a href="#tabr4">Datos Apoderado Suplente</a></li>
+            <li><a href="#tabr5">Datos Clínicos</a></li>
+            <li><a href="#tabr6">Emergencias</a></li>
+            <li><a href="#tabr7">Documentos Entregados</a></li>
+        </ul>
+
+        <div id="tabr1" class="tab-content" style="display: flex;">
+            <div class="col_5" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->rutMadre->renderLabel() . $form->rutMadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nombremadre->renderLabel() . $form->nombremadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->paternomadre->renderLabel() . $form->paternomadre->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->maternomadre->renderLabel() . $form->maternomadre->renderViewHelper();
+                    ?>
+                </div>
+
+
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->telefonomadre->renderLabel() . $form->telefonomadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nivelmadre->renderLabel() . $form->nivelmadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->ocupacionMadre->renderLabel() . $form->ocupacionMadre->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+        </div>
+        <div id="tabr2" class="tab-content" style="display:none;">
+            <div class="col_5" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->rutPadre->renderLabel() . $form->rutPadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nombrepadre->renderLabel() . $form->nombrepadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->paternopadre->renderLabel() . $form->paternopadre->renderViewHelper();
+                    ?>
+                </div>
+
+                <div>
+                    <?php
+                    echo $form->maternopadre->renderLabel() . $form->maternopadre->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->telefonopadre->renderLabel() . $form->telefonopadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nivelpadre->renderLabel() . $form->nivelpadre->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->ocupacionPadre->renderLabel() . $form->ocupacionPadre->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+        </div>
+        <div id="tabr3" class="tab-content" style="display:none;">
+            <div class="botones">
+                <ul class="button-bar">
+                    <li><a class="cp" id="1"><i class="icon-copy"></i> Datos Madre</a></li>
+                    <li><a class="cp" id="2"><i class="icon-copy"></i> Datos Padre</a></li>
+                </ul>
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;margin-top: 30px;">
+                <div>
+                    <?php
+                    echo $form->rutApoderado->renderLabel() . $form->rutApoderado->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nombreApoderado->renderLabel() . $form->nombreApoderado->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->paternoApoderado->renderLabel() . $form->paternoApoderado->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->maternoApoderado->renderLabel() . $form->maternoApoderado->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;margin-top: 30px">
+                <div>
+                    <?php
+                    echo $form->telefonoApoderado->renderLabel() . $form->telefonoApoderado->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->direccionApoderado->renderLabel() . $form->direccionApoderado->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->correoApoderado->renderLabel() . $form->correoApoderado->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->comunaApoderado->renderLabel() . $form->comunaApoderado->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div id="tabr4" class="tab-content" style="display:none;">
+            <div class="botones">
+                <ul class="button-bar">
+                    <li><a class="cp" id="3"><i class="icon-copy"></i> Datos Madre</a></li>
+                    <li><a class="cp" id="4"><i class="icon-copy"></i> Datos Padre</a></li>
+                </ul>
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;margin-top: 30px;">
+                <div>
+                    <?php
+                    echo $form->rutApoderadoSuplente->renderLabel() . $form->rutApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->nombreApoderadoSuplente->renderLabel() . $form->nombreApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->paternoApoderadoSuplente->renderLabel() . $form->paternoApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->maternoApoderadoSuplente->renderLabel() . $form->maternoApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;margin-top: 30px">
+                <div>
+                    <?php
+                    echo $form->telefonoApoderadoSuplente->renderLabel() . $form->telefonoApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->direccionApoderadoSuplente->renderLabel() . $form->direccionApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->correoApoderadoSuplente->renderLabel() . $form->correoApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->comunaApoderadoSuplente->renderLabel() . $form->comunaApoderadoSuplente->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div id="tabr5" class="tab-content" style="display:none;">
+
+            <div class="col_4" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->prevision->renderLabel() . $form->prevision->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->letra->renderLabel() . $form->letra->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->actividad->renderLabel() . $form->actividad->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->patologia->renderLabel() . $form->patologia->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+            <div class="col_4" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->horario->renderLabel() . $form->horario->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->profesional->renderLabel() . $form->profesional->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->telefonoProfesional->renderLabel() . $form->telefonoProfesional->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->documento->renderLabel() . $form->documento->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+            <div class="col_4" style="text-align: left;display: inline;">
+                <div>
+                    <?php
+                    echo $form->tratamiento->renderLabel() . $form->tratamiento->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->otroTratamiento->renderLabel() . $form->otroTratamiento->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->enTratamiento->renderLabel() . $form->enTratamiento->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->alergia->renderLabel() . $form->alergia->renderViewHelper();
+                    ?>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div id="tabr6" class="tab-content" style="display:none;">
+            <div class="col_5" style="text-align: left;display: inline;">
+                <h5>En caso de emergencia:</h5>
+                <ul class="button-bar">
+                    <li><a class="cpe" id="1"><i class="icon-copy"></i> Madre</a></li>
+                    <li><a class="cpe" id="2"><i class="icon-copy"></i> Padre</a></li>
+                </ul>
+                <div>
+                    <?php
+                    echo $form->personaEmergencia->renderLabel() . $form->personaEmergencia->renderViewHelper();
+                    ?>
+
+                </div>
+                <div>
+                    <?php
+                    echo $form->telefonoEmergencia->renderLabel() . $form->telefonoEmergencia->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->trasladoEmergencia->renderLabel() . $form->trasladoEmergencia->renderViewHelper();
+                    ?>
+                </div>
+
+
+            </div>
+
+            <div class="col_5" style="text-align: left;display: inline;">
+                <h5>Persona autorizada a retirar al alumno en caso de emergencia:</h5>
+                <div>
+                    <?php
+                    echo $form->personaRetira->renderLabel() . $form->personaRetira->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->telefonoRetira->renderLabel() . $form->telefonoRetira->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->rutRetira->renderLabel() . $form->rutRetira->renderViewHelper();
+                    ?>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div id="tabr7" class="tab-content" style="display:none;">
+            <div class="col_5" style="text-align: left;display: inline;">
+                <h5>Certificados Entregados por Apoderado :</h5>
+                <div>
+                    <?php
+                    echo $form->nacimiento->renderLabel() . $form->nacimiento->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->estudio->renderLabel() . $form->estudio->renderViewHelper();
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    echo $form->personalidad->renderLabel() . $form->personalidad->renderViewHelper();
+                    ?>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col_12 center">
+        <div>
+            <ul class="button-bar">
+                <li><a id="guardar" class="button medium"><i class="icon-save"></i> Guardar</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+

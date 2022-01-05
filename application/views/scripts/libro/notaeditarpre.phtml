@@ -1,0 +1,242 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script lang="javascript">
+
+    $(document).ready(function () {
+
+
+        $('.notas').live('keyup', function (event) {
+
+            if (event.which === 40) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).next('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+
+            if (event.which === 38) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).prev('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+
+        });
+
+
+        var codigo =<?php echo $this->tipo ?>;
+
+        if (codigo == 4) {
+            $(".notas").live('keydown', function (event) {
+
+                if (event.which === 48 || event.which === 49 || event.which === 50 || event.which === 51 || event.which === 96 || event.which === 97 || event.which === 98 || event.which === 99 || event.which === 40 || event.which === 38 || event.which === 8) {
+
+                    if (event.which === 48 || event.which === 49 || event.which === 50 || event.which === 51 || event.which === 96 || event.which === 97 || event.which === 98 || event.which === 99) {
+                        $(this).val(String.fromCharCode(event.which));
+
+                    }
+                } else {
+                    return false;
+                }
+
+            });
+        } else {
+            $(".notas").live('keydown', function (event) {
+
+                if (event.which === 76 || event.which === 40 || event.which === 38 || event.which === 8) {
+
+                    if (event.which === 76) {
+                        $(this).val(String.fromCharCode(event.which));
+
+                    }
+                } else if (event.which === 77 || event.which === 78 || event.which === 86 || event.which === 40 || event.which === 38 || event.which === 8) {
+
+
+                    if (event.which === 77) {
+
+                        $(this).val("ML");
+
+                    }
+
+                    if (event.which === 86) {
+
+                        $(this).val("VL");
+
+                    }
+
+                    if (event.which === 78) {
+
+                        $(this).val("NE");
+
+                    }
+
+                } else {
+                    return false;
+                }
+
+            });
+        }
+
+
+        $("input").live('focus', function () {
+            $(this).closest('tr').css("background-color", "green");
+
+        });
+        $("input").live('focusout', function () {
+            $(this).closest('tr').css("background-color", "");
+        });
+
+    });
+
+</script>
+
+<style>
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notas'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<table>
+    <tbody>
+    <tr class="alt first">
+        <td>
+            <label>Asignatura:</label>
+        </td>
+        <td>
+            <?php echo $this->datos[0]['nombreAsignatura']; ?>
+        </td>
+    </tr>
+
+    <tr class="last">
+        <td>
+            <label>Evaluación:</label>
+        </td>
+        <td>
+            <?php echo $this->datos[0]['contenido']; ?>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<input type="hidden" id="ev" value="<?php echo $this->evaluacion; ?>"/>
+<input type="hidden" id="as" value="<?php echo $this->asignatura; ?>"/>
+<input type="hidden" id="cu" value="<?php echo $this->curso; ?>"/>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar Alumno: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+</div>
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Alumnos</th>
+        <th>Concepto</th>
+        <th>Cambiar</th>
+
+
+    </tr>
+    </thead>
+    <tr>
+        <?php foreach ($this->datos as $d) : ?>
+
+        <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?> <input type="hidden" id="al"
+                                                                                              value="<?php echo $d[idAlumnos]; ?>"/>
+        </td>
+
+        <?php
+
+        if (empty($d['idNotas'])) { ?>
+
+
+            <td>
+
+                <input type="text" size="2" maxlength="1" class="notas" value=""/></td>
+
+            <td>
+
+                <a class="button small yellow" id="cambiarnuevo" name="<?php echo $this->evaluacion; ?>"><i
+                            class="icon-edit"></i>Cambiar</a>
+
+            </td>
+
+
+        <?php } else { ?>
+
+
+            <td>
+                <?php if ($this->tipo == 4) {
+
+
+                    if ($d['nota'] == 65) {
+                        $nota = '0';
+                    }
+                    if ($d['nota'] == 55) {
+                        $nota = '1';
+                    }
+                    if ($d['nota'] == 45) {
+                        $nota = '2';
+                    }
+                    if ($d['nota'] == 30) {
+                        $nota = '3';
+                    }
+                    if ($d['nota'] == 0) {
+                        $nota = '';
+                    }
+                } else {
+                    if ($d['nota'] == 65) {
+                        $nota = 'L';
+                    }
+                    if ($d['nota'] == 55) {
+                        $nota = 'ML';
+                    }
+                    if ($d['nota'] == 45) {
+                        $nota = 'VL';
+                    }
+                    if ($d['nota'] == 30) {
+                        $nota = 'NE';
+                    }
+                }
+
+                ?>
+
+
+                <input type="text" size="2" maxlength="1" class="notas" value="<?php echo $nota; ?> "/></td>
+
+            <td>
+
+                <a class="button small green" id="cambiar" name="<?php echo $d['idNotas'] ?>"><i class="icon-edit"></i>Cambiar</a>
+
+            </td>
+
+        <?php } ?>
+    </tr>
+    <?php endforeach; ?>
+
+    <table>
+        <script src="<?php echo $this->baseUrl; ?>/javascript/notaseditarpre.js"></script>

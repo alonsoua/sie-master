@@ -1,0 +1,61 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css"  rel="stylesheet" />
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet" />
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet" />
+
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Semilla</th>
+        <th>Respuesta</th>
+        <th>Fecha</th>
+
+    </tr>
+    </thead>
+    <?php
+
+    if(!empty($this->datos)){
+
+        foreach ($this->datos as $d) : ?>
+
+                <tr>
+                    <td><?php echo $d->semilla; ?></td>
+
+                    <td><?php
+                        switch ($d->respuesta){
+                            case 1:
+                                echo $d->respuesta.' Operación/Acción ejecutada exitosamente.';
+                                break;
+                            case 2:
+                                echo $d->respuesta.' Error(es) de validación(es) de Negocio.';
+                                break;
+                            case 3:
+                                echo $d->respuesta.' RBD NO tiene servicio disponible.';
+                                break;
+                            case 4:
+                                echo $d->respuesta.' Convenio NO tiene asociado el RBD.';
+                                break;
+                            case 5:
+                                echo $d->respuesta.' Servicio NO disponible.';
+                                break;
+                            case 6:
+                                echo $d->respuesta.' Semilla de operación NO válida o ha caducado (renovar semilla)';
+                                break;
+                            case 7:
+                                echo $d->respuesta. 'Error interno de servicio.';
+                                break;
+                        }
+
+                        ?></td>
+
+                    <td>
+                        <?php echo date('d-m-Y H:i:s',strtotime($d->fechahistorial));?>
+
+                    </td>
+
+                </tr>
+
+            <?php endforeach; }?>
+
+</table>

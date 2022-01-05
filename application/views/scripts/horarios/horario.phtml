@@ -1,0 +1,1020 @@
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+
+<script src="<?php echo $this->baseUrl; ?>/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+
+
+
+<h4>Curso: <?php echo $this->curso[0]['nombreGrado'] . ' ' . $this->curso[0]['letra']; ?></h4>
+
+
+<h2><?php echo $this->title; ?></h2>
+<?php $form = $this->dato; ?>
+<div style="width:100%;">
+    <label style="font-size: 12px" for="idCuentaJefe">Profesor Jefe:</label>
+    <?php  echo $this->docentes; ?>
+    <style scoped>
+        h3 {
+            orphans: 3;
+            widows: 3;
+        }
+
+        h2,
+        h3 {
+            page-break-after: avoid;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        h1, h2, h3, h4, h5, h6,
+        .h1, .h2, .h3, .h4, .h5, .h6 {
+            margin-bottom: 0.5rem;
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.2;
+            color: inherit;
+        }
+
+        h3, .h3 {
+            font-size: 1.75rem;
+        }
+
+        .popover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1060;
+            display: block;
+            max-width: 276px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: left;
+            text-align: start;
+            text-decoration: none;
+            text-shadow: none;
+            text-transform: none;
+            letter-spacing: normal;
+            word-break: normal;
+            word-spacing: normal;
+            white-space: normal;
+            line-break: auto;
+            font-size: 0.875rem;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0.3rem;
+        }
+
+        .popover .arrow {
+            position: absolute;
+            display: block;
+            width: 1rem;
+            height: 0.5rem;
+            margin: 0 0.3rem;
+        }
+
+        .popover .arrow::before, .popover .arrow::after {
+            position: absolute;
+            display: block;
+            content: "";
+            border-color: transparent;
+            border-style: solid;
+        }
+
+        .bs-popover-top, .bs-popover-auto[x-placement^="top"] {
+            margin-bottom: 0.5rem;
+        }
+
+        .bs-popover-top .arrow, .bs-popover-auto[x-placement^="top"] .arrow {
+            bottom: calc((0.5rem + 1px) * -1);
+        }
+
+        .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before,
+        .bs-popover-top .arrow::after, .bs-popover-auto[x-placement^="top"] .arrow::after {
+            border-width: 0.5rem 0.5rem 0;
+        }
+
+        .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before {
+            bottom: 0;
+            border-top-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .bs-popover-top .arrow::after, .bs-popover-auto[x-placement^="top"] .arrow::after {
+            bottom: 1px;
+            border-top-color: #fff;
+        }
+
+        .bs-popover-right, .bs-popover-auto[x-placement^="right"] {
+            margin-left: 0.5rem;
+        }
+
+        .bs-popover-right .arrow, .bs-popover-auto[x-placement^="right"] .arrow {
+            left: calc((0.5rem + 1px) * -1);
+            width: 0.5rem;
+            height: 1rem;
+            margin: 0.3rem 0;
+        }
+
+        .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before,
+        .bs-popover-right .arrow::after, .bs-popover-auto[x-placement^="right"] .arrow::after {
+            border-width: 0.5rem 0.5rem 0.5rem 0;
+        }
+
+        .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before {
+            left: 0;
+            border-right-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .bs-popover-right .arrow::after, .bs-popover-auto[x-placement^="right"] .arrow::after {
+            left: 1px;
+            border-right-color: #fff;
+        }
+
+        .bs-popover-bottom, .bs-popover-auto[x-placement^="bottom"] {
+            margin-top: 0.5rem;
+        }
+
+        .bs-popover-bottom .arrow, .bs-popover-auto[x-placement^="bottom"] .arrow {
+            top: calc((0.5rem + 1px) * -1);
+        }
+
+        .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before,
+        .bs-popover-bottom .arrow::after, .bs-popover-auto[x-placement^="bottom"] .arrow::after {
+            border-width: 0 0.5rem 0.5rem 0.5rem;
+        }
+
+        .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before {
+            top: 0;
+            border-bottom-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .bs-popover-bottom .arrow::after, .bs-popover-auto[x-placement^="bottom"] .arrow::after {
+            top: 1px;
+            border-bottom-color: #fff;
+        }
+
+        .bs-popover-bottom .popover-header::before, .bs-popover-auto[x-placement^="bottom"] .popover-header::before {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            display: block;
+            width: 1rem;
+            margin-left: -0.5rem;
+            content: "";
+            border-bottom: 1px solid #f7f7f7;
+        }
+
+        .bs-popover-left, .bs-popover-auto[x-placement^="left"] {
+            margin-right: 0.5rem;
+        }
+
+        .bs-popover-left .arrow, .bs-popover-auto[x-placement^="left"] .arrow {
+            right: calc((0.5rem + 1px) * -1);
+            width: 0.5rem;
+            height: 1rem;
+            margin: 0.3rem 0;
+        }
+
+        .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before,
+        .bs-popover-left .arrow::after, .bs-popover-auto[x-placement^="left"] .arrow::after {
+            border-width: 0.5rem 0 0.5rem 0.5rem;
+        }
+
+        .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before {
+            right: 0;
+            border-left-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .bs-popover-left .arrow::after, .bs-popover-auto[x-placement^="left"] .arrow::after {
+            right: 1px;
+            border-left-color: #fff;
+        }
+
+        .popover-header {
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 0;
+            font-size: 1rem;
+            color: inherit;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #ebebeb;
+            border-top-left-radius: calc(0.3rem - 1px);
+            border-top-right-radius: calc(0.3rem - 1px);
+        }
+
+        .popover-header:empty {
+            display: none;
+        }
+
+        .popover-body {
+            padding: 0.5rem 0.75rem;
+            color: #212529;
+        }
+
+        .alert {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.25rem;
+        }
+
+        .alert-heading {
+            color: inherit;
+        }
+
+        .alert-link {
+            font-weight: 700;
+        }
+
+        .alert-dismissible {
+            padding-right: 4rem;
+        }
+
+        .alert-dismissible .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0.75rem 1.25rem;
+            color: inherit;
+        }
+
+        .alert-primary {
+            color: #004085;
+            background-color: #cce5ff;
+            border-color: #b8daff;
+        }
+
+        .alert-primary hr {
+            border-top-color: #9fcdff;
+        }
+
+        .alert-primary .alert-link {
+            color: #002752;
+        }
+
+        .alert-secondary {
+            color: #383d41;
+            background-color: #e2e3e5;
+            border-color: #d6d8db;
+        }
+
+        .alert-secondary hr {
+            border-top-color: #c8cbcf;
+        }
+
+        .alert-secondary .alert-link {
+            color: #202326;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-success hr {
+            border-top-color: #b1dfbb;
+        }
+
+        .alert-success .alert-link {
+            color: #0b2e13;
+        }
+
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+
+        .alert-info hr {
+            border-top-color: #abdde5;
+        }
+
+        .alert-info .alert-link {
+            color: #062c33;
+        }
+
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+
+        .alert-warning hr {
+            border-top-color: #ffe8a1;
+        }
+
+        .alert-warning .alert-link {
+            color: #533f03;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .alert-danger hr {
+            border-top-color: #f1b0b7;
+        }
+
+        .alert-danger .alert-link {
+            color: #491217;
+        }
+
+        .alert-light {
+            color: #818182;
+            background-color: #fefefe;
+            border-color: #fdfdfe;
+        }
+
+        .alert-light hr {
+            border-top-color: #ececf6;
+        }
+
+        .alert-light .alert-link {
+            color: #686868;
+        }
+
+        .alert-dark {
+            color: #1b1e21;
+            background-color: #d6d8d9;
+            border-color: #c6c8ca;
+        }
+
+        .alert-dark hr {
+            border-top-color: #b9bbbe;
+        }
+
+        .alert-dark .alert-link {
+            color: #040505;
+        }
+    </style>
+
+    <?php $horario = $this->horario;
+    ?>
+
+    <?php if ($this->messages) : ?>
+        <div class="alert alert-danger">
+
+            <?php foreach ($this->messages as $msg) : ?>
+                <h5 class="center"><?php echo $msg; ?></h5>
+            <?php endforeach; ?>
+
+        </div>
+    <?php endif; ?>
+
+    <button style="float: right;" class="button medium blue" id="add"><i
+                class="icon-plus"></i></button>
+    <div class="right">
+        <input type="hidden" id="curso" value="<?php echo $this->curso[0]['idCursos']; ?>">
+        <table id="horarios">
+            <tr>
+                <th scope="col" class="blank">Hora</th>
+                <th scope="col" class="title">Lunes</th>
+                <th scope="col" class="title">Martes</th>
+                <th scope="col" class="title">Miercoles</th>
+                <th scope="col" class="title">Jueves</th>
+                <th scope="col" class="title">Viernes</th>
+                <th scope="col" class="title"></th>
+            </tr>
+
+            <?php  for ($i = 0; $i < count($this->bloques); $i++) { ?>
+                <tr>
+                    <td class="time" style="width: 5%;"><label for="tiempoinicio[]">Inicio:</label><input type="text" id="tiempoinicio[]" value="<?php echo date ('H:i',strtotime($this->bloques[$i]['tiempoInicio'])); ?>" maxlength="5" class="tiempo start"/><label for="tiempotermino[]">Termino:</label><input type="text" id="tiempotermino[]" value="<?php echo date ('H:i',strtotime($this->bloques[$i]['tiempoTermino'])); ?>" maxlength="5" class="end"/></td>
+
+                    <?php for ($j = 1; $j < 6; $j++) {
+                        $aux[$i][$j] = false;
+
+                        for ($d = 0; $d < count($horario); $d++) {
+
+                            if ($horario[$d]['tiempoInicio'] == $this->bloques[$i]['tiempoInicio'] && $horario[$d]['dia'] == $j) { ?>
+
+                                <td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true"
+                                    data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar>Cancelar</button></div>">
+                                    <input type="hidden" value="<?php echo $horario[$d]['idCuenta']; ?>" id="idDocente"/>
+                                    <input type="hidden" value="<?php echo $horario[$d]['idAsignatura']; ?>" id="idAsignatura"/>
+                                    <input type="hidden" value="<?php echo $horario[$d]['idHorario']; ?>" id="idHorario"/>
+                                    <div id="datos"><div><p><?php echo $horario[$d]['nombrescuenta'].' '.$horario[$d]['paternocuenta'].' '.$horario[$d]['maternocuenta']; ?></p><p><?php echo $horario[$d]['nombreAsignatura']; ?></p></div></div>
+                                </td>
+
+                                <?php $aux[$i][$j] = true; ?>
+                            <?php } ?>
+
+                        <?php } ?>
+
+                        <?php
+
+                        if (!$aux[$i][$j]) { ?>
+                            <td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true"
+                                data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar>Cancelar</button></div>">
+                                <input type="hidden" value="" id="idDocente"/>
+                                <input type="hidden" value="" id="idAsignatura"/>
+                                <input type="hidden" value="" id="idHorario"/>
+                                <div id="datos"></div>
+                            </td>
+
+                        <?php } ?>
+
+                    <?php } ?>
+
+                    <td class="drop" style="width: 13%;"><i class="icon-trash icon-2x delete"></i></td>
+                </tr>
+            <?php } ?>
+
+
+        </table>
+
+    </div>
+</div>
+
+
+<style type="text/css">
+
+
+    .right {
+        width: 100%;
+    }
+
+    .right table {
+        background: #E0ECFF;
+        width: 100%;
+    }
+
+    .right td {
+        background: #fafafa;
+        color: #444;
+        text-align: center;
+        padding: 2px;
+    }
+
+    .right td {
+        background: #E0ECFF;
+    }
+
+    .right td.drop {
+        background: #fafafa;
+        width: 100px;
+        height: 40px;
+        border: 1px solid #ddd;
+        cursor: pointer;
+    }
+
+    .right td.over {
+        background: #FBEC88;
+    }
+
+    .item {
+        text-align: center;
+        border: 1px solid #499B33;
+        background: #fafafa;
+        color: #444;
+        width: 140px;
+    }
+
+    .open {
+        background: blue;
+    }
+
+    select {
+        width:170px;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+
+
+</style>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+
+<script type="application/javascript">
+
+
+    var elemento;
+    $(function () {
+
+        $('[data-toggle="popover"]').popover()
+        $('[data-toggle="popover"]').on('click', function (e) {
+            elemento=$(this);
+            $('[data-toggle="popover"]').not(this).popover('hide');
+            $('[data-toggle="popover"]').not(this).css("background", "#fafafa");
+
+            var dia = $(this).index();
+            var inicio = $(this).closest('tr').find('.start').val();
+            var termino = $(this).closest('tr').find('.end').val();
+            var idcurso = $('#curso').val();
+            var idhorario= $(this).find('input#idHorario').val();
+            var iddocente= $(this).find('input#idDocente').val();
+            var idasignatura= $(this).find('input#idAsignatura').val();
+
+            if ($(this).prop("style")["background"] == 'blue') {
+                $(this).css("background", "#fafafa");
+            } else {
+                $(this).css("background", "blue");
+                $.ajax({
+                    type: "GET",
+                    url: "../../getform/c/" + idcurso + "/d/" + dia + "/i/" + inicio + "/t/" + termino+'/h/'+idhorario,
+                    async: true,
+                    dataType: "json",
+                    beforeSend: function (x) {
+                        if (x && x.overrideMimeType) {
+                            x.overrideMimeType("application/j-son;charset=UTF-8");
+                        }
+                    },
+                    success: function (data) {
+                        var docentes = $(".lista").empty();
+                        Object.keys(data[0]).forEach(key => docentes.append($("<option>").attr('value',key).text(data[0][key])));
+                        var asignaturas = $(".asignaturas").empty();
+                        Object.keys(data[1]).forEach(key => asignaturas.append($("<option>").attr('value',data[1][key]['id']).attr('name',data[1][key]['nombreAsignatura']).text(data[1][key]['nombreAsignatura']+' ('+data[1][key]['hora']+')')));
+                        $("#docente option[value='"+iddocente+"']").prop('selected', true);
+                        $("#asignatura option[value='"+idasignatura+"']").prop('selected', true);
+                        if(data[3].length!=0)
+                        {
+
+                            var datos='<div style="display:inline-grid"><ul>';
+
+                            for (let i=0;i< data[3].length;i++)
+                            {
+                                datos +='<li><p>Docente:'+data[3][i]["profesor"]+'</p><p>Asignatura:'+data[3][i]["nombreAsignatura"]+'</p><button class=red id=eliminar>Eliminar</button></li>';
+
+                            }
+                            datos +='</div>';
+                            $('.popover-body').prepend(datos);
+                            //$(".popover-body").ap;
+
+                            // $(".popover-body").html('');
+                            // var formulario='<div>' +
+                            //     '<p>Docente:'+data[0][iddocente]+'</p>' +
+                            //     '<p>Asignatura:</p>' +
+                            //     '<button class=red id=eliminar>Eliminar</button>' +
+                            //     '<hr></hr>' +
+                            //     '<label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar>Cancelar</button></div>'+
+                            //     '<input type="hidden" value="" id="idDocente"/><input type="hidden" value="" id="idAsignatura"/><input type="hidden" value="" id="idHorario"/>'+
+                            //     '</div>';
+                            // $(".popover-body").html(formulario);
+
+                            console.log(data[0][iddocente]);
+                            //console.log(data[1][idasignatura]);
+
+
+                        }else if(data[2]!=null){
+                            $("#asignar").attr("class","red");
+                            $("#asignar").text('Eliminar');
+                            $("#asignar").attr('id','eliminar');
+                        }
+                        else if(data[1]==''){
+                            $('label[for="asignatura"]').hide();
+                            $("#asignatura").attr('hidden', true);
+                        }
+
+
+                    }
+                });
+            }
+
+            e.stopImmediatePropagation();
+        });
+        $('body').on('click', 'button[id^="cancelar"]', function() {
+            $('[data-toggle="popover"]').not(this).popover('hide');
+            $('[data-toggle="popover"]').not(this).css("background", "#fafafa");
+            $(this).css("background", "#fafafa");
+            e.stopImmediatePropagation();
+        });
+    })
+
+
+
+    function add() {
+        $('#horarios tr:last').after('<tr>' +
+            '<td class="time" style="width: 5%;">' +
+            '<label for="tiempoinicio[]">Inicio:</label>' +
+            '<input type="text" id="tiempoinicio[]" maxlength="5" class="tiempo start"/>' +
+            '<label for="tiempotermino[]">Termino:</label>' +
+            '<input type="text" id="tiempotermino[]" maxlength="5" class="end"/>' +
+            '</td>' +
+            '<td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true" data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar >Cancelar</button></div>"><input type="hidden" value="" id="idDocente"/><input type="hidden" value="" id="idAsignatura"/><input type="hidden" value="" id="idHorario"/><div id="datos"></div></td>' +
+            '<td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true" data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar >Cancelar</button></div>"><input type="hidden" value="" id="idDocente"/><input type="hidden" value="" id="idAsignatura"/><input type="hidden" value="" id="idHorario"/><div id="datos"></div></td>' +
+            '<td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true" data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar >Cancelar</button></div>"><input type="hidden" value="" id="idDocente"/><input type="hidden" value="" id="idAsignatura"/><input type="hidden" value="" id="idHorario"/><div id="datos"></div></td>' +
+            '<td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true" data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar >Cancelar</button></div>"><input type="hidden" value="" id="idDocente"/><input type="hidden" value="" id="idAsignatura"/><input type="hidden" value="" id="idHorario"/><div id="datos"></div>' +
+            '<td class="drop" style="width: 13%;" data-toggle="popover" title="Asignar" data-html="true" data-content="<div style=display:inline-grid><label for=docente>Docentes:</label><select id=docente class=lista></select><label for=asignatura>Asignaturas:</label><select id=asignatura class=asignaturas></select><button class=blue id=asignar>Asignar</button><button class=button id=cancelar name=cancelar >Cancelar</button></div>"><input type="hidden" value="" id="idDocente"/><input type="hidden" value="" id="idAsignatura"/><input type="hidden" value="" id="idHorario"/><div id="datos"></div></td>' +
+            '<td class="drop" style="width: 13%;"><i class="icon-trash icon-2x delete"></i></td></tr>');
+    }
+
+    $('#add').click(function (e) {
+
+        if ($('#horarios tr').length == 1) {
+            add();
+
+        } else {
+
+            if ($('#horarios tr:last .start').val().trim() != '' || $('#horarios tr:last .end').val().trim() != '') {
+                add();
+
+            }
+            return false;
+
+        }
+        e.stopImmediatePropagation();
+    });
+
+
+    $('body').on('focus', ".tiempo", function (e) {
+        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="popover"]').on('click', function (e) {
+            elemento=$(this);
+
+            var dia = $(this).index();
+            var inicio = $(this).closest('tr').find('.start').val();
+            var termino = $(this).closest('tr').find('.end').val();
+            var idcurso = $('#curso').val();
+            var idhorario= $(this).find('input#idHorario').val();
+            var iddocente= $(this).find('input#idDocente').val();
+            var idasignatura= $(this).find('input#idAsignatura').val();
+
+
+            $('[data-toggle="popover"]').not(this).popover('hide');
+            $('[data-toggle="popover"]').not(this).css("background", "#fafafa");
+
+
+            if ($(this).prop("style")["background"] == 'blue') {
+
+                $(this).css("background", "#fafafa");
+            } else {
+                $(this).css("background", "blue");
+                $.ajax({
+                    type: "GET",
+                    url: "../../getform/c/" + idcurso + "/d/" + dia + "/i/" + inicio + "/t/" + termino+'/h/'+idhorario,
+                    async: true,
+                    dataType: "json",
+                    beforeSend: function (x) {
+                        if (x && x.overrideMimeType) {
+                            x.overrideMimeType("application/j-son;charset=UTF-8");
+                        }
+                    },
+                    success: function (data) {
+                        var docentes = $(".lista").empty();
+                        Object.keys(data[0]).forEach(key => docentes.append($("<option>").attr('value',key).text(data[0][key])));
+                        var asignaturas = $(".asignaturas").empty();
+                        Object.keys(data[1]).forEach(key => asignaturas.append($("<option>").attr('value',data[1][key]['id']).attr('name',data[1][key]['nombreAsignatura']).text(data[1][key]['nombreAsignatura']+' ('+data[1][key]['hora']+')')));
+
+                        if(data[3]==2) {
+
+                            console.log("Nuevo Formulario");
+
+
+                        }
+
+                        else if(data[2]!=null){
+                            $("#asignar").attr("class","red");
+                            $("#asignar").text('Eliminar');
+                            $("#asignar").attr('id','eliminar');
+                        }
+
+                        else if(data[1]==''){
+                            $('label[for="asignatura"]').hide();
+                            $("#asignatura").attr('hidden', true);
+                        }
+                        else if(iddocente>0 && idasignatura>0){
+                            $("#docente option[value='"+iddocente+"']").prop('selected', true);
+                            $("#asignatura option[value='"+idasignatura+"']").prop('selected', true);
+                        }
+
+                    }
+                });
+            }
+
+
+            e.stopImmediatePropagation();
+        });
+
+        var beforetime = $(this).closest('tr').prev().find('.end').val();
+        if (beforetime == undefined) {
+            beforetime = '07:30';
+        }
+        $(this).timepicker({
+            change: function (time) {
+                var theAdd = new Date();
+                var timestart = $(this).val();
+                var timeend = '';
+
+
+                arr = timestart.split(':');
+                hour = $.trim(arr[0]);
+                min = $.trim(arr[1]);
+
+                // Set Hours, minutes, secons and miliseconds
+                theAdd.setHours(hour, min, '00', '000');
+
+                theAdd.setMinutes(theAdd.getMinutes() + 30);
+
+                var hour = (theAdd.getHours().toString().length == 1 ? "0" + theAdd.getHours().toString() : theAdd.getHours().toString());
+                var minutes = (theAdd.getMinutes().toString().length == 1 ? "0" + theAdd.getMinutes().toString() : theAdd.getMinutes().toString());
+                timeend = hour + ":" + minutes;
+
+                $(this).closest('td').find('.end').val(timeend);
+            },
+            timeFormat: 'HH:mm',
+            interval: '5',
+            minTime: beforetime,
+            maxTime: '18:30',
+            defaultTime: beforetime,
+            startTime: beforetime,
+            dynamic: false,
+            dropdown: true,
+            scrollbar: true,
+        });
+
+        e.stopImmediatePropagation();
+    });
+
+    $("#horarios").on("click", ".delete", function (e) {
+
+        var id = $(this).closest('tr').find("[aria-describedby]").attr('aria-describedby');
+        if (id != undefined) {
+            $("#" + id).remove();
+        }
+        $(this).closest("tr").remove();
+
+        e.stopImmediatePropagation();
+
+    });
+
+    $(document).on('click', 'button[id^="asignar"]', function() {
+        var element=$(this).parent();
+        var iddocente=element.find("select#docente :selected").val();
+        var idasignatura=element.find("select#asignatura :selected").val();
+
+        var docente=element.find("select#docente :selected").text();
+        var asignatura=element.find("select#asignatura :selected").attr('name');
+
+        var dia = elemento.index();
+        var inicio = elemento.closest('tr').find('.start').val();
+        var termino = elemento.closest('tr').find('.end').val();
+        var idcurso = $('#curso').val();
+        var idhorario = elemento.find('input#idHorario').val();
+
+        var Datos = {
+            "id": iddocente,
+            "ida": idasignatura,
+            "d":dia,
+            "i": inicio,
+            "t":termino,
+            "c":idcurso,
+            "h":idhorario
+        };
+
+        $.ajax(
+            {
+                global: false,
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../../guardarhorario/',
+                data: JSON.stringify(Datos),
+                success: function (data) {
+                    if (data.response == '1' || data.response == '2') {
+                        var mensaje='Creado';
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        if(data.response == '2'){
+                            mensaje='Actualizado';
+
+
+                        }
+
+                        Toast.fire({
+                            type: 'success',
+                            title: mensaje
+                        })
+
+                        if (!data.hasOwnProperty('ida') || data.ida==null || data.ida=='null') {
+                            elemento.find('div#datos').html('<div><p>'+docente+'</p></div>');
+                        }else {
+                            elemento.find('div#datos').html('<div><p>'+docente+'</p><p>'+asignatura+'</p></div>');
+                        }
+
+
+                        $('[data-toggle="popover"]').not(this).popover('hide');
+                        $('[data-toggle="popover"]').not(this).css("background", "#fafafa");
+
+
+                        if ($('[data-toggle="popover"]').prop("style")["background"] == 'blue') {
+
+                            $('[data-toggle="popover"]').css("background", "#fafafa");
+                        }
+
+                            elemento.find('input#idHorario').val(data.h);
+                            elemento.find('input#idDocente').val(data.id);
+                            elemento.find('input#idAsignatura').val(data.ida);
+
+
+
+                    } else if (data.response == '3') {
+
+                        const Toasterror = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        Toasterror.fire({
+                            type: 'error',
+                            title: 'Error al ingresar los datos'
+                        })
+                    }
+                },
+                error: function () {
+                    const Toasterror = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    Toasterror.fire({
+                        type: 'error',
+                        title: 'Error al ingresar los datos'
+                    })
+                }
+            });
+
+    });
+
+
+    $(document).on('click', 'button[id^="eliminar"]', function() {
+        var element=$(this).parent();
+        var idhorario = elemento.find('input#idHorario').val();
+
+        var Datos = {
+            "id": idhorario
+        };
+
+        $.ajax(
+            {
+                global: false,
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../../eliminar/',
+                data: JSON.stringify(Datos),
+                success: function (data) {
+                    if (data.response == '1') {
+
+                        var mensaje='Eliminado';
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+
+                        Toast.fire({
+                            type: 'success',
+                            title: mensaje
+                        })
+
+                        elemento.find('div#datos').html('');
+
+                        $('[data-toggle="popover"]').not(this).popover('hide');
+                        $('[data-toggle="popover"]').not(this).css("background", "#fafafa");
+
+
+                        if ($('[data-toggle="popover"]').prop("style")["background"] == 'blue') {
+
+                            $('[data-toggle="popover"]').css("background", "#fafafa");
+                        }
+
+
+                    } else if (data.response == '3') {
+
+                        const Toasterror = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        Toasterror.fire({
+                            type: 'error',
+                            title: 'Existen datos asociados, no se puede eliminar'
+                        })
+                    }
+                },
+                error: function () {
+                    const Toasterror = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    Toasterror.fire({
+                        type: 'error',
+                        title: 'Error al eliminar los datos'
+                    })
+                }
+            });
+
+    });
+
+    $("#idCuentaJefe").on('change', function() {
+        if($(this).val()!='null'){
+            var idcurso = $('#curso').val();
+            var Datos = {
+                "id": $(this).val(),
+                "c":idcurso,
+            };
+
+            $.ajax(
+                {
+                    global: false,
+                    cache: false,
+                    async: true,
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded',
+                    url: '../../guardardocentejefe/',
+                    data: JSON.stringify(Datos),
+                    success: function (data) {
+                        if (data.response == '1') {
+                            var mensaje='Docente Asignado';
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toast.fire({
+                                type: 'success',
+                                title: mensaje
+                            })
+
+
+                        } else if (data.response == '3') {
+
+                            const Toasterror = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            Toasterror.fire({
+                                type: 'error',
+                                title: 'Error al ingresar los datos'
+                            })
+                        }
+                    },
+                    error: function () {
+                        const Toasterror = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+
+                        Toasterror.fire({
+                            type: 'error',
+                            title: 'Error al ingresar los datos'
+                        })
+                    }
+                });
+
+        }
+
+
+    });
+</script>
+
+
+

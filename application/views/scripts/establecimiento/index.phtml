@@ -1,0 +1,75 @@
+<!--creo link para agregar un Establecimiento -->
+<a class="button small" href="<?php $d = '';
+echo $this->url(array('controller' => 'Establecimiento',
+    'action' => 'agregar')); ?>">Agregar Establecimiento</a>
+
+<!--creo una tabla para mostrar los datos-->
+<table class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>RBD</th>
+        <th>Nombre Establecimiento</th>
+        <th>Asignar Director</th>
+        <th>Director</th>
+        <th>Configuraciones</th>
+        <th>Decretos</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+
+    </tr>
+    </thead>
+    <?php foreach ($this->dato as $d): ?>
+
+        <tr>
+
+            <td>
+                <?php echo $d->rbd; ?>
+            </td>
+
+            <td><?php echo $d->nombreEstablecimiento; ?></td>
+
+            <td>
+
+                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'agregardirector', 'id' => $d->idEstablecimiento), 'default', true); ?>">Agregar
+                    Director</a>
+
+            </td>
+
+            <td>
+                <?php
+                if ($d->idDirector == 0 || empty($d->idDirector)) {
+                    echo 'Sin Asignar';
+                } else {
+
+                    echo $d->nombrescuenta . ' ' . $d->paternocuenta . ' ' . $d->maternocuenta;
+                } ?>
+            </td>
+            <td>
+
+                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'config', 'id' => $d->idEstablecimiento)); ?>">Configuración</a>
+
+            </td>
+            <td>
+                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'decretos', 'id' => $d->idEstablecimiento)); ?>">Decretos</a>
+            </td>
+
+            <td>
+
+                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'editar', 'id' => $d->idEstablecimiento)); ?>">Editar</a>
+
+            </td>
+
+            <td>
+
+
+                <a class="button small red" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'eliminar', 'id' => $d->idEstablecimiento)); ?>">Eliminar</a>
+            </td>
+
+        </tr>
+    <?php endforeach; ?>
+</table>

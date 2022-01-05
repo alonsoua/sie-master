@@ -1,0 +1,203 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery-1.7.2.min.js"></script>
+
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/prettify.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/kickstart.js"></script>
+
+
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/calendario/css/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.core.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.datepicker.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery.blockUI.js"></script>
+<script lang="javascript">
+    $(function () {
+        if ($('input[type=radio]["name=tipoNota"]').val() == 1) {
+            $("#tipoEvaluacionPrueba option[value='6']").hide();
+            $("#tipoEvaluacionPrueba option[value='1']").show();
+            $("#tipoEvaluacionPrueba option[value='2']").show();
+            $('label[for=criterio], select#criterio').hide();
+            $("#criterio-label").hide();
+            $("#criterio").closest('tr').hide();
+            $('label[for=porcentajeExamen], select#porcentajeExamen').hide();
+            $("#porcentajeExamen-label").hide();
+            $("#porcentajeExamen").closest('tr').hide();
+            //Mostramos
+            $('label[for=coef], select#coef').show();
+            $("#coef-label").show();
+            $("#coef").closest('tr').show();
+
+            $('label[for=fecha], select#fecha').show();
+            $("#fecha-label").show();
+            $("#fecha").closest('tr').show();
+        } else if ($('input[type=radio]["name=tipoNota"]').val() == 2) {
+            //Agregamos un campo al periodo
+            $("#tipoEvaluacionPrueba option[value='6']").show();
+            $("#tipoEvaluacionPrueba option[value='1']").hide();
+            $("#tipoEvaluacionPrueba option[value='2']").hide();
+            $('label[for=coef], select#coef').hide();
+            $("#coef-label").hide();
+            $("#coef").closest('tr').hide();
+
+            $('label[for=fecha], select#fecha').hide();
+            $("#fecha-label").hide();
+            $("#fecha").closest('tr').hide();
+
+            $('label[for=criterio], select#criterio').show();
+            $("#criterio-label").show();
+            $("#criterio").show();
+            $("#criterio").closest('tr').show();
+            $('label[for=porcentajeExamen], select#porcentajeExamen').show();
+            $("#porcentajeExamen-label").show();
+            $("#porcentajeExamen").closest('tr').show();
+        }
+
+        jQuery.fn.preventDoubleSubmission = function () {
+            $(this).on('submit', function (e) {
+                var $form = $(this);
+                if ($form.data('submitted') === true) {
+                    e.preventDefault();
+                } else {
+                    $form.data('submitted', true);
+                }
+            });
+
+            return this;
+        };
+
+        $('form').preventDoubleSubmission();
+
+        <?php  $periodo = new Zend_Session_Namespace('nombreperiodo');
+        $idperiodo = $periodo->nombreperiodo;?>
+        var ano =<?php echo $idperiodo?>;
+
+
+        var fechain = '01-03-' + ano;
+        var fechate = '31-12-' + ano;
+
+
+        function noSunday(date) {
+            var day = date.getDay();
+            return [(day > 0), ''];
+        }
+
+        function cambiarfecha(tipo) {
+
+
+            if (tipo == '1') {
+                fechain = '01-03-' + ano;
+                fechate = '31-08-' + ano;
+            }
+
+            if (tipo == '2') {
+                fechain = '01-07-' + ano;
+                fechate = '31-12-' + ano;
+            }
+            if (tipo == '3') {
+                fechain = '01-03-' + ano;
+                fechate = '31-05-' + ano;
+            }
+            if (tipo == '4') {
+                fechain = '01-05-' + ano;
+                fechate = '30-09-' + ano;
+            }
+            if (tipo == '5') {
+                fechain = '01-09-' + ano;
+                fechate = '31-12-' + ano;
+            }
+        }
+
+        $("#tipoEvaluacionPrueba").live('change', function (e) {
+            $("#fecha").val('');
+            $('#fecha').datepicker('destroy');
+            cambiarfecha($(this).val());
+            // $('#fecha').datepicker('show');
+
+            $("#fecha").datepicker({
+                //autoSize: true,
+                showOn: "button",
+                buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+                buttonImageOnly: true,
+                minDate: fechain,
+                maxDate: fechate,
+                beforeShowDay: noSunday,
+                numberOfMonths: 3,
+
+
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                firstDay: 1,
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true
+
+
+            });
+            e.stopImmediatePropagation();
+        });
+
+
+        $('#tipoEvaluacionPrueba').trigger("change");
+
+        $('input[type=radio]["name=tipoNota"]').live('change', function (e) {
+            if ($(this).val() == 1) {
+                $("#tipoEvaluacionPrueba option[value='6']").hide();
+                $("#tipoEvaluacionPrueba option[value='1']").attr('selected', 'selected');
+                $("#tipoEvaluacionPrueba option[value='1']").show();
+                $("#tipoEvaluacionPrueba option[value='2']").show();
+                $('label[for=criterio], select#criterio').hide();
+                $("#criterio-label").hide();
+                $("#criterio").closest('tr').hide();
+                $('label[for=porcentajeExamen], select#porcentajeExamen').hide();
+                $("#porcentajeExamen-label").hide();
+                $("#porcentajeExamen").closest('tr').hide();
+                //Mostramos
+                $('label[for=coef], select#coef').show();
+                $("#coef-label").show();
+                $("#coef").closest('tr').show();
+
+                $('label[for=fecha], select#fecha').show();
+                $("#fecha-label").show();
+                $("#fecha").closest('tr').show();
+            } else {
+                //Agregamos un campo al periodo
+                $("#tipoEvaluacionPrueba option[value='6']").show();
+                $("#tipoEvaluacionPrueba option[value='6']").attr('selected', 'selected');
+                $("#tipoEvaluacionPrueba option[value='1']").hide();
+                $("#tipoEvaluacionPrueba option[value='2']").hide();
+                $('label[for=coef], select#coef').hide();
+                $("#coef-label").hide();
+                $("#coef").closest('tr').hide();
+
+                $('label[for=fecha], select#fecha').hide();
+                $("#fecha-label").hide();
+                $("#fecha").closest('tr').hide();
+
+                $('label[for=criterio], select#criterio').show();
+                $("#criterio-label").show();
+                $("#criterio").show();
+                $("#criterio").closest('tr').show();
+                $('label[for=porcentajeExamen], select#porcentajeExamen').show();
+                $("#porcentajeExamen-label").show();
+                $("#porcentajeExamen").closest('tr').show();
+            }
+
+
+            e.stopImmediatePropagation();
+        });
+
+    });
+
+
+</script>
+
+<?php echo $this->form; ?>
+

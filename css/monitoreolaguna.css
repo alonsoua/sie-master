@@ -1,0 +1,160 @@
+
+#txtBuscar {
+    padding: 5px;
+    width: 595px;
+}
+
+.oculta {
+    display: none;
+}
+
+table th, td {
+    border-left: 2px solid #ddd;
+    border-right: 2px solid #ddd;
+    text-align: center;
+}
+
+.coef {
+    background-color: #3EBDFF !important;
+}
+
+.red {
+    color: #cd0a0a;
+}
+
+.azul {
+    color: #0000FF;
+}
+
+.sem {
+    background-color: #11b106;
+}
+
+.taller {
+    background-color: #f3b163;
+}
+
+.final {
+    background-color: #63abe6;
+}
+
+.examen {
+    background-color: #edde34;
+}
+.finalex{
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#41729b+0,41729b+77,edde34+78,edde34+99 */
+    background: #63abe6; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #63abe6 0%, #63abe6 77%, #edde34 78%, #edde34 99%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #63abe6 0%,#63abe6 77%,#edde34 78%,#edde34 99%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #63abe6 0%,#63abe6 77%,#edde34 78%,#edde34 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#41729b', endColorstr='#edde34',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+
+.editing {
+    border: 2px dotted #c9c9c9;
+}
+
+#edit {
+    display: none;
+}
+
+.notas{
+    margin:auto;
+
+}
+.center-header{
+    display: -webkit-box;
+    margin-top: 10px;
+}
+.center-header h4{
+    text-align: left;
+}
+
+
+.grid-container {
+    display: grid; /* This is a (hacky) way to make the .grid element size to fit its content */
+    overflow: auto;
+    height: 600px;
+    width: 100%;
+}
+.grid {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.grid-col {
+
+}
+
+.grid-item--header {
+    padding: 5px;
+    height: 75px;
+    min-height: 75px;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background-color: white;
+    overflow: auto;
+}
+
+.grid-col--fixed-left {
+    width: 150px;
+    min-width: 150px;
+    position: sticky;
+    left: 0;
+    z-index: 500;
+    background-color: white;
+
+}
+.grid-col--fixed-right {
+    position: sticky;
+    position: -webkit-sticky;
+    right: 0;
+    z-index: 500;
+
+}
+
+.grid-item-pond-header{
+    height: 37px;
+    border: 1px solid gray;
+    text-align: center;
+    width: 71px;
+
+}
+
+
+.grid-item-pond{
+
+    padding: 2px;
+    height: 41px;
+    border: 1px solid gray;
+    text-align: center;
+    width: 71px;
+
+}
+
+
+.grid-item-pond-nota{
+
+    padding: 2px;
+    height: 41px;
+    border-right: 1px solid gray;
+    text-align: center;
+    width: 50px;
+
+}
+
+.grid-item {
+    padding: 0px;
+    height: 45px;
+    border: 1px solid gray;
+    text-align: center;
+    min-width: 71px;
+}
+.head{
+    font-size: 12px;
+    font-weight: bold;
+}
+.selector{
+    display: -webkit-box;
+}

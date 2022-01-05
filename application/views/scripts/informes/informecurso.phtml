@@ -1,0 +1,800 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'informenotas'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe Notas
+    por Alumno</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'informecurso'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe Notas
+    por Curso</a>
+<style>
+
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+
+            <th>Grado</th>
+            <th>Letra Curso</th>
+            <th>Establecimiento</th>
+            <th>Informe Curso Notas</th>
+            <th>Informe Curso Promedios</th>
+            <th>Informe Alumnos Curso Parcial</th>
+            <th>Informe Alumnos Curso Periodo</th>
+            <th>Informe Alumnos Curso Anual</th>
+
+
+        </tr>
+        </thead>
+        <?php
+        $cargo = new Zend_Session_Namespace('cargo');
+        $rol = $cargo->cargo;
+
+        $ingreson = new Zend_Session_Namespace('ingresonota');
+        $ingresonota = $ingreson->ingresonota;
+        $datos = $this->datos;
+
+        $idtipoev = new Zend_Session_Namespace('tipoevaluacion');
+        $idtevalucacion = $idtipoev->tipoevaluacion;
+
+
+        if ($rol == '1' || $rol == '3' || $rol == '6') {
+
+
+            if (!empty($datos)) {
+
+
+                ?>
+                <?php foreach ($this->datos as $d) : ?>
+
+                    <tr>
+
+                        <td><?php echo $d['nombreGrado']; ?></td>
+
+                        <td><?php echo $d['letra']; ?></td>
+
+                        <td><?php echo $d['nombreEstablecimiento']; ?>
+                        </td>
+
+                        <?php if ($d['idCodigoTipo'] == 10) { ?>
+
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generaralumnocursoanualprec', 'id' => $d['idCursos'], 't' => 1), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                </div>
+                            </td>
+
+                        <?php } else { ?>
+
+                            <?php if ($d['tipoModalidad'] == 1 || $d['tipoModalidad'] == 0) { ?>
+
+                                <td>
+
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodo', 'id' => $d['idCursos'], 's' => 1), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso I Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodo', 'id' => $d['idCursos'], 's' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso II Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascurso', 'id' => $d['idCursos']), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso Final</a>
+                                    </div>
+
+
+                                </td>
+
+                                <td>
+
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodopromedio', 'id' => $d['idCursos'], 's' => 1), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso I Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodopromedio', 'id' => $d['idCursos'], 's' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso II Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'dialogopromedio', 'id' => $d['idCursos']), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso Final</a>
+                                    </div>
+
+
+                                </td>
+
+                                <td>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generarparcial', 'id' => $d['idCursos'], 'p' => 1, 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Parcial I
+                                            Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generarparcial', 'id' => $d['idCursos'], 'p' => 2, 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Parcial II Semestre</a>
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocurso', 'id' => $d['idCursos'], 'p' => 1), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Periodo I
+                                            Semestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocurso', 'id' => $d['idCursos'], 'p' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Periodo II Semestre</a>
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocursoanual', 'id' => $d['idCursos'], 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                    </div>
+
+                                </td>
+
+
+                            <?php } else { ?>
+
+                                <td>
+
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodo', 'id' => $d['idCursos'], 's' => 3), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso I Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodo', 'id' => $d['idCursos'], 's' => 4), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso II Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodo', 'id' => $d['idCursos'], 's' => 5), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso III Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursot', 'id' => $d['idCursos']), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso Final</a>
+                                    </div>
+
+
+                                </td>
+
+                                <td>
+
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodopromediot', 'id' => $d['idCursos'], 's' => 3), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso I Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodopromediot', 'id' => $d['idCursos'], 's' => 4), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso II Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'informenotascursoperiodopromediot', 'id' => $d['idCursos'], 's' => 5), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso III Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'dialogopromedio', 'id' => $d['idCursos']), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Curso Final</a>
+                                    </div>
+
+
+                                </td>
+
+                                <td>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generarparcial', 'id' => $d['idCursos'], 'p' => 3, 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Parcial I Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generarparcial', 'id' => $d['idCursos'], 'p' => 4, 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Parcial II Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generarparcial', 'id' => $d['idCursos'], 'p' => 5, 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Parcial III
+                                            Trimestre</a>
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocurso', 'id' => $d['idCursos'], 'p' => 3), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Periodo I Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocurso', 'id' => $d['idCursos'], 'p' => 4), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Periodo II Trimestre</a>
+                                    </div>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocurso', 'id' => $d['idCursos'], 'p' => 5), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Periodo III
+                                            Trimestre</a>
+                                    </div>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocursoanual', 'id' => $d['idCursos'], 't' => 2), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                    </div>
+
+                                </td>
+
+                            <?php }
+                        } ?>
+
+                    </tr>
+                <?php endforeach;
+            }
+        } else if ($rol == '2') {
+
+            for ($i = 0; $i < count($datos); $i++) {
+
+                foreach ($this->datos[$i] as $d[$i]) : ?>
+
+                    <tr>
+
+                        <td><?php echo $d[$i]['nombreGrado']; ?></td>
+
+                        <td><?php echo $d[$i]['letra']; ?></td>
+
+                        <td><?php echo $d[$i]['nombreEstablecimiento']; ?>
+                        </td>
+
+                        <?php if ($d[$i]['idCodigoTipo'] == 10) {
+
+                            if ($d[$i]['idEstablecimiento'] == 8) {
+                                ?>
+
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocursoanualpremonitor', 'id' => $d[$i]['idCursos'], 't' => 1), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                    </div>
+                                </td>
+
+                            <?php } else {
+                                ?>
+
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <div class="ventana">
+                                        <a class="button small blue"
+                                           href="<?php echo $this->url(array('controller' => 'Informes',
+                                               'action' => 'generaralumnocursoanualprec', 'id' => $d[$i]['idCursos'], 't' => 1), 'default', true); ?>"><i
+                                                    class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                    </div>
+                                </td>
+
+                            <?php }
+                            ?>
+
+
+                        <?php } else {
+                            if ($d[$i]['authjefe']) {
+
+                                if ($d[$i]['tipoModalidad'] == 1 || $d[$i]['tipoModalidad'] == 0) { ?>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCursos'], 's' => 1), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCursos'], 's' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascurso', 'id' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCursos'], 's' => 1), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCursos'], 's' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'dialogopromedio', 'id' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generarparcial', 'id' => $d[$i]['idCursos'], 'p' => 1, 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Parcial I
+                                                Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generarparcial', 'id' => $d[$i]['idCursos'], 'p' => 2, 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Parcial II
+                                                Semestre</a>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocurso', 'id' => $d[$i]['idCursos'], 'p' => 1), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Periodo I
+                                                Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocurso', 'id' => $d[$i]['idCursos'], 'p' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Periodo II
+                                                Semestre</a>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocursoanual', 'id' => $d[$i]['idCursos'], 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                        </div>
+
+                                    </td>
+
+                                <?php } else {
+                                    ?>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCursos'], 's' => 3), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCursos'], 's' => 4), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCursos'], 's' => 5), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso III Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursot', 'id' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCursos'], 's' => 3), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCursos'], 's' => 4), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Trimestre</a>
+                                        </div>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCursos'], 's' => 5), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso III Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'dialogopromedio', 'id' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generarparcial', 'id' => $d[$i]['idCursos'], 'p' => 3, 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Parcial I
+                                                Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generarparcial', 'id' => $d[$i]['idCursos'], 'p' => 4, 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Parcial II
+                                                Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generarparcial', 'id' => $d[$i]['idCursos'], 'p' => 5, 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Parcial III
+                                                Trimestre</a>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocurso', 'id' => $d[$i]['idCursos'], 'p' => 3), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Periodo I
+                                                Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocurso', 'id' => $d[$i]['idCursos'], 'p' => 4), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Periodo II
+                                                Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocurso', 'id' => $d[$i]['idCursos'], 'p' => 5), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Periodo III
+                                                Trimestre</a>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'generaralumnocursoanualt', 'id' => $d[$i]['idCursos'], 't' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Alumnos Curso Anual</a>
+                                        </div>
+
+                                    </td>
+
+
+                                <?php } ?>
+
+
+                            <?php } else {
+
+                                if ($d[$i]['tipoModalidad'] == 1 || $d[$i]['tipoModalidad'] == 0) { ?>
+
+                                    <td>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 1), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascurso', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 1), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 2), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Semestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'dialogopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+                                    </td>
+
+                                    <td>
+
+                                    </td>
+
+                                    <td>
+
+                                    </td>
+
+                                <?php }else{ ?>
+                                    <td>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 3), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 4), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodo', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 5), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso III Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursot', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 3), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso I Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 4), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso II Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'informenotascursoperiodopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos'], 's' => 5), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso III Trimestre</a>
+                                        </div>
+
+                                        <div class="ventana">
+                                            <a class="button small blue"
+                                               href="<?php echo $this->url(array('controller' => 'Informes',
+                                                   'action' => 'dialogopromedio', 'id' => $d[$i]['idCuentaCurso'], 'ids' => $d[$i]['idCursos']), 'default', true); ?>"><i
+                                                        class="icon-hand-up"></i> Informe Curso Final</a>
+                                        </div>
+
+
+                                    </td>
+
+                                    <td>
+
+                                    </td>
+
+                                    <td>
+
+                                    </td>
+
+                                    <td>
+
+                                    </td>
+
+                                <?php }
+                            }
+                        } ?>
+
+                    </tr>
+                <?php
+                endforeach;
+            }
+
+
+        } ?>
+    </table>
+</div>

@@ -1,0 +1,190 @@
+<style>
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker-month {
+        display: none;
+    }
+
+    .ui-datepicker-current {
+        visibility: hidden;
+    }
+
+    #fieldset-botones label {
+        display: none;
+
+
+    }
+
+    #fieldset-botones {
+        margin-bottom: 20px;
+    }
+
+
+    input {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px
+    }
+
+    select {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px
+    }
+
+    label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        float: left;
+        padding-top: 5px;
+        text-align: right;
+        width: 390px;
+    }
+
+    p {
+        width: 50%;
+    }
+
+    .checkbox {
+        margin-left: 50px;
+    }
+
+
+    .control-label {
+        width: 300px;
+    }
+
+    .col_4 {
+        margin-left: 0;
+        height: 120px;
+    }
+
+
+</style>
+
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Mensaje',
+    'action' => 'index'), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php if ($this->messages): ?>
+    <div class="t_a_message">
+        <ul>
+            <?php foreach ($this->messages as $msg): ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif;
+$form = $this->form;
+$cargo = new Zend_Session_Namespace('cargo');
+$rol = $cargo->cargo;
+?>
+<div class="col_12" style="border: 1px solid #efefef;">
+    <form name="formElem" enctype="application/x-www-form-urlencoded" action method="post">
+        <?php echo $form->id->renderViewHelper(); ?>
+        <?php echo $form->idEstablecimiento->renderViewHelper(); ?>
+
+        <h3 class="center">Configuración de Mensajes</h3>
+
+        <?php if ($rol == 1 || $rol == 3) { ?>
+            <?php if ($rol == 1) { ?>
+
+        <div class="col_4" style="border: 1px solid #efefef;">
+            <h6>Nuevos Mensajes</h6>
+
+
+                <div>
+                    <span>Permitir Nuevo Mensaje Director<?php echo $form->nuevoDirector->renderViewHelper(); ?></span>
+                </div>
+
+
+
+
+            <div>
+                <span>Permitir Nuevo Mensaje Jefe UTP<?php echo $form->nuevoUtp->renderViewHelper();?></span>
+            </div>
+
+            <div>
+                <span> Permitir Nuevo Mensaje Docente<?php echo $form->nuevoDocente->renderViewHelper(); ?></span>
+            </div>
+
+        </div>
+            <?php } ?>
+
+
+        <hr style="width: 100%;">
+        <?php } ?>
+        <h5 class="center">Respuesta Mensajes</h5>
+        <?php if ($rol == 1) { ?>
+            <div class="col_4" style="border: 1px solid #efefef;">
+                <h6>Administrador Daem</h6>
+                <div>
+            <span>Permitir Respuesta Director<?php echo $form->daemDirector->renderViewHelper(); ?>
+        </span>
+                </div>
+
+                <div>
+            <span>Permitir Respuesta Jefe UTP<?php echo $form->daemUtp->renderViewHelper(); ?>
+        </span>
+                </div>
+
+                <div>
+            <span>Permitir Respuesta Docente<?php echo $form->daemDocente->renderViewHelper(); ?>
+        </span>
+                </div>
+
+            </div>
+        <?php } ?>
+
+        <?php if ($rol == 1 || $rol==3) { ?>
+            <div class="col_4" style="border: 1px solid #efefef;">
+                <h6>Director</h6>
+
+                <div>
+            <span>Permitir Respuesta Jefe UTP<?php echo $form->directorUtp->renderViewHelper(); ?>
+        </span>
+                </div>
+
+                <div>
+            <span>Permitir Respuesta Docente<?php echo $form->directorDocente->renderViewHelper(); ?>
+        </span>
+                </div>
+
+            </div>
+        <?php } ?>
+
+
+
+
+        <div class="col_4" style="border: 1px solid #efefef;">
+            <h6>Jefe UTP</h6>
+            <div>
+            <span>Permitir Respuesta Docente<?php echo $form->utpDocente->renderViewHelper(); ?>
+        </span>
+            </div>
+
+        </div>
+        <div class="col_12">
+            <span><?php echo $form->submit->renderViewHelper(); ?></span>
+        </div>
+
+
+
+    </form>
+
+</div>
+
+
+

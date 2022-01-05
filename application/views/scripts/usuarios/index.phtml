@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet">
+    <script src="<?php echo $this->baseUrl; ?>/javascript/jquery-1.7.2.min.js"></script>
+    <script src="<?php echo $this->baseUrl; ?>/javascript/ingresocuenta.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="loginprincipal">
+        <h1><?=$this->escape($this->title);?></h1>
+        <form name="inicio" method='post' action='<?=$this->escape($this->action);?>'>
+
+            <p>
+                <label>Establecimiento: </label>
+                <select id="establecimiento" name='establecimiento' placeholder="Establecimiento">
+                    <option value="">Seleccione Establecimiento</option>
+
+
+
+                    <?php foreach ($this->dato as $d) : ?>
+
+
+                        <option value="<?php echo $d->idEstablecimiento;?>"><?php echo $d->nombreEstablecimiento;?></option><?php endforeach; ?></select></p>
+            <p>
+                <label>Cargo: </label>
+                <select id="cargo" name="cargo"></select>
+            </p>
+
+            <p class="submit"><input class="small gray" type='submit' name='login' value='Guardar'></p>
+        </form>
+    </div>
+
+
+</div>
+</body>
+
+</html>

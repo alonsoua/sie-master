@@ -1,0 +1,85 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<input type="hidden" name="" value="<?php echo $this->datocurso; ?>" id="curso">
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'asignaturas', 'id' => $this->idcurso), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'configuracionelectivo', 'id' => $this->idasignatura, 'c' => $this->idcurso), 'default', true); ?>">Nueva
+    Configuración</a>
+
+<h4>Electivo: <?php echo $this->nombre[0]['nombreAsignatura']; ?></h4>
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Periodo</th>
+            <th>Lista Alumnos</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php foreach ($this->dato as $d):
+            switch ($d['tiempo']){
+
+                case 1:
+                    $opcion = 'Primer Semestre';
+                    break;
+                case 2:
+                    $opcion = 'Segundo Semestre';
+                    break;
+                case 3:
+                    $opcion = 'Primer Trimestre';
+                    break;
+                case 4:
+                    $opcion = 'Segundo Trimestre';
+                    break;
+                case 5:
+                    $opcion = 'Tercer Trimestre';
+                    break;
+                default:
+                    $opcion = 'No Existe Configuracion del Establecimiento';
+                    break;
+
+            }
+            ?>
+
+            <tr>
+                <td><?php echo $opcion; ?></td>
+                <td>
+                        <div class="ventana">
+                            <a class="button small blue"
+                               href="<?php echo $this->url(array('controller' => 'Cursos',
+                                   'action' => 'listaalumnos', 'id' => $d['idConfiguracionElectivo'], 's' => 2), 'default', true); ?>">
+                                Lista de Alumnos</a>
+                        </div>
+                </td>
+                <td>
+                    <a class="button small red" href="<?php echo $this->url(array('controller' => 'Cursos',
+                        'action' => 'eliminartaller', 'id' => $this->idasignatura, 'c' => $this->idcurso, 't' => $d['idConfiguracionTaller']), 'default', true); ?>"
+                       onclick="return confirm('¿Quiere eliminar ésta Configuración?');">Eliminar</a>
+                </td>
+            </tr>
+
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+
+
+
+
+
+

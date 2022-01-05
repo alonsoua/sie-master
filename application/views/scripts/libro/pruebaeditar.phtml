@@ -1,0 +1,101 @@
+
+        
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'pruebas'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php echo $this->form; ?>
+<script type="text/javascript">
+  $(function(){
+      <?php  $periodo= new Zend_Session_Namespace('nombreperiodo');
+        $idperiodo=$periodo->nombreperiodo;?>
+                var ano=<?php echo $idperiodo?>;
+               
+      
+      var fechain='01-03-'+ano;
+      var fechate='31-12-'+ano;
+    
+    
+  
+  function noSunday(date){
+     var day = date.getDay();
+     return [(day > 0), ''];
+  }
+  
+   function cambiarfecha(tipo) {
+        
+     
+      
+      if(tipo=='1'){
+      fechain='01-03-'+ano;
+      fechate='31-08-'+ano;  
+      }
+      
+       if(tipo=='2'){
+      fechain='01-09-'+ano;
+      fechate='31-12-'+ano;  
+      }
+       if(tipo=='3'){
+      fechain='01-03-'+ano;
+     fechate='31-05-'+ano;  
+      }
+       if(tipo=='4'){
+      fechain='01-05-'+ano;
+     fechate='30-09-'+ano;  
+      }
+       if(tipo=='5'){
+      fechain='01-09-'+ano;
+    fechate='31-12-'+ano;  
+      }
+    }
+  
+   $("#tipoEvaluacionPrueba").live('change',function (e) {
+       $("#fecha").val('');
+       $('#fecha').datepicker('destroy');
+       cambiarfecha($(this).val());
+       // $('#fecha').datepicker('show');
+       
+       $( "#fecha" ).datepicker({ 
+		 //autoSize: true,
+            showOn: "button",
+			buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+			buttonImageOnly: true,
+                         minDate: fechain,
+                maxDate:fechate,
+            beforeShowDay: noSunday,
+             numberOfMonths: 3,
+            
+               
+     
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true
+           
+        
+                        
+			
+            });
+       	 e.stopImmediatePropagation();    
+       });
+
+
+      
+      
+ 
+	
+            
+      
+
+	
+	});	
+		
+	
+         
+        
+	</script>
+

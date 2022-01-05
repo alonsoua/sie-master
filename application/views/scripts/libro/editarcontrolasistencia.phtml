@@ -1,0 +1,135 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<style>
+
+    .unavailable span {
+        color: green !important;
+        background-color: blue;
+    }
+
+    .unavailable {
+        background-color: blue;
+    }
+
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'controlasistencias'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<table style="margin-top: 10px;">
+    <tbody>
+    <tr>
+        <td>Fecha Asistencia:</td>
+        <td><?php echo $this->datos[0][0]['fechaControl'] ?></td>
+    </tr>
+
+    <tr>
+        <td>Asignatura:</td>
+        <td><?php echo $this->datos[0][0]['nombreAsignatura'] ?></td>
+    </tr>
+
+    <tr>
+        <td>Bloque:</td>
+        <td><?php echo $this->datos[0][0]['tiempoInicio'] . '-' . $this->datos[0][0]['tiempoTermino']; ?></td>
+    </tr>
+
+    <tr>
+        <td>Presencial/Online:</td>
+        <td>
+            <?php if($this->datos[0][0]['tipoModalidadAsistencia']==1){
+                $seleccionar='checked="checked"';
+                $seleccionar_='';
+            }else{
+                $seleccionar='';
+                $seleccionar_='checked="checked"';
+            } ?>
+            <label>
+                <input type="radio" name="tipo" id="tipoClase-1" value="1" <?php echo $seleccionar; ?> class="radio">Presencial
+            </label>
+            <label>
+                <input type="radio" name="tipo" id="tipoClase-2" value="2" <?php echo $seleccionar_; ?>  class="radio">Online
+            </label>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="position:relative" class="info mensajes">Nota: -La Asistencia marcada corresponde a los ausentes<br> -
+    Marque los ausentes
+</div>
+
+
+<div id="asistencia">
+    <div id="divTabla" style="margin-top: 20px;">
+                        <label for="txtBuscar">Buscar Alumno: </label>
+                        <input type="text" id="txtBuscar" autofocus
+                               placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    </div>
+
+    <input type="hidden" id="ida" value="<?php echo $this->datos[0][0]['idAsistencia']; ?>"/>
+    <input type="hidden" id="idcontrol" value="<?php echo $this->datos[0][0]['idControlAsistencia']; ?>"/>
+
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Estudiante</th>
+            <th>Asistencia</th>
+            <th>Observación</th>
+
+        </tr>
+        </thead>
+        <tr>
+            <?php
+            $i = 1;
+            foreach ($this->datos as $d) : ?>
+            <td><?php echo $i; ?></td>
+
+            <td><?php echo substr($d[0]['rutAlumno'], 0, -1) . '-' . substr($d[0]['rutAlumno'], -1) ?></td>
+
+            <td><?php echo $d[0]['apaterno'] . ' ' . $d[0]['amaterno'] . ' ' . $d[0]['nombres']; ?></td>
+            <?php if ($d[0]['valorasistencia'] == 1) { ?>
+                <td>
+                    <input type="checkbox" checked="checked" value="<?php echo $d[0]['idAsistenciaValores']; ?>"
+                           class="cambiar asistencia"/>
+                </td>
+            <?php } ?>
+
+            <?php if ($d[0]['valorasistencia'] == 2) { ?>
+                <td>
+                    <input type="checkbox" value="<?php echo $d[0]['idAsistenciaValores']; ?>"
+                           class="cambiar asistencia"/>
+                </td>
+            <?php } ?>
+
+            <td><?php echo $d[0]['select']; ?></td>
+
+
+        </tr>
+        <?php
+        $i++;
+        endforeach; ?>
+
+        <table>
+
+
+            <input type="button" id="guardarasistencia" value="Actualizar"/>
+
+</div>
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/asistenciaeditar.js"></script>

@@ -1,0 +1,187 @@
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<link href="<?php echo $this->baseUrl; ?>/css/publicar.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<script src="<?php echo $this->baseUrl; ?>/javascript/publicarnotas.js"></script>
+
+
+<?php
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$cargo = new Zend_Session_NameSpace("cargo");
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+$codigos = new Zend_Session_Namespace('codigo');
+$codigo = $codigos->codigo;
+
+$app = new Zend_Session_Namespace('activarapp');
+$activarapp = $app->activarapp;
+
+ ?>
+
+
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notasnuevo',), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php if($activarapp==1){?>
+
+    <a class="button medium blue " id="guardar"><i class="icon-save"></i> Guardar</a>
+
+
+
+<?php  } ?>
+
+
+
+
+<div class="center-header">
+    <div style="width: 40%; display: -webkit-box">
+
+    </div>
+
+    <div style="width: 60%">
+        <h3>Curso: <?php echo $nombre_curso; ?></h3>
+    </div>
+
+</div>
+
+
+<?php if($activarapp==1){?>
+
+
+
+
+
+<input type="hidden" id="us" value="<?php echo $cargo->cargo; ?>">
+
+<div class="grid-container" id="tblTabla" style="height: auto; max-height: 550px">
+    <div class="grid">
+        <div class="grid-col grid-col--fixed-left alumnos" id="alumnos">
+            <div class="grid-item grid-item--header">
+                <p class="head">Asignaturas</p>
+            </div>
+
+
+
+            <?php $max=0; foreach ($this->listaasignatura as $c) :
+
+                if($max<count($c['evaluaciones'])){$max=count($c['evaluaciones']);}
+
+                ?>
+                <div id="alum" name="<?php echo $c['idAsignatura']; ?>" class="grid-item"
+                     style="text-align: left; width: auto;">
+                    <p><?php echo $c['nombreAsignatura']; ?> </p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <?php
+
+            for($i=0;$i<$max;$i++){
+
+                echo'<div class="grid-col nota" id="nota">
+                        <div class="grid-item grid-item--header">
+                        <div class="ventana" id="caja">
+                            <p>Nota '.($i+1).'</p>
+                            <input style="border: none" type="checkbox"  value="'.$i.'"  class="publicar columna"/>
+                        </div>
+                        </div>';
+                foreach ($this->listaasignatura as $c) :
+
+                if(isset($c['evaluaciones'][$i])){
+                    if($c['evaluaciones'][$i]['publicar']==1){
+
+                        echo ' <div class="grid-item notas">
+                                <input checked style="border: none" type="checkbox"  value="'.$c['evaluaciones'][$i]['idEvaluacion'].'" class="'.$i.' eva" />
+                                <p class="abrir" style="overflow:hidden;white-space:nowrap;text-overflow: ellipsis;">'.$c['evaluaciones'][$i]['fechaEvaluacion'].'</p>
+                                <p class="tooltip">'.$c['evaluaciones'][$i]['contenido'].'</p>
+                           
+                           </div>';
+
+                    }else{
+                        echo ' <div class="grid-item notas">
+                                <input style="border: none" type="checkbox"  value="'.$c['evaluaciones'][$i]['idEvaluacion'].'" class="'.$i.' eva" />
+                                <p class="abrir" style="overflow:hidden;white-space:nowrap;text-overflow: ellipsis;">'.$c['evaluaciones'][$i]['fechaEvaluacion'].'</p>
+                                <p class="tooltip">'.$c['evaluaciones'][$i]['contenido'].'</p>
+                           
+                           </div>';
+                    }
+
+
+
+                }else{
+                    echo' <div class="grid-item notas">
+                <p>-</p>
+            </div>';
+                }
+                endforeach;
+
+                echo'</div>';
+
+            }
+
+        ?>
+
+
+        <script>
+            $(".columna").change(function(){
+                var status = $(this).is(":checked") ? true : false;
+                $("."+$(this).val()).prop("checked",status);
+            });
+
+
+
+        </script>
+        <style>
+
+            .abrir{
+                cursor: pointer;
+            }
+            .tooltip {
+                text-align: justify-all;
+                width: 100px;
+                height: 30px;
+                padding: 20px;
+                border: 1px solid #ccc;
+                box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+                -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+                border-radius: 3px;
+                -webkit-border-radius: 3px;
+                display: none;
+                background-color: white;
+                color: #0a0a0a;
+            }
+
+
+            .tooltip {
+                z-index: 1000;
+            }
+
+            .abrir:hover+.tooltip {
+                display: block;
+            }
+
+            .tooltip:hover {
+                display: block;
+            }
+        </style>
+    </div>
+
+
+
+    <?php } ?>
+
+
+

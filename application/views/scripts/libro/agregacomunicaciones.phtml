@@ -1,0 +1,14 @@
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'comunicaciones'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<h4>
+    <? $nombre_curso = new Zend_Session_Namespace('nombre_curso');
+    echo $nombre_curso->nombre_curso; ?>
+</h4>
+<?php
+
+
+echo $this->form;
+?>
+
+

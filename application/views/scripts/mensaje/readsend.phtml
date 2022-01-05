@@ -1,0 +1,86 @@
+<link href="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet"
+      id="bootstrap-css">
+<link href="<?php echo $this->baseUrl; ?>/css/estilomensajes.css" rel="stylesheet">
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+<div class="mail-box">
+    <aside class="sm-side">
+        <div class="inbox-body">
+            <?php if (!$this->messagesnuevo) { ?>
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'nuevo'), 'default', TRUE); ?>" data-toggle="modal" title="Compose" class="btn btn-compose">
+                    Nuevo Mensaje
+                </a>
+            <?php } ?>
+
+        </div>
+        <ul class="inbox-nav inbox-divider">
+            <li >
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'entrada'), 'default', TRUE); ?>"><i class="fa fa-inbox"></i> Entrada <span
+                            class="label label-danger pull-right"><?php if ($this->totalnoleido > 0) {
+                            echo $this->totalnoleido;
+                        } ?></span></a>
+
+            </li>
+            <li class="active">
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'enviado'), 'default', TRUE); ?>"><i class="fa fa-envelope-o"></i> Enviados</a>
+            </li>
+        </ul>
+
+
+    </aside>
+    <aside class="lg-side">
+        <div class="inbox-head">
+            <h3><?php if ($this->messages) {
+                    echo 'Error';
+                } else {
+                    echo $this->datos[0]['asunto'];
+                } ?></h3>
+            <h5><?php if ($this->messages) {
+                    echo 'Error';
+                } else {
+                    $lista = 'Enviado a: ';
+                    foreach ($this->receptores as $d):
+
+                        $lista .= $d['nombrescuenta'] . ' ' . $d['paternocuenta'] . ' ' . $d['maternocuenta'] . ',';
+
+                    endforeach;
+
+                }
+                if (!empty($lista)) {
+                    echo rtrim($lista, ',');
+                }
+
+                ?>
+               </h5>
+            <h5><span class="mailbox-read-time pull-right"><?php if ($this->messages) {
+                        echo 'Error';
+                    } else {
+                        echo strtoupper($this->datos[0]['fechaformato']);
+                    } ?></span></h5>
+
+        </div>
+
+        <div class="inbox-body">
+            <div class="mailbox-read-message">
+                <?php if ($this->messages): ?>
+                    <div class="t_a_message">
+                        <ul>
+                            <?php foreach ($this->messages as $msg): ?>
+                                <li><?php echo $msg; ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+                <div id="texto" class="form-group">
+
+                        <?php echo $this->datos[0]['mensaje']; ?>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+
+

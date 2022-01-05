@@ -1,0 +1,129 @@
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet">
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery-1.7.2.min.js"></script>
+<div>
+<?php
+$datoscurso = $this->datoscurso;
+echo "<input type='hidden' value='" . $datoscurso[0]['idCursos'] . "' id='idcurso' />";
+?>
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Nombre Asignatura</th>
+        <th>Seleccionar</th>
+
+    </tr>
+    </thead>
+
+
+    <?php foreach ($this->dato as $d): ?>
+        <tr>
+        <td><?php echo $d['nombreAsignatura']; ?></td>
+         <td><input type="checkbox" class="asig" value="<?php echo $d['idAsignatura']; ?>" name="<?php echo $d['idNucleo']; ?>" /></td>
+
+
+        </tr>
+
+    <?php endforeach;?>
+</table>
+<a class="button medium blue" id="guardar">Guardar</a>
+<a class="button medium blue" id="todo">Seleccionar Todos</a>
+<a class="button medium blue" id="destodo">Desmarcar Todos</a>
+</div>
+<script type="text/javascript">
+
+    $('#todo').live('click', function(e) {
+        var checkboxes = $(this).closest('div').find(':checkbox');
+
+            checkboxes.prop('checked', true);
+
+        e.stopImmediatePropagation();
+    });
+
+     $('#destodo').live('click', function(e) {
+        var checkboxes = $(this).closest('div').find(':checkbox');
+
+            checkboxes.prop('checked', false);
+
+        e.stopImmediatePropagation();
+    });
+
+     //si presiona boton guardar 1 a 6
+    $("#guardar").live('click', function(e) {
+        //obtenemos valor del curso
+        var idcurso = $('#idcurso').val();
+
+        //Obtenemos el valor de los check seleccionados
+        var check;
+        check = $('input[type=checkbox]:checked').map(function() {
+            return $(this);
+        }).get();
+        if (check == '' || check == 'NULL') {
+            $('#contenido').append('<div class="error mensajes">Debe seleccionar al menos un campo </div>');
+            $(document).ready(function() {
+                setTimeout(function() {
+                    $(".mensajes").fadeOut(800).fadeIn(800).fadeOut(500).fadeIn(500).fadeOut(300).remove();
+                }, 3000);
+            });
+            return false;
+        }
+        //Obtenemos los meses de los check seleccionados
+        var asignaturas;
+        asignaturas = $('input[type=checkbox]:checked').map(function() {
+            var clase = $(this).attr('class');
+            if (clase != 'todo') {
+                return $(this).val();
+            }
+        }).get();
+
+        var nucleo;
+        nucleo = $('input[type=checkbox]:checked').map(function() {
+            var clase = $(this).attr('class');
+            if (clase != 'todo') {
+                return $(this).attr('name');
+            }
+        }).get();
+
+        //creamos el json con los datos para enviar y guardar
+        var edited = "{";
+        for (var i = 0; i < asignaturas.length; i++) {
+            edited += '"' + i + '":{"asignatura":"' + asignaturas[i] + '","idcurso":"' + idcurso + '","nucleo":"' + nucleo[i] + '"},';
+        }
+        edited = edited.slice(0, -1);
+        edited += "}";
+
+        $.ajax({
+            cache: false,
+            async: true,
+            dataType: 'json',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            url: '../../guardarasignaturasearch/',
+            data: edited,
+            beforeSend: function(data) {
+                $('#div_cliente').html('<label>Cargando...</label>');
+            },
+            success: function(data) {
+                $('#tablaplanificaciones input:checkbox').removeAttr('checked');
+                if (data.response == 'existe') {
+                    $('#contenido').append('<div class="error mensajes">El registro que intenta insertar, ya existe</div>');
+
+                } else if (data.response == 'error') {
+                    $('#contenido').append('<div class="error mensajes">Se ha producido un error al ingresar los datos</div>');
+
+                } else {
+                    parent.location.reload(true);
+                    parent.$.fancybox.close();
+
+
+                }
+            },
+            error: function(data) {
+
+            },
+            complete: function(requestData, exito) {}
+        });
+        e.stopImmediatePropagation();
+    });
+
+</script>

@@ -1,0 +1,64 @@
+<!--creo link para agregar un Sostenedor -->
+<a class="button small" href="<?php $d=''; echo $this->url(array('controller' =>'Sostenedor',
+            'action' => 'agregar')); ?>">Agregar Sostenedor</a>
+
+<!--creo una tabla para mostrar los datos-->
+<table class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>Rut</th>
+        <th>Nombre</th>
+        <th>Direccion</th>
+        <th>Telefono</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+        
+    </tr>
+    </thead>
+
+<!--    recorro el arreglo de datos-->
+    <?php foreach ($this->dato as $d) : ?>
+
+
+<!--           por cada fila, muestro sus datos -->
+        <tr>
+<!--            Rut Sostenedor-->
+            <td>
+                
+                   <?php echo $d->rutSostenedor; ?>
+            
+        </td>
+
+<!--                   Nombre Sostenedor-->
+        <td>
+            <?php echo $d->nombreSostenedor;?>
+        </td>
+        <!--                   Direccion Sostenedor-->
+        <td>
+            <?php echo $d->direccion;?>
+        </td>
+        
+        <!--                   Nombre Telefono-->
+        <td>
+            <?php echo $d->telefono;?>
+        </td>
+        
+        
+         <td>
+             <!--                   enlace para editar Sostenedor-->
+             <a class="button small green" href="<?php echo $this->url(array('controller' => 'Sostenedor',
+            'action' => 'editar', 'idSostenedor' => $d->idSostenedor)); ?>">Editar</a>
+             
+         </td>
+
+        <td>
+            <!--                   enlace para borrar Sostenedor-->
+
+            <a class="button small red" href="<?php echo $this->url(array('controller' => 'Sostenedor',
+                       'action' => 'eliminar', 'idSostenedor' => $d->idSostenedor)); ?>">Eliminar</a>
+            </td>
+        
+        </tr>
+<!--    fin del for-->
+    <?php endforeach; ?>
+</table>

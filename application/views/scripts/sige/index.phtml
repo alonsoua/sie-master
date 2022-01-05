@@ -1,0 +1,110 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<?php
+$cargo = new Zend_Session_Namespace('cargo');
+$rol = $cargo->cargo;
+if($rol=='1'){?>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'index'), null, true);
+?>"><i class="icon-hand-up"></i>&nbsp;Convenios</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'agregar'), null, true);
+?>"><i class="icon-hand-up"></i>&nbsp;Agregar Convenio</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'indextipo'), null, true);
+?>"><i class="icon-hand-up"></i> Lista Tipo de Enseñanza</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'cursos'), null, true);
+?>"><i class="icon-hand-up"></i> Lista Cursos</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'alumnos'), null, true);
+?>"><i class="icon-hand-up"></i>&nbsp;Lista Alumnos</a>
+&nbsp;
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'asistencia'), null, true);
+?>"><i class="icon-hand-up"></i> Asistencia</a>
+<?php } ?>
+<?php if($rol=='5'|| $rol=='3'){ ?>
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+        'action' => 'asistencia'), null, true);
+    ?>"><i class="icon-hand-up"></i> Asistencia</a>
+<?php } ?>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Establecimiento</th>
+            <th>Cliente</th>
+            <th>Convenio</th>
+            <th>Token</th>
+            <th>Semilla</th>
+            <th>Fecha</th>
+            <th>Obtener Semilla</th>
+            <?php if($rol=='1'){?>
+            <th>Editar</th>
+            <?php } ?>
+
+
+        </tr>
+        </thead>
+
+        <!--    recorro el arreglo de datos-->
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+
+                <td><?php echo $d->nombreEstablecimiento; ?></td>
+                <td><?php echo $d->ClienteId; ?></td>
+                <td><?php echo $d->ConvenioId; ?></td>
+                <td><?php echo $d->ConvenioToken; ?></td>
+                <td><?php echo $d->ValorSemilla; ?></td>
+                <td><?php
+
+                    echo date('d-m-Y H:i:s', strtotime($d->fechasemilla)); ?></td>
+
+                <td>
+
+                    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Sige',
+                        'action' => 'obtener', 'id' => $d->idSige), 'default', true); ?>">Obtener Semilla</a>
+
+                </td>
+                <?php if($rol=='1'){?>
+
+                <td>
+
+                    <a class="button small green" href="<?php echo $this->url(array('controller' => 'Sige',
+                        'action' => 'editar', 'id' => $d->idSige), 'default', true); ?>">Editar</a>
+
+                </td>
+                <?php } ?>
+
+            </tr>
+            <!--    fin del for-->
+        <?php endforeach; ?>
+    </table>

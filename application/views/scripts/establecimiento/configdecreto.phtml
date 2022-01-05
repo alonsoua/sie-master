@@ -1,0 +1,125 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#idCursos").chosen({no_results_text: "Búsqueda no encontrada"});
+    });
+    $(function () {
+        $('#yearperiodo').datepicker({
+            changeYear: true,
+            showButtonPanel: true,
+            currentText: 'Hoy',
+            stepMonths: '20',
+            closeText: 'Listo',
+            prevText: '<-Ant',
+            nextText: 'Sig->',
+            dateFormat: 'yy',
+            yearRange: "-40:+0",
+            altField: "#yaerperiodo",
+            onClose: function (dateText, inst) {
+
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+            }
+        });
+
+        $('#yearplan').datepicker({
+            changeYear: true,
+            showButtonPanel: true,
+            currentText: 'Hoy',
+            stepMonths: '20',
+            closeText: 'Listo',
+            prevText: '<-Ant',
+            nextText: 'Sig->',
+            dateFormat: 'yy',
+            yearRange: "-40:+0",
+            altField: "#yaerperiodo",
+            onClose: function (dateText, inst) {
+
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+            }
+        });
+        $(".date-picker-year").focus(function () {
+            $(".ui-datepicker-month").hide();
+        });
+    });
+
+</script>
+<style>
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker-month {
+        display: none;
+    }
+
+    .ui-datepicker-current {
+        visibility: hidden;
+    }
+
+    #fieldset-botones label {
+        display: none;
+
+
+    }
+
+    #fieldset-botones {
+        margin-bottom: 20px;
+    }
+
+
+    input {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px
+    }
+
+    select {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px
+    }
+
+    label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        float: left;
+        padding-top: 5px;
+        text-align: right;
+        width: 390px;
+    }
+
+
+    .control-label {
+        width: 300px;
+    }
+</style>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+    'action' => 'decretos', 'id' => $this->esta), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php if ($this->messages): ?>
+    <div class="t_a_message">
+        <ul>
+            <?php foreach ($this->messages as $msg): ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+<div id="imagePreview"></div>
+<div class="col_12 column center"><?php echo $this->form ?></div>

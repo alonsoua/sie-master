@@ -1,0 +1,192 @@
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+
+
+
+
+<?php
+$establecimientos = new Zend_Session_Namespace('idesta');
+$id_establecimiento = $establecimientos->idesta;
+
+//INICIO CESA
+ if($id_establecimiento==12){ ?>
+
+
+    <link href="<?php echo $this->baseUrl; ?>/css/monitoreocgv.css" type="text/css" rel="stylesheet"/>
+
+    <?php if ($this->messages) {
+        ?>
+
+        <div class="error">
+            <p>
+                <?php foreach ($this->messages as $msg): ?>
+                    <?php echo $msg; ?>
+                <?php endforeach; ?>
+
+
+            </p>
+
+        </div>
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'index'), null, true);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+    <?php } else {
+
+
+        ?>
+
+        <?php
+        $nombrecurso = new Zend_Session_Namespace('nombre_curso');
+        $nombre_curso = $nombrecurso->nombre_curso;
+
+        $idcurso = new Zend_Session_Namespace('id_curso');
+        $id_curso = $idcurso->id_curso;
+
+        $iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+        $id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+        $cargo = new Zend_Session_NameSpace("cargo");
+
+        $ingreson = new Zend_Session_Namespace('ingresonota');
+        $ingresonota = $ingreson->ingresonota;
+
+        $codigos = new Zend_Session_Namespace('codigo');
+        $codigo = $codigos->codigo;
+
+        if ($cargo->cargo == '2') { ?>
+
+            <?php
+            $nivelcurso = new Zend_Session_Namespace('nivel_curso');
+            $nivel_curso = $nivelcurso->nivel_curso; ?>
+
+
+
+            <a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+                'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+            ?>"><i class="icon-hand-left"></i> Volver</a>
+
+            <a class="button medium green" href="<?php echo $this->url(array('controller' => 'Libro',
+                'action' => 'notasnuevo'), null, TRUE);
+            ?>"><i class="icon-hand-left"></i> Ir a Notas</a>
+
+
+        <?php }
+        if ($cargo->cargo == '1' || $cargo->cargo == '3') { ?>
+            <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+                'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+            ?>"><i class="icon-hand-left"></i> Volver</a>
+            <a class="button medium green" href="<?php echo $this->url(array('controller' => 'Libro',
+                'action' => 'notasnuevo'), null, TRUE);
+            ?>"><i class="icon-hand-left"></i> Ir a Notas</a>
+        <?php } ?>
+
+        <input type="hidden" id="apx" value="<?php echo $this->aprox; ?>">
+
+        <div class="center-header">
+            <div style="width: 40%">
+                <?php if ($cargo->cargo == '2') { ?>
+
+                    <div class="ventana"><a class="button medium blue" id="nuevo"
+                                            href="<?php echo $this->url(array('controller' => 'Libro',
+                                                'action' => 'agregarguia', 'id' => ''), null, TRUE);
+                                            ?>"> Nueva Guía</a></div>
+
+
+                <?php } ?>
+            </div>
+            <div style="width: 60%">
+                <h3>Curso: <?php echo $nombre_curso; ?></h3>
+            </div>
+
+        </div>
+
+
+        <ul class="tabs left" id="listas">
+            <?php
+            foreach ($this->listaasignatura as $c) : ?>
+
+                <li><a class="asignatura" href="#" id="<?php echo $c['idAsignatura']; ?>"
+                       name="<?php echo $c['tipoAsignatura']; ?>"><?php echo $c['nombreAsignatura']; ?></a></li>
+
+
+            <?php endforeach;
+            ?>
+        </ul>
+        <input type="hidden" id="us" value="<?php echo $cargo->cargo; ?>">
+
+        <div class="grid-container" id="tblTabla">
+            <div class="grid">
+                <div class="grid-col grid-col--fixed-left alumnos" id="alumnos">
+                    <div class="grid-item grid-item--header">
+                        <p class="head">Alumnos</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div id="alum" name="<?php echo $c['idAlumnosActual']; ?>" class="grid-item"
+                             style="text-align: left; width: auto;">
+                            <p><?php echo $c['apaterno'] . ' ' . $c['amaterno'] . ' ' . $c['nombres']; ?> </p>
+                        </div>
+                    <?php endforeach; ?>
+
+                </div>
+
+                <div class="grid-col segundo" id="segundo" style="display: none">
+                    <div class="grid-item grid-item--header" style="background-color: #11b106;">
+                        <p class="head">II SEM</p>
+                    </div>
+                    <?php /*foreach ($this->alumnos as $c) : */ ?>
+                    <div class="grid-item sem">
+                    </div>
+                    <?php /*endforeach; */ ?>
+                </div>
+
+
+                <div class="grid-col grid-col--fixed-right" id="entregada"
+                     style="width: 70px;right: 270px;background-color: whitesmoke">
+                    <div class="grid-item grid-item--header final" style="background-color: green; color: white">
+                        <p class="head" style="color: white">Total Entregada</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item entregada<?php echo $c['idAlumnosActual']; ?>"
+                             style="background-color: green; color: white;">
+                            <p></p>
+                        </div>
+                    <?php endforeach; ?>
+                    <div class="grid-item" style="background-color: whitesmoke;">
+                        <p></p>
+                    </div>
+                    <div class="grid-item" style="background-color: whitesmoke;">
+                        <p></p>
+                    </div>
+                    <div class="grid-item" style="background-color: whitesmoke;">
+                        <p></p>
+                    </div>
+                    <div class="grid-item" style="background-color: whitesmoke;">
+                        <p></p>
+                    </div>
+
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+
+
+        <?php
+
+    }
+
+
+}?>
+
+
+
+
+
+

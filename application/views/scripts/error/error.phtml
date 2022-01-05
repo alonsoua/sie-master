@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Zend Framework Default Application</title>
+</head>
+<body>
+  <h1>An error occurred</h1>
+  <h2><?php echo $this->message ?></h2>
+
+  <?php if (isset($this->exception)): ?>
+
+  <h3>Exception information:</h3>
+  <p>
+      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+  </p>
+
+  <h3>Stack trace:</h3>
+  <pre><?php echo $this->exception->getTraceAsString() ?>
+  </pre>
+
+  <h3>Request Parameters:</h3>
+  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
+  </pre>
+
+  <?php endif ?>
+
+</body>
+</html>
+
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />-->
+<!--    <style type="text/css">-->
+<!--        *{-->
+<!--            transition: all 0.6s;-->
+<!--        }-->
+<!---->
+<!--        body{-->
+<!--            font-family: 'Lato', sans-serif;-->
+<!--            color: #888;-->
+<!--            margin: 0;-->
+<!--        }-->
+<!---->
+<!--        #main{-->
+<!--            display: table;-->
+<!--            width: 100%;-->
+<!--            height: 50vh;-->
+<!--            text-align: center;-->
+<!--        }-->
+<!---->
+<!--        .fof{-->
+<!--            display: table-cell;-->
+<!--            vertical-align: middle;-->
+<!--        }-->
+<!---->
+<!--        .fof h1{-->
+<!--            font-size: 50px;-->
+<!--            display: inline-block;-->
+<!--            padding-right: 12px;-->
+<!--            animation: type .5s alternate infinite;-->
+<!--        }-->
+<!---->
+<!--        @keyframes type{-->
+<!--            from{box-shadow: inset -3px 0px 0px #888;}-->
+<!--            to{box-shadow: inset -3px 0px 0px transparent;}-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="main">-->
+<!--    <div class="fof">-->
+<!--        <h1>404</h1>-->
+<!--        <h3>Página no Encontrada</h3>-->
+<!--        <p><a href="--><?php //echo $this->url(array('controller' => 'index',
+//                'action' => 'index'),null,TRUE); ?><!--">Ir a la página principal</a></p>-->
+<!--    </div>-->
+<!--</div>-->
+<!---->
+<!--</body>-->
+<!--</html>-->

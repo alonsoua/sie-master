@@ -1,0 +1,332 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<script lang="javascript">
+
+    var codigos=[];
+    var conceptos=[];
+    var texto;
+    $(function () {
+
+        var tipo =<?php echo $this->tipo; ?>;
+        var asignatura =<?php echo $this->asignatura; ?>;
+
+
+            if (tipo== 5 && asignatura!='') {
+                var ajax = $.ajax({
+                    type: "GET",
+                    url: "../../getasignaturas/id/" + asignatura,
+                    async: true,
+                    dataType: "json",
+                    beforeSend: function (x) {
+                        if (x && x.overrideMimeType) {
+                            x.overrideMimeType("application/j-son;charset=UTF-8");
+                        }
+                    },
+                    success: function (data) {
+                        if(data!=''){
+                            texto='';
+                            for (var i = 0; i < data.length; i++) {
+                                codigos[i]=data[i].concepto.charCodeAt(0);
+                                conceptos[i]=data[i].concepto+' ';
+                                texto +='event.which==='+data[i].concepto.charCodeAt(0)+' || ';
+
+                            }
+                            texto=texto.slice(0, -3);
+
+
+
+                        }
+
+
+                    }
+                });
+
+            }
+    });
+    $(document).ready(function () {
+
+
+        $('.notas').live('keyup', function (event) {
+
+            if (event.which === 40) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).next('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+
+            if (event.which === 38) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).prev('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+        });
+
+
+    });
+
+    function conComas(valor) {
+        var nums = new Array();
+        var simb = ","; //Éste es el separador
+        valor = valor.toString();
+        valor = valor.replace(/\D/g, "");   //Ésta expresión regular solo permitira ingresar números
+        nums = valor.split(""); //Se vacia el valor en un arreglo
+        var long = nums.length - 1; // Se saca la longitud del arreglo
+        var patron = 1; //Indica cada cuanto se ponen las comas
+        var prox = 0; // Indica en que lugar se debe insertar la siguiente coma
+        var res = "";
+
+        while (long > prox) {
+            nums.splice((long - prox), 0, simb); //Se agrega la coma
+            prox += patron; //Se incrementa la posición próxima para colocar la coma
+        }
+
+        for (var i = 0; i <= nums.length - 1; i++) {
+            res += nums[i]; //Se crea la nueva cadena para devolver el valor formateado
+        }
+
+        return res;
+    }
+
+    $(".notas").live('keydown',function (event) {
+
+        if(codigos.length>0){
+            if(eval(texto) ||  event.which === 40 || event.which === 38 || event.which === 8 ) {
+                for (var i = 0; i < codigos.length; i++) {
+
+                    eval("if(event.which === codigos[i]){if(conceptos[i].length==2){$(this).val(conceptos[i])}else{$(this).val(conceptos[i]);}}");
+
+
+
+
+                }
+
+            }else {
+                return false;
+            }
+
+        }else {
+            if ((event.which > 47 && event.which < 58 ) || (event.which > 95 && event.which < 106 ) || event.which === 40 || event.which === 38 || event.which === 8) {
+                var valActual = $(this).val();
+                var lar = valActual.length;
+                var check = parseInt(valActual);
+                if (lar == '1') {
+                    if (check > '7' || check < '1') {
+                        $(this).val('');
+                        return false;
+                    }
+                }
+
+                if (lar == '2') {
+                    if (check > '70' || check < '10') {
+                        $(this).val('');
+                        return false;
+                    }
+                }
+
+                var a2 = valActual.replace(/\./g, "");
+                a2 = parseInt(a2);
+
+
+                var nuevoValor = conComas(valActual);
+                $(this).val(nuevoValor);
+            }
+            else {
+                return false;
+            }
+        }
+
+        event.stopImmediatePropagation();
+
+    });
+
+    $(".notas").live('focusout', function () {
+
+        if(codigos.length==0) {
+            var valActual = $(this).val();
+            var lar = valActual.length;
+
+
+            if (lar == '1') {
+                if(valActual>=7){
+                    $(this).val('7,0');
+
+                }else{
+                    var valornuevo = valActual;
+                    valornuevo += ',0';
+                    $(this).val(valornuevo);
+                }
+
+            }
+            if (lar == '2') {
+                if(valActual>=70){
+                    $(this).val('7,0');
+
+                }
+
+            }
+        }
+
+
+    });
+
+    $(".notas").live('focusin', function () {
+
+        if(codigos.length==0) {
+            $(this).val($(this).val().replace(',',''));
+        }
+
+
+    });
+
+    $("input").live('focus', function () {
+        $(this).closest('tr').css("background-color", "green");
+        ;
+    });
+    $("input").live('focusout', function () {
+        $(this).closest('tr').css("background-color", "");
+        ;
+    });
+
+
+</script>
+
+<style>
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notas'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<table>
+    <tbody>
+    <tr class="alt first">
+        <td>
+            <label>Asignatura:</label>
+        </td>
+        <td>
+            <?php echo $this->datos[0]['nombreAsignatura']; ?>
+        </td>
+    </tr>
+
+    <tr class="last">
+        <td>
+            <label>Evaluación:</label>
+        </td>
+        <td>
+            <?php echo $this->datos[0]['contenido']; ?>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<input type="hidden" id="ev" value="<?php echo $this->evaluacion; ?>"/>
+<input type="hidden" id="as" value="<?php echo $this->asignatura; ?>"/>
+<input type="hidden" id="cu" value="<?php echo $this->curso; ?>"/>
+<input type="hidden" id="tip" value="<?php echo $this->tipo; ?>"/>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar Alumno: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+</div>
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Alumnos</th>
+        <th>Nota</th>
+        <th>Cambiar</th>
+
+
+    </tr>
+    </thead>
+    <tr>
+        <?php foreach ($this->datos as $d) : ?>
+
+        <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?> <input type="hidden" id="al"
+                                                                                              value="<?php echo $d['idAlumnos']; ?>"/>
+        </td>
+
+        <?php
+        // si el alumno no posee la nota creada se asigna para guardar una nueva.
+
+        if (empty($d['idNotas'])) { ?>
+
+
+            <td>
+
+                <input type="text" size="2" class="notas" value=""/></td>
+
+            <td>
+
+                <a class="button small yellow" id="cambiarnuevo" name="<?php echo $this->evaluacion; ?>"><i
+                            class="icon-edit"></i>Cambiar</a>
+
+            </td>
+
+
+        <?php } else {
+            if($this->tipo==1){ ?>
+
+
+            <td>
+                <?php
+
+
+                $arr1 = str_split($d['nota']); ?>
+
+
+                <input type="text" size="2" class="notas" maxlength="2" value="<?php echo $arr1[0] . ',' . $arr1[1]; ?>"/></td>
+
+            <td>
+
+                <a class="button small green" id="cambiar" name="<?php echo $d['idNotas'] ?>"><i class="icon-edit"></i>Cambiar</a>
+
+            </td>
+
+        <?php }elseif ($this->tipo==5){?>
+                <td>
+
+
+
+                    <input type="text" size="2" class="notas" maxlength="2" value="<?php echo $d['nota']; ?>"/></td>
+
+                <td>
+
+                    <a class="button small green" id="cambiar" name="<?php echo $d['idNotas'] ?>"><i class="icon-edit"></i>Cambiar</a>
+
+                </td>
+
+            <?php }
+
+        } ?>
+    </tr>
+    <?php endforeach; ?>
+
+    <table>
+        <script src="<?php echo $this->baseUrl; ?>/javascript/notaseditar.js"></script>

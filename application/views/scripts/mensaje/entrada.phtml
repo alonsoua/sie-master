@@ -1,0 +1,117 @@
+<link href="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet"
+      id="bootstrap-css">
+<script src="<?php echo $this->baseUrl; ?>/javascript/moment-with-locales.js"></script>
+<link href="<?php echo $this->baseUrl; ?>/css/estilomensajes.css" rel="stylesheet">
+
+
+
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+<div class="mail-box">
+    <aside class="sm-side">
+        <div class="inbox-body">
+            <?php if (!$this->messagesnuevo) { ?>
+            <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                'action' => 'nuevo'), 'default', TRUE); ?>" data-toggle="modal" title="Compose" class="btn btn-compose">
+                Nuevo Mensaje
+            </a>
+            <?php } ?>
+
+        </div>
+        <ul class="inbox-nav inbox-divider">
+            <li class="active">
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'entrada'), 'default', TRUE); ?>"><i class="fa fa-inbox"></i> Entrada <span
+                            class="label label-danger pull-right"><?php if($this->totalnoleido>0){echo $this->totalnoleido;} ?></span></a>
+
+            </li>
+            <li>
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'enviado'), 'default', TRUE); ?>"><i class="fa fa-envelope-o"></i> Enviados</a>
+            </li>
+        </ul>
+
+
+    </aside>
+    <aside class="lg-side">
+        <div class="inbox-head">
+            <h3>Entrada</h3>
+        </div>
+        <div class="inbox-body">
+            <div class="mail-option">
+                <div class="btn-group">
+                    <a data-original-title="Refresh" data-placement="top" data-toggle="dropdown"
+                       href="<?php echo $this->url(array('controller' => 'mensaje',
+                           'action' => 'entrada'), 'default', TRUE); ?>"
+                       class="btn mini tooltips">
+                        <i class=" fa fa-refresh"></i>
+                    </a>
+                </div>
+            </div>
+            <table class="table table-inbox table-hover">
+                <tr>
+                    <th class="inbox-small-cells"></th>
+                    <th class="inbox-small-cells"></th>
+                    <th class="view-message ">De</th>
+                    <th class="view-message ">Asunto</th>
+                    <th class="view-message ">Cargo</th>
+                    <th class="view-message ">Establecimiento</th>
+                    <th class="view-message ">Fecha</th>
+                </tr>
+                <tbody>
+
+                <?php foreach ($this->mensajes as $d): ?>
+
+                    <?php if ($d['leido'] == 1) { ?>
+                        <tr class="unread clickable-row" data-href="<?php echo $this->url(array('controller' => 'mensaje',
+                            'action' => 'read', 'id' => $d['idMensaje']), 'default', true); ?>">
+
+                    <?php } else { ?>
+
+                        <tr class="clickable-row" data-href="<?php echo $this->url(array('controller' => 'mensaje',
+                            'action' => 'read', 'id' => $d['idMensaje']), 'default', true); ?>">
+                    <?php } ?>
+
+
+                    <td class="inbox-small-cells">
+                        <input type="checkbox" class="mail-checkbox">
+                    </td>
+                    <td class="inbox-small-cells"></td>
+                    <td class="view-message  dont-show"><?php echo $d['nombrescuenta'] . ' ' . $d['paternocuenta'] . ' ' . $d['maternocuenta'] ?></td>
+                    <td class="view-message "><?php echo $d['asunto'] ?></td>
+                    <td class="view-message "><?php echo $d['nombreRol'] ?></td>
+                    <td class="view-message "><?php echo $d['nombreEstablecimiento'] ?></td>
+                    <td data-time-format="time-ago" class="view-message text-right" data-time-value="<?php echo $d['fecha'] ?>"></td>
+
+                    </tr>
+
+
+                <?php endforeach; ?>
+
+                </tbody>
+            </table>
+        </div>
+    </aside>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        moment.locale('es');
+        $( "[data-time-format]" ).each(function() {
+            var el = $( this );
+            switch(el.attr("data-time-format")) {
+                case "time-ago":
+                    var timeValue = el.attr("data-time-value")
+                    var strTimeAgo = moment.unix(timeValue).fromNow();
+                    el.text(strTimeAgo);
+                    break;
+            }
+        });
+
+
+        $(".clickable-row").click(function () {
+            console.log($(this).data('href'));
+            window.location = $(this).data("href");
+        });
+    });
+</script>

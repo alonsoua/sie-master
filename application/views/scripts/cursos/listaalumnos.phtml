@@ -1,0 +1,28 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+<?php
+$codigos = new Zend_Session_Namespace('codigo');
+$codigo = $codigos->codigo;
+?>
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Rut</th>
+        <th>Nombre Alumno</th>
+    </tr>
+    </thead>
+    <?php $var0 = $this->listanotas;
+    if (!empty($var0)) {
+
+        foreach ($this->listanotas as $d) : ?>
+            <tr>
+                <td><?php echo $d['rutAlumno']; ?></td>
+                <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?></td>
+            </tr>
+        <?php endforeach;
+    } ?>
+
+</table>

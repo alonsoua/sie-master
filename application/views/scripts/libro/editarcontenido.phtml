@@ -1,0 +1,245 @@
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+<style>
+    .breadcrumbs a{
+        text-decoration: underline;
+        color: #4D99E0;
+
+    }
+
+    .alert {
+        position: relative;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+    }
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .alert-danger hr {
+        border-top-color: #f1b0b7;
+    }
+
+    .alert-danger .alert-link {
+        color: #491217;
+    }
+</style>
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'controlregistros'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php
+$form = $this->form;
+
+if ($this->messages) : ?>
+
+    <div class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white text-red-700 bg-red-100 border border-red-300 ">
+        <div slot="avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="feather feather-alert-octagon w-5 h-5 mx-2">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+        </div>
+
+        <div class="text-xl font-normal  max-w-full flex-initial">
+            <?php foreach ($this->messages as $msg) : ?>
+                <?php echo $msg; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+<div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow  sm:p-10">
+        <div class="max-w-md mx-auto">
+            <div class="flex items-center space-x-5">
+                <div class="block pl-2 font-semibold text-xl self-start text-gray-700">
+                    <h2 class="leading-relaxed">Editar Clase</h2>
+                </div>
+            </div>
+            <form enctype="application/x-www-form-urlencoded" method="post">
+
+                <?php echo $form->idControlContenidoDetalle->renderViewHelper(); ?>
+                <?php echo $form->token->renderViewHelper(); ?>
+                <div class="divide-y divide-gray-200">
+                    <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+
+
+
+                        <div class="flex items-center space-x-4">
+                            <div class="flex flex-col">
+                                <label class="leading-loose">Fecha </label>
+                                <div class="relative focus-within:text-gray-600 text-gray-400">
+                                    <?php echo $form->fechaContenido->renderViewHelper(); ?>
+                                    <div class="absolute left-3 top-2">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="flex flex-col">
+                                <?php if ($form->fechaContenido->getMessages()) { ?>
+                                    <span class="text-red-700 text-xs italic">
+                                        <?php echo $form->fechaContenido->getMessages()['isEmpty']; ?>
+                                      </span>
+
+
+                                <?php } ?>
+                                <span></span>
+
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Contenidos</label>
+                            <?php echo $form->contenidos->renderViewHelper(); ?>
+                        </div>
+                        <?php if ($form->contenidos->getMessages()) { ?>
+                            <div class="flex flex-col">
+                              <span class="text-red-700 text-xs italic">
+                                <?php echo $form->contenidos->getMessages()['isEmpty']; ?>
+                              </span>
+                            </div>
+
+                        <?php } ?>
+
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Asignatura</label>
+                            <input readonly value="<?php echo $this->datosform[0]['nombreAsignatura']; ?>" type="text" class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                        </div>
+
+
+                        <div class="flex flex-col">
+                            <label class="leading-loose">Horario</label>
+                            <input readonly value="<?php echo $this->datosform[0]['tiempoInicio'].'-'.$this->datosform[0]['tiempoTermino']; ?>" type="text" class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600">
+                        </div>
+
+                    </div>
+                    <div class="pt-4 flex items-center space-x-4">
+
+                        <?php
+                        echo $form->enviar->renderViewHelper();
+                        ?>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var valid=false;
+
+
+
+    $("#bloque").chosen({width: "40%"});
+    $("#enviar").click(function (e) {
+
+
+        if($("#contenidos").val()!='')
+        {
+            console.log('entra al modal');
+            Swal.fire({
+                title: 'Firma Digital',
+                text: 'Ingrese su Código de 6 Dígitos',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off',
+                    maxlength: '6'
+
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Firmar',
+                cancelButtonText:'Cancelar',
+                showLoaderOnConfirm: true,
+                preConfirm: (value) => {
+
+                    var regex = /^[0-9-+()]*$/;
+
+                    if (value == '' || value == null || value.length < 6 || !regex.test(value)) {
+
+                        swal.showValidationError('Firma no Válida');
+                        e.preventDefault();
+
+                    }
+                    return value;
+
+
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.value) {
+                    $("#token").val(result.value);
+                    valid=true;
+                    $("form").submit();
+
+
+                }
+            });
+
+            $('.swal2-input').ForceNumericOnly();
+        }
+
+
+
+
+    });
+
+    $("form").submit(function (e) {
+
+        console.log(valid);
+        if(!valid){
+            e.preventDefault();
+        }
+
+
+
+    });
+
+    // Numeric only control handler
+    jQuery.fn.ForceNumericOnly =
+        function()
+        {
+            return this.each(function()
+            {
+                $(this).keydown(function(e)
+                {
+                    var key = e.charCode || e.keyCode || 0;
+                    // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+                    // home, end, period, and numpad decimal
+                    return (
+                        key == 8 ||
+                        key == 9 ||
+                        key == 13 ||
+                        key == 46 ||
+                        key == 110 ||
+                        key == 190 ||
+                        (key >= 35 && key <= 40) ||
+                        (key >= 48 && key <= 57) ||
+                        (key >= 96 && key <= 105));
+                });
+            });
+        };
+
+
+
+
+</script>
+

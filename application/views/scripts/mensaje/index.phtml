@@ -1,0 +1,32 @@
+
+<table class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>RBD</th>
+        <th>Nombre Establecimiento</th>
+        <th>Configurar</th>
+
+
+    </tr>
+    </thead>
+    <?php foreach ($this->dato as $d): ?>
+
+        <tr>
+            <td>
+                <?php echo $d->rbd; ?>
+            </td>
+
+            <td><?php echo $d->nombreEstablecimiento; ?></td>
+
+            <td>
+                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Mensaje',
+                    'action' => 'agregarconfiguracion', 'id' => $d->idEstablecimiento)); ?>">Configuración Mensajes</a>
+            </td>
+
+
+        </tr>
+    <?php endforeach; ?>
+
+
+
+</table>

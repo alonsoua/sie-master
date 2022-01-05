@@ -1,0 +1,17 @@
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'observaciones'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<?php if ($this->messages) : ?>
+    <div class="t_a_message">
+        <ul>
+            <?php foreach ($this->messages as $msg) : ?>
+                <li class="error"><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+<?php endif; ?>
+
+<div><?php echo $this->form ?></div>

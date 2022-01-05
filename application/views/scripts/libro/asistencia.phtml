@@ -1,0 +1,267 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+</style>
+<?php
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$roles = new Zend_Session_Namespace('cargo');
+$rol = $roles->cargo;
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+?>
+<?php if ($rol == '2') { ?>
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'agregarasistencia'), null, TRUE);
+    ?>"> <i class="icon-plus"></i> Agregar Asistencia</a>
+
+
+    <?php if ($ingresonota == 1) { ?>
+
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <?php } else { ?>
+
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso . '-' . $id_detalle_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <?php } ?>
+
+<?php } ?>
+
+<?php if ($rol == '1' || $rol == '3' || $rol == '6') { ?>
+
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } ?>
+
+
+<h4>Curso: <?php echo $nombre_curso; ?></h4>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar"><i class="icon-search"></i> Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+
+
+            <th>Fecha</th>
+            <th>Ver Asistencia</th>
+            <?php if ($rol == 2) { ?>
+                <th>Editar</th>
+
+            <?php } ?>
+
+        </tr>
+        </thead>
+        <?php $var0 = $this->datosnotas;
+        if (!empty($var0)) {
+
+
+            ?>
+
+            <?php foreach ($this->datosnotas as $c) : ?>
+
+                <tr>
+
+
+                    <td><?php echo date("d-m-Y", strtotime($c['fechaAsistencia'])); ?></td>
+
+
+                    <td>
+                        <div class="ventana">
+                            <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Libro',
+                                'action' => 'verasistencia', 'id' => base64_encode($c['idAsistencia'])), 'default', true); ?>"><i
+                                        class="icon-eye-open"></i> Ver Asistencia</a>
+
+                        </div>
+                    </td>
+                    <?php if ($rol == '2') { ?>
+                        <td>
+                            <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                                'action' => 'editarasistencia', 'id' => base64_encode($c['idAsistencia'])), 'default', true); ?>"><i
+                                        class="icon-edit"></i> Editar</a>
+
+
+                        </td>
+
+
+                    <?php } ?>
+
+
+
+                </tr>
+
+            <?php endforeach;
+        } ?>
+
+    </table>
+
+
+</div>
+
+<script type="text/javascript">
+    var enviarasistencia = function (est, periodo, nombreperiodo, idasistencia, idcurso) {
+        if (est != '' && periodo != '' && nombreperiodo != '' && idcurso != '' && idasistencia != '') {
+            $.ajax({
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../Sige/enviaasistencia/',
+                data: JSON.stringify({
+                    est: est,
+                    periodo: periodo,
+                    nombreperiodo: nombreperiodo,
+                    idasistencia: idasistencia,
+                    idcurso: idcurso
+                }),
+                beforeSend: function (data) {
+                    $('#div_cliente').html('<label>Validando...</label>');
+                },
+                success: function (data) {
+                    if (parseInt(data.response) === 1) {
+                        switch (parseInt(data.status)) {
+                            case 1:
+                                alert('Operación/Acción ejecutada exitosamente.');
+                                break;
+                            case 2:
+                                alert('Error(es) de validación(es) de Negocio.');
+                                break;
+                            case 3:
+                                alert('RBD NO tiene servicio disponible.');
+                                break;
+                            case 4:
+                                alert('Convenio NO tiene asociado el RBD.');
+                                break;
+                            case 5:
+                                alert('Servicio NO disponible.');
+                                break;
+                            case 6:
+                                alert('Semilla de operación NO válida o ha caducado (renovar semilla)');
+                                break;
+                            case 7:
+                                alert('Error interno de servicio.');
+                                break;
+
+
+                        }
+                    } else if (parseInt(data.response) === 0) {
+                        alert('Error Con el envío 1');
+                    } else {
+                        alert('Error Con el envío 2');
+                    }
+                },
+                error: function () {
+                    alert('Error Con el envío 3');
+                }
+            });
+        } else {
+            alert('No se Puede Consultar Existen datos Vacíos');
+        }
+    }
+
+
+    var reporteasistencia = function (est, periodo, codigo, idcurso, idasistencia) {
+        if (est != '' && periodo != '' && codigo != '' && idcurso != '' && idasistencia != '') {
+
+            $.ajax({
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../Sige/reporteasistencia/',
+                data: JSON.stringify({
+                    est: est,
+                    periodo: periodo,
+                    codigo: codigo,
+                    idcurso: idcurso,
+                    idasistencia: idasistencia
+                }),
+                beforeSend: function (data) {
+                    $('#div_cliente').html('<label>Validando...</label>');
+                },
+                success: function (data) {
+                    if (parseInt(data.response) === 1) {
+                        switch (parseInt(data.status)) {
+                            case 1:
+                                alert('Asistencia procesada exitosamente.');
+                                break;
+                            case 2:
+                                alert('Asistencia procesada con Observaciones.');
+                                break;
+                            case 3:
+                                alert('Asistencia procesada con Errores.');
+                                break;
+                            case 4:
+                                alert('Asistencia aún no ha sido procesada.');
+                                break;
+                            case 5:
+                                alert('Parámetros no corresponden.');
+                                break;
+                            case 6:
+                                alert('RBD NO tiene servicio disponible.');
+                                break;
+                            case 7:
+                                alert('Convenio NO tiene asociado el RBD.');
+                                break;
+                            case 8:
+                                alert('Servicio NO disponible.');
+                                break;
+                            case 9:
+                                alert('Semilla de operación NO válida o ha caducado (renovar semilla).');
+                                break;
+                            case 10:
+                                alert('Error interno del servicio.');
+                                break;
+
+
+                        }
+                    } else if (parseInt(data.response) === 0) {
+                        alert('Error Con el envío 1');
+                    } else {
+                        alert('Error Con el envío 2');
+                    }
+                },
+                error: function () {
+                    alert('Error Con el envío 3');
+                }
+            });
+        } else {
+            alert('No se Puede Consultar Existen datos Vacíos');
+        }
+    }
+</script>

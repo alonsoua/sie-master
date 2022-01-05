@@ -1,0 +1,84 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery.twosidedmultiselect.js"></script>
+
+
+
+   <style type="text/css">
+		/* Recommended styles */
+		.tsmsselect {
+			width: 40%;
+			float: left;
+		}
+		
+		.tsmsselect select {
+			width: 100%;
+		}
+		
+		.tsmsoptions {
+			width: 20%;
+			float: left;
+		}
+		
+		.tsmsoptions p {
+			margin: 4px;
+			text-align: center;
+			font-size: larger;
+			cursor: pointer;
+                        border:1px solid #ccc;padding:1px;
+                        border-radius:10px 10px 10px 10px;
+                        font-size: 10px;
+		}
+		
+		.tsmsoptions p:hover {
+			color: White;
+			background-color: Silver;
+		}
+                
+	
+   
+</style>
+    
+
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/jquery.datetimepicker.css" type="text/css">
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery.datetimepicker.js"></script>
+
+<script>
+$().ready(function() 
+	{
+            
+            jQuery('#fechaenvio').datetimepicker({
+ lang:'es',
+  format:'d-m-Y H:i',
+  allowTimes:[
+  '7:00', '7:30', '8:00','8:30','9:00','9:30','10:00','10:30','11:00','11:30','12:00', 
+  '12:30', '13:00', '13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00',
+  '17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'
+  
+ ]
+});
+    });
+        
+        
+</script>
+
+
+     
+      <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'comunicaciones'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<h4>
+<?$nombre_curso = new Zend_Session_Namespace('nombre_curso');
+echo $nombre_curso->nombre_curso;?>
+</h4>
+        <?php
+        
+        
+	echo $this->form;
+        ?>
+     
+       
+     <script type="text/javascript">
+
+        $(".multiselect").twosidedmultiselect();
+        
+
+        </script>

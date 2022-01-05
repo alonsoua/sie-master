@@ -1,0 +1,84 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'observaciones'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php $var0 = $this->lista;
+
+if (!empty($var0)){
+?>
+
+<?php if ($this->messages) : ?>
+    <div class="error">
+        <ul>
+            <?php foreach ($this->messages as $msg) : ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<table class="striped sortable" style="margin-top: 25px;">
+    <tr>
+        <td style="width:60%;text-align: left;"><h5>
+                Alumno: <?php echo $var0[0]['nombres'] . ' ' . $var0[0]['apaterno'] . ' ' . $var0[0]['amaterno'] ?> </h5>
+        </td>
+        <td style="width:40%;text-align: left;"><h5>
+                Curso: <?php echo $var0[0]['nombreGrado'] . ' ' . $var0[0]['letra']; ?></h5></td>
+    </tr>
+    <tr>
+        <td colspan="2" style="width:100%;text-align: left;">
+            <div class="ventana">
+                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Informes',
+                    'action' => 'generaobservacion', 'id' => $var0[0]['idAlumnos']), 'default', true); ?>">Generar Hoja de Conducta</a>
+            </div>
+        </td>
+
+    </tr>
+
+</table>
+<h3 class="center">Lista Observaciones</h3>
+
+<table class="striped sortable">
+
+    <tr>
+        <td>Nº</td>
+        <td>Asignatura</td>
+        <td>Fecha Observación</td>
+        <td>Observación</td>
+        <td>Editar</td>
+        <td>Eliminar</td>
+    </tr>
+
+    <?php $i = 1;
+    foreach ($this->lista as $d) :?>
+
+            <tr>
+                <td ><?php echo $i; ?></td>
+                <td><?php echo $d['Asignatura'][0]['nombreAsignatura']; ?></td>
+                <td><?php echo date("d-m-Y", strtotime($d['fechaObservacion'])); ?></td>
+                <td><?php echo $d['observacion']; ?></td>
+                <td>
+                    <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                        'action' => 'editar', 'id' => $d['idObservaciones'],'ida' => $d['idAlumnos']), 'default', true); ?>">Editar</a>
+                </td>
+                <td>
+                    <a class="button small red" href="<?php echo $this->url(array('controller' => 'Libro',
+                        'action' => 'eliminar', 'id' => $d['idObservaciones'],'ida' => $d['idAlumnos'],), 'default', true); ?>">Eliminar</a>
+                </td>
+            </tr>
+
+
+
+        <?php $i++; endforeach;
+    } else {
+        ?>
+
+        <h3 class="center">Sin Observaciones</h3>
+
+
+    <?php } ?>
+</table>

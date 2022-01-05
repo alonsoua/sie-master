@@ -1,0 +1,180 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<?php
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$cargo = new Zend_Session_NameSpace("cargo");
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+$codigos = new Zend_Session_Namespace('codigo');
+$codigo = $codigos->codigo;
+
+if ($cargo->cargo == '2') {
+    $nivelcurso = new Zend_Session_Namespace('nivel_curso');
+    $nivel_curso = $nivelcurso->nivel_curso;
+    if ($codigo == 10) { ?>
+
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'agregarnotaspre'), null, TRUE);
+        ?>"> <i class="icon-plus"></i> Agregar Notas</a>
+    <?php } else { ?>
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'agregarnotas'), null, TRUE);
+        ?>"> <i class="icon-plus"></i> Agregar Notas</a>
+    <?php }
+    if ($ingresonota == 1) { ?>
+
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <?php } else {
+        ?>
+
+        <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso . '-' . $id_detalle_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+    <?php } ?>
+
+<?php }
+if ($cargo->cargo == '1' || $cargo->cargo == '3') { ?>
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } ?>
+
+
+<h4>Curso: <?php echo $nombre_curso; ?></h4>
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar"><i class="icon-search"></i> Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Asignatura</th>
+            <th>Contenido Prueba</th>
+            <th>Coeficiente</th>
+            <th>Periodo</th>
+            <th>Ver Notas</th>
+            <?php if ($cargo->cargo == '2') { ?>
+                <th>Editar</th>
+                <th>Eliminar</th>
+            <?php } ?>
+        </tr>
+        </thead>
+        <?php $var0 = $this->datosnotas;
+        if (!empty($var0)) {?>
+            <?php $r = 1;
+            foreach ($this->datosnotas as $c) : ?>
+
+                <tr>
+
+                    <td><?php echo $r; ?></td>
+
+                    <td><?php echo $c['nombreAsignatura']; ?></td>
+
+                    <td><?php echo $c['contenido']; ?></td>
+
+                    <?php if ($c['tiempo'] == 1) {
+                        $nombreperiodo = 'Primer Semestre';
+                    }
+
+                    if ($c['tiempo'] == 2) {
+                        $nombreperiodo = 'Segundo Semestre';
+                    }
+                    if ($c['tiempo'] == 3) {
+                        $nombreperiodo = 'Primer Trimestre';
+                    }
+
+                    if ($c['tiempo'] == 4) {
+                        $nombreperiodo = 'Segundo Trimestre';
+                    }
+                    if ($c['tiempo'] == 5) {
+                        $nombreperiodo = 'Tercer Trimestre';
+                    }
+
+
+                    ?>
+                    <?php if ($c['coef'] == '1') { ?>
+                        <td>Coeficiente 1</td>
+
+                    <?php }
+                    if ($c['coef'] == '2') { ?>
+                        <td>Coeficiente 2</td>
+                    <?php }
+                    if ($c['coef'] == '0') { ?>
+                        <td>Sin Asignar</td>
+                    <?php } ?>
+
+                    <td><?php echo $nombreperiodo ?></td>
+
+
+                    <td>
+                        <div class="ventana">
+                            <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Libro',
+                                'action' => 'vernotas', 'id' => $c['idPruebas']), 'default', true); ?>"><i
+                                        class="icon-eye-open"></i> Ver Notas</a>
+
+                        </div>
+                    </td>
+                    <?php if ($cargo->cargo == '2') { ?>
+                        <td>
+                            <?php if ($codigo== 10) { ?>
+
+                                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                                    'action' => 'notaeditarpre', 'id' => $c['idPruebas']), 'default', true); ?>"><i
+                                            class="icon-edit"></i> Editar</a>
+
+                            <?php } else { ?>
+                                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                                    'action' => 'notaeditar', 'id' => $c['idPruebas']), 'default', true); ?>"><i
+                                            class="icon-edit"></i> Editar</a>
+                            <?php } ?>
+                        </td>
+
+
+                        <td>
+
+
+                            <a class="button small red"
+                               onclick="if (confirm('¿Ésta acción eliminará todas las notas correspondientes a la evaluación, desea continuar?')) { document.location = this.href; } return false;"
+                               href="<?php echo $this->url(array('controller' => 'Libro',
+                                   'action' => 'notaseliminar', 'id' => $c['idPruebas']), 'default', true); ?>"><i
+                                        class="icon-minus-sign"></i> Eliminar</a>
+
+
+                        </td>
+
+                    <?php } ?>
+
+                </tr>
+                <!--    fin del for-->
+                <?php $r++; endforeach;
+        } ?>
+
+
+    </table>
+
+
+</div>
+
+     		

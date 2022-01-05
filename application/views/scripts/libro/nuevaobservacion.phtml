@@ -1,0 +1,116 @@
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery-ui.min.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/calendario/css/jquery.ui.all.css" type="text/css">
+
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.core.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.datepicker.js"></script>
+<style>
+    td{
+        border-bottom: none;
+    }
+    textarea{
+        margin: 0px;
+        height: 230px;
+        width: 548px;
+    }
+</style>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'observaciones'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php echo $form = $this->form; ?>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#idAlumnos").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            placeholder_text_multiple: "Seleccione Alumnos",
+            width: "550px"
+        });
+
+        $("#idAsignatura").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            placeholder_text_multiple: "Seleccione Alumnos",
+            width: "550px"
+        });
+
+    });
+
+
+    <?php  $periodo = new Zend_Session_Namespace('nombreperiodo');
+    $idperiodo = $periodo->nombreperiodo;?>
+    var ano =<?php echo $idperiodo ?>;
+
+
+    var fechain = '01-03-' + ano;
+    var fechate = '31-12-' + ano;
+
+
+    function noSunday(date) {
+        var day = date.getDay();
+        return [(day > 0), ''];
+    }
+
+
+        $("#fechaObservacion").datepicker({
+            //autoSize: true,
+            showOn: "button",
+            buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+            buttonImageOnly: true,
+            minDate: fechain,
+            maxDate: fechate,
+            beforeShowDay: noSunday,
+            numberOfMonths: 3,
+
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true
+
+
+        });
+
+    $('#idAlumnos').change(function (evt, params) {
+
+        var $s = $(this);
+
+
+        if (params.selected && params.selected == "allc") {
+            $s.children('option').not(':selected').each(function () {
+                $(this).attr('disabled', 'disabled');
+            });
+        } else if (params.deselected && params.deselected == "allc") {
+            $s.children('option').each(function () {
+                $(this).removeAttr('disabled');
+            });
+        }
+
+        if ((params.selected && params.selected != "allc") || (params.deselected && params.deselected != "allc")) {
+
+            if ($(this).val() != null && $(this).val() != 'all') {
+                $(this).find('option:eq(0)').attr('disabled', 'disabled');
+
+            } else {
+                $(this).find('option:eq(0)').removeAttr('disabled');
+
+            }
+
+        }
+        $('#idAlumnos').trigger('chosen:updated');
+
+
+
+
+    });
+
+</script>

@@ -1,0 +1,97 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo{
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+    #divTabla{
+
+    }
+        input[type="text"]{
+            padding: 5px;
+            width: 595px;
+        }
+</style>
+
+<!--creo link para agregar una Alumnos -->
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action'                           => 'agregar'), 'default', true);?>">Agregar Alumnos</a>
+
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action'                           => 'index'));?>">Lista Alumnos Activos</a>
+
+            <a class="button small red" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action'                           => 'indexr'), 'default', true);?>">Lista Alumnos Retirados</a>
+
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action'                           => 'indexa'), 'default', true);?>">Lista Apoderados</a>
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action'                           => 'agregarapoderado'), 'default', true);?>">Agregar Apoderado</a>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                <label for="txtBuscar">Buscar: </label>
+                <input type="text" id="txtBuscar" autofocus placeholder="Escriba el texto que desea encontrar y presione ENTER">
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+   <thead> <tr>
+           <th>Nº</th>
+        <th>Rut</th>
+        <th>Nombre</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+
+    </tr></thead>
+
+<!--    recorro el arreglo de datos-->
+    <?php $i = 1;foreach ($this->paginator as $d): ?>
+
+<!--           por cada fila, muestro sus datos -->
+       <tbody> <tr class="alt first last">
+
+               <td><?php echo $i; ?></td>
+<!--                  Rut Apoderado-->
+         <td> <?php echo $d[rutApoderado]; ?> </td>
+
+
+<!--                   nombre apoderado-->
+        <td><?php echo $d[nombreApoderado]; ?></td>
+
+<!--                   Apellido Paterno-->
+        <td><?php echo $d[paternoApoderado]; ?></td>
+
+<!--                   Apellido Materno-->
+        <td><?php echo $d[maternoApoderado]; ?></td>
+
+
+
+
+
+         <td>
+
+             <a class="button small green" href="<?php echo $this->url(array('controller' => 'Alumnos',
+    'action'                                                                                  => 'editarapoderado', 'id' => $d->idApoderado)); ?>">Editar</a>
+
+         </td>
+
+        <td>
+
+
+            <a class="button small red" href="<?php echo $this->url(array('controller' => 'Alumnos',
+    'action'                                                                               => 'eliminarapoderado', 'id' => $d->idApoderado)); ?>">Eliminar</a>
+            </td>
+
+        </tr></tbody>
+
+    <?php $i = $i + 1;endforeach;?>
+
+</table>

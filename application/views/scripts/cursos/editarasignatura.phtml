@@ -1,0 +1,42 @@
+<script type="text/javascript">
+    $(function () {
+        $('#idAmbito').change(function () {
+
+            $('#nombreNucleo').html('');
+            $('#idAsignatura').html('');
+
+            var ajax = $.ajax({
+                type: "GET",
+                url: "../../../../getnucleo/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    var nucleos = [];
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        nucleos[i] = data[i].idNucleo;
+                        options += '<option value="' + data[i].idNucleo + '">' + data[i].nombreNucleo + '</option>';
+                    }
+                    $('#idNucleo').html(options);
+
+
+                }
+            });
+
+
+        });
+
+
+    });
+
+
+</script>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'asignaturas', 'id' => $this->dato), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<?php echo $this->form;

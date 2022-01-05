@@ -1,0 +1,133 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<?php
+$roles = new Zend_Session_Namespace('cargo');
+$rol = $roles->cargo;
+
+$idtipoev = new Zend_Session_Namespace('tipoevaluacion');
+$idtevalucacion = $idtipoev->tipoevaluacion;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+if ($this->messages) {
+    ?>
+    <div class="error">
+        <p>
+            <?php foreach ($this->messages as $msg): ?>
+                <?php echo $msg; ?>
+            <?php endforeach; ?>
+
+
+        </p>
+
+    </div>
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+        'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+    ?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } else {
+?>
+
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº Lista</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Nombres</th>
+            <?php if ($idtevalucacion == 1) { ?>
+                <th>Primer Semestre</th>
+                <th>Segundo Semestre</th>
+            <?php } else { ?>
+                <th>Primer Trimestre</th>
+                <th>Segundo Trimestre</th>
+                <th>Tercer Trimestre</th>
+
+            <?php } ?>
+
+
+        </tr>
+        </thead>
+        <tbody>
+
+
+        <?php
+        if (!empty($this->datosalumnos)) {
+
+        $r = 1;
+        foreach ($this->datosalumnos as $d): ?>
+
+            <tr>
+                <td><?php echo $r; ?>
+                    <input type="hidden" class="ides" value="<?php echo $d['idAlumnosActual']; ?>"/>
+                <td><?php echo $d['apaterno']; ?>
+                </td>
+                <td><?php echo $d['amaterno']; ?>
+                </td>
+                <td><?php echo $d['nombres']; ?>
+                </td>
+
+                <?php if ($idtevalucacion == 1) { ?>
+                    <td>
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'nuevopre', 'id' => $d['idAlumnos'], 's' => 1), 'default', true); ?>"><i
+                                    class="icon-edit"></i> Agregar Notas</a>
+                    </td>
+
+                    <td>
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'nuevopre', 'id' => $d['idAlumnos'], 's' => 2), 'default', true); ?>"><i
+                                    class="icon-edit"></i> Agregar Notas</a>
+                    </td>
+                <?php } else { ?>
+                    <td>
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'nuevopre', 'id' => $d['idAlumnos'], 's' => 3), 'default', true); ?>"><i
+                                    class="icon-edit"></i> Agregar Notas</a>
+                    </td>
+
+                    <td>
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'nuevopre', 'id' => $d['idAlumnos'], 's' => 4), 'default', true); ?>"><i
+                                    class="icon-edit"></i> Agregar Notas</a>
+                    </td>
+
+                    <td>
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'nuevopre', 'id' => $d['idAlumnos'], 's' => 5), 'default', true); ?>"><i
+                                    class="icon-edit"></i> Agregar Notas</a>
+                    </td>
+
+                <?php } ?>
+
+
+            </tr>
+
+
+            <?php $r++;endforeach; ?>
+        </tbody>
+    </table>
+    <?php
+
+    }
+    } ?>
+
+
+

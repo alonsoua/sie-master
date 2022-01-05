@@ -1,0 +1,108 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+    .center-header {
+        display: -webkit-box;
+        margin-top: 10px;
+    }
+
+    .center-header h4 {
+        text-align: left;
+    }
+</style>
+<?php
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$cargo = new Zend_Session_NameSpace("cargo");
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+$codigos = new Zend_Session_Namespace('codigo');
+$codigo = $codigos->codigo;
+
+$nivelcurso = new Zend_Session_Namespace('nivel_curso');
+$nivel_curso = $nivelcurso->nivel_curso; ?>
+
+
+
+
+
+<div class="center-header">
+    <div style="width: 40%">
+        <a class="button medium " href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+        <?php if ($cargo->cargo == '2' || $cargo->cargo == '3' || $cargo->cargo == '6' || $cargo->cargo == '1') { ?>
+
+            <a class="button medium blue" id="nuevo"
+               href="<?php echo $this->url(array('controller' => 'Libro',
+                   'action' => 'nuevaobservacion'), null, TRUE);
+               ?>"> Nueva Observación</a>
+
+        <?php } ?>
+    </div>
+    <div style="width: 60%">
+        <h3>Curso: <?php echo $nombre_curso; ?></h3>
+    </div>
+
+</div>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar"><i class="icon-search"></i> Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr class="alt first last">
+            <th>Estudiante</th>
+            <th>Listar Observaciones</th>
+
+
+        </tr>
+        </thead>
+        <?php $var1 = $this->datos;
+        if (!empty($var1)) {
+
+            ?>
+            <?php foreach ($this->datos as $record) { ?>
+
+                <tr>
+                    <td><?php echo $record['apaterno'] . ' ' . $record['amaterno'] . ' ' . $record['nombres']; ?></td>
+                    <td>
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'verobservaciones', 'id' => $record['idAlumnos']), 'default', true); ?>"><i
+                                    class="icon-list-alt"></i> Listar Observaciones</a>
+
+                    </td>
+
+
+                </tr>
+
+            <?php }
+        } ?>
+
+    </table>
+</div>

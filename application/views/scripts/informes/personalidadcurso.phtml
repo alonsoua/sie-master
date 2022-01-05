@@ -1,0 +1,109 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'personalidad'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe
+    Personalidad por Alumno</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'personalidadcurso'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe
+    Personalidad por Curso</a>
+
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Establecimiento</th>
+            <th>Opciones</th>
+
+
+
+        </tr>
+        </thead>
+        <?php
+        $cargo = new Zend_Session_Namespace('cargo');
+        $rol = $cargo->cargo;
+        if ($rol == '2' || $rol == '1' || $rol == '3' || $rol == '6') {
+            $var0 = $this->datos;
+            if (!empty($var0)) {
+
+
+                ?>
+                <?php foreach ($this->datos as $d) : ?>
+
+                    <tr>
+                        <td><?php echo $d['nombreGrado']; ?></td>
+                        <td><?php echo $d['letra']; ?></td>
+                        <td><?php echo $d['nombreEstablecimiento']; ?>
+                        </td>
+                        <td>
+
+                            <?php if($d['tipoModalidad']==1 || $d['tipoModalidad']==0){ ?>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidadcurso', 'id' => $d['idCursos'], 'p' => 1, 't' => 1), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Informe Personalidad Alumnos I Semestre</a>
+                                </div>
+
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidadcurso', 'id' => $d['idCursos'], 'p' => 2, 't' => 1), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Informe Personalidad Alumnos II Semestre</a>
+                                </div>
+
+                            <?php }elseif($d['tipoModalidad']==2){?>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidadcurso', 'id' => $d['idCursos'], 'p' => 3, 't' => 1), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Informe Personalidad Alumnos I Trimestre</a>
+                                </div>
+
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidadcurso', 'id' => $d['idCursos'], 'p' => 4, 't' => 1), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Informe Personalidad Alumnos II Trimestre</a>
+                                </div>
+
+                                <div class="ventana">
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generapersonalidadcurso', 'id' => $d['idCursos'], 'p' => 5, 't' => 1), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i> Informe Personalidad Alumnos III Trimestre</a>
+                                </div>
+
+
+                            <?php } ?>
+
+
+
+                        </td>
+                    </tr>
+
+                <?php endforeach;
+            }
+        } ?>
+
+    </table>

@@ -1,0 +1,13 @@
+
+ <?php if ($this->messages) : ?>
+<div class="error">
+   <?php foreach ($this->messages as $msg) : ?>
+     <?php echo $msg; ?>
+   <?php endforeach; ?>
+    
+    <a class="button small" href="<?php $d=''; echo $this->url(array('controller' =>'Libro',
+            'action' => 'notas'),null,TRUE); ?>">Volver</a>
+</div>
+
+
+<?php endif; ?>

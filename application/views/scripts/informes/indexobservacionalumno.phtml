@@ -1,0 +1,111 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+    .center-header h4 {
+        text-align: left;
+    }
+</style>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar"><i class="icon-search"></i> Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr class="alt first last">
+
+
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Nombres</th>
+            <th>Grado</th>
+            <th>Letra Curso</th>
+            <th>Establecimiento</th>
+            <th>Listar Observaciones</th>
+
+
+        </tr>
+        </thead>
+
+        <?php if ($this->variable == 1) {
+
+            for ($i = 0; $i < count($this->datos); $i++) {
+
+                foreach ($this->datos[$i] as $d[$i]) : ?>
+
+
+                    <tr>
+
+                        <td><?php echo $d[$i]['apaterno']; ?></td>
+
+                        <td><?php echo $d[$i]['amaterno']; ?></td>
+
+                        <td><?php echo $d[$i]['nombres']; ?></td>
+                        <td><?php echo $d[$i]['nombreGrado']; ?></td>
+
+                        <td><?php echo $d[$i]['letra']; ?></td>
+
+                        <td><?php echo $d[$i]['nombreEstablecimiento']; ?>
+
+                        <td>
+
+                            <div class="ventana">
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'generaobservacion', 'id' => $d[$i]['idAlumnos']), 'default', true); ?>">Generar
+                                    Hoja de Conducta</a>
+                            </div>
+                        </td>
+
+
+                    </tr>
+
+                <?php endforeach;
+            }
+
+        } else {
+            $var1 = $this->datos;
+            if (!empty($var1)) {
+                foreach ($this->datos as $d) : ?>
+
+                    <tr>
+
+                        <td><?php echo $d['apaterno']; ?></td>
+
+                        <td><?php echo $d['amaterno']; ?></td>
+
+                        <td><?php echo $d['nombres']; ?></td>
+
+                        <td><?php echo $d['nombreGrado']; ?></td>
+
+                        <td><?php echo $d['letra']; ?></td>
+
+                        <td><?php echo $d['nombreEstablecimiento']; ?>
+
+                        <td>
+
+                            <div class="ventana">
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'generaobservacion', 'id' => $d['idAlumnos']), 'default', true); ?>">Generar
+                                    Hoja de Conducta</a>
+                            </div>
+                        </td>
+
+
+                    </tr>
+
+                <?php endforeach;
+            }
+        } ?>
+
+
+    </table>
+</div>

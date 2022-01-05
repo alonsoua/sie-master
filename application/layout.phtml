@@ -1,0 +1,370 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <head>
+        <title><?php echo $this->title; ?></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--        referencia al archivo css, uso $this->baseUrl para tener una referencia segun
+        el lugar dede donde se llame al layout-->
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css"  rel="stylesheet">
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet">
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet">
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery-1.7.2.min.js"></script>
+ 
+ 
+ 
+
+<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/prettify.js"></script>                                   
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/kickstart.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/login.css" />
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/estiloformulario.css" />
+ 
+ <script src="<?php echo $this->baseUrl; ?>/javascript/login.js"></script>
+ <script src="<?php echo $this->baseUrl; ?>/javascript/jquery.Rut.js"></script>
+  <script src="<?php echo $this->baseUrl; ?>/javascript/sliding.form.js"></script>
+  <script src="<?php echo $this->baseUrl; ?>/javascript/observaciones.js"></script>
+  
+  <script src="<?php echo $this->baseUrl; ?>/javascript/editablegrid-2.0.1.js"></script> 
+   
+          
+		<!-- I use jQuery for the Ajax methods -->
+		
+                <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery-ui.min.js"></script>
+		
+                <script src="<?php echo $this->baseUrl; ?>/javascript/asistencia.js" ></script>
+
+
+
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/calendario/css/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.core.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.datepicker.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+      
+      
+  
+  function noSunday(date){
+     var day = date.getDay();
+     return [(day > 0), ''];
+  }
+      
+      
+  
+	
+		$( "#fechaperiodo" ).datepicker({ 
+		 //autoSize: true,
+            showOn: "button",
+			buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+			buttonImageOnly: true,
+            beforeShowDay: noSunday,
+               
+     
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-70:+1",
+                        onSelect: function(selected) {
+                         $("#fechaperiodo2").datepicker("option","minDate", selected)
+                        }
+			
+            });
+		
+
+	
+		$( "#fechaperiodo2" ).datepicker({ 
+		 //autoSize: true,
+            showOn: "button",
+			buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+			buttonImageOnly: true,
+             //bloqueamos los domingos
+            beforeShowDay: noSunday,
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-70:+1",
+            onSelect: function(selected) {
+          $("#fechaperiodo").datepicker("option","maxDate", selected)
+        }
+			
+		
+    });
+		
+	});	
+		
+	
+         
+        
+	</script>
+<script type="text/javascript">
+    $(function(){
+       $('#item_select_1').change(function(){
+          var ajax = $.ajax({
+             type: "GET",
+             url: "<?php echo $this->baseUrl; ?>/Alumnos/getmodelos/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].COMUNA_ID + '">' + data[i].COMUNA_NOMBRE + '</option>';
+                   }
+                   $('#item_select_2').html(options);
+             }
+        });
+      });
+    });
+ </script>
+<script type="text/javascript">
+    $(function(){
+       $('#item_select_3').change(function(){
+          var ajax = $.ajax({
+             type: "GET",
+             url: "<?php echo $this->baseUrl; ?>/Alumnos/getmodelos/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].COMUNA_ID + '">' + data[i].COMUNA_NOMBRE + '</option>';
+                   }
+                   $('#item_select_4').html(options);
+             }
+        });
+      });
+    });
+ </script>
+<script type="text/javascript">
+    $(function(){
+       $('#item1').change(function(){
+           
+       
+            $('#item2').html('');
+             $('#item3').html('');
+       
+          var ajax = $.ajax({
+             type: "GET",
+             url: "<?php echo $this->baseUrl; ?>/Establecimiento/getprovincia/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].PROVINCIA_ID + '">' + data[i].PROVINCIA_NOMBRE + '</option>';
+                   }
+                   $('#item2').html(options);
+             }
+        });
+      });
+      $('#item2').change(function(){
+          var ajax = $.ajax({
+             type: "GET",
+             url: "<?php echo $this->baseUrl; ?>/Establecimiento/getcomuna/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var options = '';
+                   for (var i = 0; i < data.length; i++) {
+                      options += '<option value="' + data[i].COMUNA_ID + '">' + data[i].COMUNA_NOMBRE + '</option>';
+                   }
+                   $('#item3').html(options);
+             }
+        });
+      });
+    });
+ </script>
+<script type="text/javascript">
+    $(function(){
+       $('#itemalumnos').change(function(){
+          var ajax = $.ajax({
+             type: "GET",
+             url: "<?php echo $this->baseUrl; ?>/Alumnos/getalumnos/id/" + $(this).val(),
+             async: true,
+             dataType: "json",
+             beforeSend: function(x) {
+                if(x && x.overrideMimeType) {
+                   x.overrideMimeType("application/j-son;charset=UTF-8");
+                }
+             },
+             success: function(data){
+                var nombre = '';
+                var rut= '';
+                var apaterno = '';
+                var amaterno = '';
+                var curso= '';
+                var telefono = '';
+                var direccion = '';
+                   for (var i = 0; i < data.length; i++) {
+                      nombre = data[i].nombres ;
+                      rut = data[i].Rut ;
+                      apaterno= data[i].apaterno ;
+                      amaterno= data[i].amaterno ;
+                      curso= data[i].idCursos ;
+                      telefono= data[i].telefono ;
+                      direccion= data[i].direccion ;
+                      
+                   }
+                   //alert(nombre);
+                    $('#rutalumno').attr('value',rut);
+                   $('#nombalumno').attr('value',nombre);
+                   $('#apalumno').attr('value',apaterno);
+                   $('#amalumno').attr('value',amaterno);
+                   $('#cursoalumno').attr('value',curso);
+                   $('#telefonoalumno').attr('value',telefono);
+                   $('#direccionalumno').attr('value',direccion);
+                    cargalista(rut);
+             }
+        });
+       
+      });
+    });
+    
+  </script>
+
+
+</head>
+<body>
+
+
+
+<!-- Inicio Cabecera-->
+<div id="cabecera">
+    <!-- Inicio de SESION-->
+    <div id="login">
+    <h4>Bienvenido <span class="icon white medium" data-icon="u"></span></h4>
+    <div id="logout">
+
+    
+            <!-- Login Starts Here -->
+            <div id="loginContainer">
+                <a href="#" id="loginButton"><span><?$recuperando = new Zend_Session_Namespace('usuario');
+echo $recuperando->mivalor; // imprime nombre real de usuario en sesion ;?></span></a>
+                <div style="clear:both"></div>
+                <div id="loginBox">                
+                    <form id="loginForm">
+                        <fieldset id="body">
+                            <fieldset>
+                                <label>Nombre: <?$recuperando = new Zend_Session_Namespace('usuario');
+echo $recuperando->mivalor; // imprime nombre real de usuario en sesion ;?></label>
+                                <label>Establecimiento: <?$establecimiento = new Zend_Session_Namespace('nomb_establecimiento');
+echo $establecimiento->nom_establecimiento; // imprime nombre real de usuario en sesion ;?></label>
+                                
+
+                            </fieldset>  
+                        </fieldset>
+                        <span><a  class="button small" href="<?php echo $this->url(array('controller' =>'usuarios',
+            'action' => 'logout')); ?>">Cerrar Sesion</a></span>
+                    </form>
+               </div>
+</div>
+</div>
+
+           </div>
+
+
+            <!-- Fin de Sesion-->
+ 
+<!-- Menu Horizontal -->
+
+<ul class="menu">
+<li><a href="<?php echo $this->url(array('controller' => 'index',
+    'action' => 'index'),null,TRUE); ?>">Inicio</a></li>
+<li><a href="#" return:false>Mantenedores</a>
+	<ul>
+            <li><a href="<?php echo $this->url(array('controller' => 'Sostenedor',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon gray small" data-icon="j"></span>Sostenedor</a></li>
+	<li><a href="<?php echo $this->url(array('controller' => 'Establecimiento',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon gray small" data-icon="j"></span>Establecimientos</a></li>
+	<li><a href="<?php echo $this->url(array('controller' => 'Asignaturas',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon" data-icon="j"></span>Asignaturas</a></li>
+ 
+    <li><a href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon" data-icon="w"></span>Cursos</a></li>
+    <li class="divider"></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'Periodo',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon" data-icon="v"></span>Periodos</a></li>
+    <li class="divider"></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'Personal',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon" data-icon="7"></span>Personal</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'Alumnos',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon" data-icon="7"></span>Alumnos</a></li>
+    <li><a href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+    'action' => 'index'),null,TRUE); ?>"><span class="icon" data-icon="7"></span>Cuentas Usuarios</a></li>
+	</ul>
+</li>
+<li><a href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'index'),null,TRUE); ?>">Libro de Clases</a></li>
+<li><a href="">Planificaciones</a>
+    <ul>
+        <li><a href="<?php echo $this->url(array('controller' => 'Planificaciones',
+    'action' => 'index'),null,TRUE); ?>">Planificacion Anual</a></li>
+        <li><a href="<?php echo $this->url(array('controller' => 'Planificacionunidad',
+    'action' => 'index'),null,TRUE); ?>">Planificacion Unidad</a></li>
+        <li><a href="<?php echo $this->url(array('controller' => 'Planificacionclases',
+    'action' => 'index'),null,TRUE); ?>">Planificacion Clase a Clase</a></li>
+    </ul>
+<li>
+<li><a href="">Informes</a></li>
+</ul>
+<!--Fin menu horizontal-->
+
+</div>
+        <!--Fin Cabecera-->
+
+<!--Inicio de contendido-->
+<div></div>
+<div id="contenido">
+    <div class="breadcrumbs alt1">
+    <?php  echo $this->navigation()->breadcrumbs()->setMinDepth(0)->render($this->navigation()->getContainer());
+                    ?></div>
+    
+                    <h5><?php echo $this->title; ?></h5> 
+   
+                    <?php echo $this->layout()->content; ?>
+              
+            
+    </div>
+
+
+<!-- Fin contenido-->
+<!--Inicio Pie de Pagina-->
+<div id="footer">Softinnova &copy; Derechos Reservados 2013 <br />
+<a href="#" class="center">Soporte</a> | <a href="#" class="center">Ayuda</a>
+</div>	
+<!-- Fin pie de Pagina-->
+</body>
+</html>

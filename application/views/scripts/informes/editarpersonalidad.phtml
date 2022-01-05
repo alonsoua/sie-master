@@ -1,0 +1,24 @@
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'personalidad'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<div id="content">
+            <div id="wrapper">
+                    <?php if ($this->messages) : ?>
+<div class="t_a_message">
+   <ul>
+   <?php foreach ($this->messages as $msg) : ?>
+      <li><?php echo $msg; ?></li>
+   <?php endforeach; ?>
+   </ul>
+</div>
+<?php endif; ?> 
+                <div id="steps">
+                 <?php echo $this->form; ?>   
+                    
+                </div>
+               
+                
+               
+        </div>
+  </div>

@@ -1,0 +1,109 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+<a class="button small" href="<?php $d = '';
+echo $this->url(array('controller' => 'Cuentausuario',
+    'action' => 'agregar')); ?>">Nuevo Usuario</a>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nombre de usuario</th>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Establecimiento</th>
+            <th>Cargo</th>
+            <th>Última Conexión</th>
+            <th>Editar</th>
+            <th>Agregar Rol</th>
+            <th>Restablecer Contraseña</th>
+            <th>Eliminar</th>
+
+        </tr>
+        </thead>
+
+
+        <?php foreach ($this->dato as $d) : ?>
+
+            <tr>
+                <td><?php echo $d['usuario']; ?></td>
+                <td><?php echo $d['nombrescuenta']; ?></td>
+                <td><?php echo $d['paternocuenta']; ?></td>
+                <td><?php echo $d['maternocuenta']; ?></td>
+
+                <td><?php if ($d['nombreEstablecimiento'] == '') {
+                        if ($d['idRoles'] == '1') {
+                            echo 'Todos los Establecimientos';
+                        } else {
+                            echo 'Sin Rol Asignado';
+                        }
+                    } else {
+                        echo $d['nombreEstablecimiento'];
+                    } ?>
+                </td>
+
+                <td><?php echo $d['nombreRol']; ?></td>
+                <td><?php echo $d['ultima_conexion']; ?></td>
+
+
+                <td>
+
+                    <?php if ($d['idRoles'] == '4' || $d['idRoles'] == '1') { ?>
+
+                        <a class="button small" disabled="disabled">Editar</a>
+                    <?php } else { ?>
+
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+                            'action' => 'editarcuenta', 'idCuenta' => $d['idCuenta'], 'idRol' => $d['id'])); ?>">Editar</a>
+                    <?php } ?>
+                </td>
+
+                <td>
+                    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+                        'action' => 'agregarrol', 'idCuenta' => $d['idCuenta'])); ?>">Nuevo Rol</a>
+                </td>
+
+
+                <?php if ($d['idRoles'] == '1') { ?>
+                    <td>
+
+                        <a class="button small " disabled="disabled">Restablecer</a>
+                    </td>
+                <?php } else {
+                    ?>
+                    <td>
+
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+                            'action' => 'restablecer', 'idCuenta' => $d['idCuenta'])); ?>">Restablecer</a>
+                    </td>
+                <?php } ?>
+
+                <?php if ($d['idRoles'] == '1') { ?>
+                    <td>
+                        <a class="button small " disabled="disabled">Eliminar</a>
+                    </td>
+                <?php } else { ?>
+                    <td>
+
+                        <a class="button small red" href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+                            'action' => 'eliminar', 'id' => $d['idCuenta'], 'ide' => $d['idEstablecimiento'], 'idr' => $d['idRol'])); ?>">Eliminar</a>
+                    </td>
+                <?php } ?>
+            </tr>
+        <?php endforeach; ?>
+    </table>

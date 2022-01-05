@@ -1,0 +1,31 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#asignaturas").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            max_selected_options: "3",
+            placeholder_text_multiple: "Seleccione Asignaturas",
+            width: "350px"
+        });
+    });
+
+</script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'asignaturas', 'id' => $this->dato), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<?php if ($this->messages): ?>
+    <div class="t_a_message">
+        <ul>
+            <?php foreach ($this->messages as $msg): ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<div class="col_12 column center"><?php echo $this->form ?></div>

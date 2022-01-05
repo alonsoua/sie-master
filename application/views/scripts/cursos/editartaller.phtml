@@ -1,0 +1,117 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //$("#opsegmento").hide();
+        $("#opsegmento").closest('tr').hide();
+        $("#idAlumnos").closest('tr').hide();
+        //$("#opsegmento-label").hide();
+
+        $("#idAsignaturaTaller").chosen({no_results_text: "Búsqueda no encontrada"});
+
+        if ($('#segmento').val() == 2) {
+            $("#opsegmento").html('');
+            var opciones = '<option value="1">Primer Semestre</option><option value="2">Segundo Semestre</option>';
+            $("#opsegmento").append(opciones);
+            $("#opsegmento").closest("tr").show();
+
+        }
+
+        if ($('#segmento').val() == 3) {
+            $("#opsegmento").html('');
+            var opciones = '<option value="1">Primer Trimestre</option><option value="2">Segundo Trimestre</option><option value="3">Tercer Trimestre</option>';
+            $("#opsegmento").append(opciones);
+            $("#opsegmento").closest("tr").show();
+
+        }
+    });
+    $(function () {
+
+        $('#segmento').change(function () {
+
+            if ($(this).val() == 1) {
+                $("#opsegmento").html('');
+                $("#opsegmento").closest("tr").hide();
+
+            }
+
+            if ($(this).val() == 2) {
+                $("#opsegmento").html('');
+                var opciones = '<option value="1">Primer Semestre</option><option value="2">Segundo Semestre</option>';
+                $("#opsegmento").append(opciones);
+                $("#opsegmento").closest("tr").show();
+
+
+            }
+
+            if ($(this).val() == 3) {
+                $("#opsegmento").html('');
+                var opciones = '<option value="1">Primer Trimestre</option><option value="2">Segundo Trimestre</option><option value="3">Tercer Trimestre</option>';
+                $("#opsegmento").append(opciones);
+                $("#opsegmento").closest("tr").show();
+
+            }
+
+        });
+
+        $('#tipo').change(function () {
+
+            if ($(this).val() == 1) {
+                $("#idAlumnos").val([]).trigger('chosen:updated')
+                $("#idAlumnos").closest("tr").hide();
+
+            }
+
+            if ($(this).val() == 2) {
+                $("#idAlumnos").closest("tr").show();
+
+
+            }
+
+
+        });
+
+
+        $('#forma').change(function () {
+            if ($(this).val() == '2') {
+                $("#porcentaje-label").closest("tr").show();
+
+
+            } else {
+                $("#porcentaje-label").closest("tr").hide();
+                $("#porcentaje").val('');
+            }
+
+        });
+
+        $("#forma").trigger("change");
+
+        $("#idAlumnos").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            max_selected_options: "50",
+            placeholder_text_multiple: "Seleccione Alumnos",
+            width: "350px"
+        });
+
+    });
+
+
+</script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'taller', 'id' => $this->datoasig, 'c' => $this->dato), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<?php if ($this->messages): ?>
+    <div class="t_a_message error">
+        <ul>
+            <?php foreach ($this->messages as $msg): ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<div class="col_12 column center"><?php echo $this->form ?></div>

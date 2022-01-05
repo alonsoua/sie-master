@@ -1,0 +1,52 @@
+<a class="button medium blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Establecimiento',
+    'action' => 'configdecreto')); ?>">Agregar Decreto</a>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+    'action' => 'index'), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+
+<table class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>Numero Decreto</th>
+        <th>Año</th>
+        <th>Nombre Establecimiento</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
+
+    </tr>
+    </thead>
+    <?php foreach ($this->dato as $d): ?>
+
+        <tr>
+
+            <td>
+                <?php echo $d->numeroDecreto; ?>
+            </td>
+
+            <td>
+                <?php echo $d->yearDecreto; ?>
+            </td>
+
+            <td><?php echo $d->nombreEstablecimiento; ?></td>
+
+
+            <td>
+
+                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'editardecreto', 'id' => $d->idEstablecimiento,'idd' => $d->idDecreto)); ?>">Editar</a>
+
+            </td>
+
+            <td>
+
+
+                <a class="button small red" href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                    'action' => 'eliminardecreto', 'id' => $d->idEstablecimiento,'idd' => $d->idDecreto)); ?>">Eliminar</a>
+            </td>
+
+        </tr>
+
+    <?php endforeach; ?>
+</table>

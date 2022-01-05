@@ -1,0 +1,338 @@
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<link href="<?php echo $this->baseUrl; ?>/css/notasnuevo.css" type="text/css" rel="stylesheet"/>
+
+
+<?php
+$nombrecurso = new Zend_Session_Namespace('nombre_curso');
+$nombre_curso = $nombrecurso->nombre_curso;
+
+$idcurso = new Zend_Session_Namespace('id_curso');
+$id_curso = $idcurso->id_curso;
+
+$iddetallecurso = new Zend_Session_Namespace('id_detalle_curso');
+$id_detalle_curso = $iddetallecurso->id_detalle_curso;
+
+$cargo = new Zend_Session_NameSpace("cargo");
+
+$ingreson = new Zend_Session_Namespace('ingresonota');
+$ingresonota = $ingreson->ingresonota;
+
+$codigos = new Zend_Session_Namespace('codigo');
+$codigo = $codigos->codigo;
+
+$app = new Zend_Session_Namespace('activarapp');
+$activarapp = $app->activarapp;
+
+$establecimientos = new Zend_Session_Namespace('idesta');
+$id_establecimiento = $establecimientos->idesta;
+
+$idtipoev = new Zend_Session_Namespace('tipoevaluacion');
+$idtevalucacion = $idtipoev->tipoevaluacion;
+
+
+$monitoreos = new Zend_Session_Namespace('monitoreo');
+$monitoreo = $monitoreos->monitoreo;
+
+
+if ($cargo->cargo == '1' || $cargo->cargo == '3') { ?>
+
+    <?php if($monitoreo==1){?>
+
+        <a class="button medium green" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'monitoreo'), null, true);
+        ?>"><i class="icon-hand-right"></i> Ir a Monitoreo Evaluación </a>
+    <?php } ?>
+
+
+<?php } ?>
+
+<input type="hidden" id="apx" value="<?php echo $this->aprox; ?>">
+
+<div class="center-header">
+    <div style="width: 40%; display: -webkit-box">
+        <a class="button medium" href="<?php echo $this->url(array('controller' => 'Libro',
+            'action' => 'abrir', 'id' => $id_curso), null, TRUE);
+        ?>"><i class="icon-hand-left"></i> Volver</a>
+
+        <?php if ($cargo->cargo == '2') { ?>
+
+            <div class="ventana"><a class="button medium blue" id="nuevo"
+                                    href="<?php echo $this->url(array('controller' => 'Libro',
+                                        'action' => 'agregarnotasnuevo', 'id' => ''), null, TRUE);
+                                    ?>"> Nueva Evaluación</a></div>
+
+            <?php if($activarapp==1){ ?>
+
+                <a style="margin-left: 10px;" class="button medium green" id="publicar"
+                   href="<?php echo $this->url(array('controller' => 'Libro',
+                       'action' => 'publicarnotas'), null, TRUE);
+                   ?>"> Publicar Notas App</a>
+
+
+            <?php } ?>
+
+            <?php if($monitoreo==1){?>
+
+                <a class="button medium green" href="<?php echo $this->url(array('controller' => 'Libro',
+                    'action' => 'monitoreo'), null, true);
+                ?>"><i class="icon-hand-right"></i> Ir a Monitoreo Evaluación </a>
+            <?php } ?>
+
+
+
+        <?php } ?>
+    </div>
+
+    <div style="width: 60%">
+        <h3>Curso: <?php echo $nombre_curso; ?></h3>
+    </div>
+
+</div>
+
+
+<ul class="tabs left" id="listas">
+    <?php
+    foreach ($this->listaasignatura as $c) : ?>
+
+        <li><a class="asignatura" href="#" id="<?php echo $c['idAsignatura']; ?>"
+               name="<?php echo $c['tipoAsignatura']; ?>"><?php echo $c['nombreAsignatura']; ?></a></li>
+
+
+    <?php endforeach;
+    ?>
+</ul>
+<input type="hidden" id="us" value="<?php echo $cargo->cargo; ?>">
+
+<?php if($idtevalucacion==1){?>
+
+    <script src="<?php echo $this->baseUrl; ?>/javascript/notasnuevo.js"></script>
+
+    <div class="grid-container" id="tblTabla">
+        <div class="grid">
+            <div class="grid-col grid-col--fixed-left alumnos" id="alumnos">
+                <div class="grid-item grid-item--header">
+                    <p class="head">Alumnos</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div id="alum" name="<?php echo $c['idAlumnosActual']; ?>" class="grid-item"
+                         style="text-align: left; width: auto;">
+                        <p><?php echo $c['apaterno'] . ' ' . $c['amaterno'] . ' ' . $c['nombres']; ?> </p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <?php
+            if($id_establecimiento==11){?>
+
+                <div class="grid-col primer" id="primer">
+                    <div class="grid-item grid-item--header" style="background-color: #E2E5E5;">
+                        <p class="head">I SEM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem" style="background-color: #E2E5E5;">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="grid-col segundo" id="segundo">
+                    <div class="grid-item grid-item--header" style="background-color: #E2E5E5;">
+                        <p class="head">II SEM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem" style="background-color: #E2E5E5;">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+            <?php }else{?>
+
+                <div class="grid-col primer" id="primer">
+                    <div class="grid-item grid-item--header" style="background-color: #11b106;">
+                        <p class="head">I SEM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="grid-col segundo" id="segundo">
+                    <div class="grid-item grid-item--header" style="background-color: #11b106;">
+                        <p class="head">II SEM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+            <?php } ?>
+
+
+            <div class="grid-col grid-col--fixed-right " id="final">
+                <div class="grid-item grid-item--header final" style="background-color: #63abe6;">
+                    <p class="head">FINAL</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div class="grid-item final">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="grid-col grid-col--fixed-right ex oculta " id="ex">
+                <div class="grid-item grid-item--header examen" style="background-color: #edde34;">
+                    <p class="head">Examen</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div class="grid-item examen">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="grid-col grid-col--fixed-right exfinal oculta" id="finalex">
+                <div class="grid-item grid-item--header finalex">
+                    <p class="head">Final + Examen</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div class="grid-item finalex">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
+    </div>
+
+
+
+<?php }else{ ?>
+
+
+
+    <script src="<?php echo $this->baseUrl; ?>/javascript/notasnuevot.js"></script>
+
+    <div class="grid-container" id="tblTabla">
+        <div class="grid">
+            <div class="grid-col grid-col--fixed-left alumnos" id="alumnos">
+                <div class="grid-item grid-item--header">
+                    <p class="head">Alumnos</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div id="alum" name="<?php echo $c['idAlumnosActual']; ?>" class="grid-item"
+                         style="text-align: left; width: auto;">
+                        <p><?php echo $c['apaterno'] . ' ' . $c['amaterno'] . ' ' . $c['nombres']; ?> </p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <?php
+            if($id_establecimiento==11){?>
+
+                <div class="grid-col primer" id="primer">
+                    <div class="grid-item grid-item--header" style="background-color: #E2E5E5;">
+                        <p class="head">I TRIM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem" style="background-color: #E2E5E5;">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="grid-col segundo" id="segundo">
+                    <div class="grid-item grid-item--header" style="background-color: #E2E5E5;">
+                        <p class="head">II TRIM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem" style="background-color: #E2E5E5;">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="grid-col tercero" id="tercero">
+                    <div class="grid-item grid-item--header" style="background-color: #E2E5E5;">
+                        <p class="head">III TRIM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem" style="background-color: #E2E5E5;">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+            <?php }else{?>
+
+                <div class="grid-col primer" id="primer">
+                    <div class="grid-item grid-item--header" style="background-color: #11b106;">
+                        <p class="head">I TRIM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="grid-col segundo" id="segundo">
+                    <div class="grid-item grid-item--header" style="background-color: #11b106;">
+                        <p class="head">II TRIM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="grid-col tercero" id="tercero">
+                    <div class="grid-item grid-item--header" style="background-color: #11b106;">
+                        <p class="head">III TRIM</p>
+                    </div>
+                    <?php foreach ($this->alumnos as $c) : ?>
+                        <div class="grid-item sem">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+            <?php } ?>
+
+
+            <div class="grid-col grid-col--fixed-right " id="final">
+                <div class="grid-item grid-item--header final" style="background-color: #63abe6;">
+                    <p class="head">FINAL</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div class="grid-item final">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="grid-col grid-col--fixed-right ex oculta " id="ex">
+                <div class="grid-item grid-item--header examen" style="background-color: #edde34;">
+                    <p class="head">Examen</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div class="grid-item examen">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="grid-col grid-col--fixed-right exfinal oculta" id="finalex">
+                <div class="grid-item grid-item--header finalex">
+                    <p class="head">Final + Examen</p>
+                </div>
+                <?php foreach ($this->alumnos as $c) : ?>
+                    <div class="grid-item finalex">
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+        </div>
+    </div>
+<?php } ?>
+
+
+
+
+
+
+
+
+

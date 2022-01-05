@@ -1,0 +1,129 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'indexasistenciaalumno'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe Asistencia Alumno</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'indexasistencia'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i> Informe Asistencia Curso</a>
+
+
+
+
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+<style>
+    td{
+        border-bottom: none;
+    }
+
+
+</style>
+
+<div style="margin-top: 20px;">
+
+    <h4>Generar Informe Asistencia Curso</h4>
+<?php echo $this->form; ?>
+
+<script>
+    $(document).ready(function () {
+
+        $("#idAlumnos").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            placeholder_text_multiple: "Seleccione Alumnos",
+            width:350
+        });
+
+        function noSunday(date) {
+            var day = date.getDay();
+            return [(day > 0), ''];
+        }
+
+
+        $("#fechai").datepicker({
+            <?php $periodo = new Zend_Session_Namespace('nombreperiodo');
+            ?>
+            //autoSize: true,
+            showOn: "button",
+            buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+            buttonImageOnly: true,
+            beforeShowDay: noSunday,
+            minDate: new Date(<?php echo $periodo->nombreperiodo ?>, 1, 1),
+            maxDate: new Date(<?php echo $periodo->nombreperiodo ?>, 11, 31),
+
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            defaultDate: new Date(<?php echo $periodo->nombreperiodo ?>, 1, 1),
+            numberOfMonths: 3,
+
+
+            onSelect: function (selected) {
+                $("#fechat").datepicker("option", "minDate", selected);
+            }
+
+        });
+
+
+        $("#fechat").datepicker({
+            //autoSize: true,
+            showOn: "button",
+            buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+            buttonImageOnly: true,
+            //bloqueamos los domingos
+            beforeShowDay: noSunday,
+
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            firstDay: 1,
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dateFormat: 'dd-mm-yy',
+            numberOfMonths: 3,
+            defaultDate: new Date(<?php echo $periodo->nombreperiodo ?>, 5, 1),
+            minDate: new Date(<?php echo $periodo->nombreperiodo ?>, 2, 1),
+            maxDate: new Date(<?php echo $periodo->nombreperiodo ?>, 11, 31),
+            onSelect: function (selected) {
+                $("#fechai").datepicker("option", "maxDate", selected);
+            }
+
+
+        });
+
+
+        $('#idCursos').on('change', function (e) {
+            $.ajax({
+                type: "GET",
+                url: "getalumnos/id/" + $(this).val(),
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    var options = '';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].idAlumnos + '">' + data[i].apaterno + ' ' + data[i].amaterno+ ' '+ data[i].nombres+'</option>';
+                    }
+                    $('#idAlumnos').html(options);
+                    $('#idAlumnos').trigger('chosen:updated');
+                    // if (curso > 0) {
+                    //     $('#idCursos').val(curso);
+                    // }
+                }
+            });
+            e.stopImmediatePropagation();
+        });
+
+        $('#idCursos').trigger('change');
+
+
+    });
+</script>
+</div>
+

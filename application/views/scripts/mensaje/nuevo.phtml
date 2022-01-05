@@ -1,0 +1,333 @@
+<link href="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="<?php echo $this->baseUrl; ?>/css/estilomensajes.css" rel="stylesheet">
+<link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css'>
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/plugins/iCheck/icheck.min.js"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+<script src="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/css/bootstrap-3.3.7-dist/plugins/bootstrap-wysihtml5/locales/bootstrap-wysihtml5.es-ES.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+<?php
+$periodo = new Zend_Session_Namespace('nombreperiodo');
+$nombreperiodo = $periodo->nombreperiodo;
+$form = $this->form;
+$cargo = new Zend_Session_Namespace('cargo');
+$rol = $cargo->cargo;
+?>
+<div class="mail-box">
+    <aside class="sm-side">
+        <div class="inbox-body">
+            <?php if (!$this->messagesnuevo) { ?>
+
+
+            <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                'action' => 'nuevo'), 'default', TRUE); ?>" data-toggle="modal" title="Compose" class="btn btn-compose">
+                Nuevo Mensaje
+            </a>
+            <?php } ?>
+
+        </div>
+        <ul class="inbox-nav inbox-divider">
+            <li>
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'entrada'), 'default', TRUE); ?>"><i class="fa fa-inbox"></i> Entrada <span
+                            class="label label-danger pull-right"><?php if($this->totalnoleido>0){echo $this->totalnoleido;} ?></span></a>
+
+            </li>
+            <li>
+                <a href="<?php echo $this->url(array('controller' => 'mensaje',
+                    'action' => 'enviado'), 'default', TRUE); ?>"><i class="fa fa-envelope-o"></i> Enviados</a>
+            </li>
+        </ul>
+    </aside>
+    <aside class="lg-side">
+
+        <div class="inbox-head">
+            <?php if (!$this->messagesnuevo) { ?>
+            <h3>Nuevo Mensaje</h3>
+            <?php } ?>
+            <?php if ($this->messages) : ?>
+                <div class="error">
+                    <ul>
+                        <?php foreach ($this->messages as $msg) : ?>
+                            <li><?php echo $msg; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="inbox-body">
+
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <?php if ($this->messagesnuevo) { ?>
+                        <div class="error">
+                            <ul>
+                                <?php foreach ($this->messagesnuevo as $msg) : ?>
+                                    <li><?php echo $msg; ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php }else{ ?>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <form id="formElem" name="formElem" enctype="application/x-www-form-urlencoded" action method="post">
+                            <?php if($rol!=2){ ?>
+                            <div class="form-group">
+                                <?php echo $form->idEstablecimiento->renderViewHelper(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->idRol->renderViewHelper(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->idCuenta->renderViewHelper(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->asunto->renderViewHelper(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->mensaje->renderViewHelper(); ?>
+                            </div>
+
+                            <div class="form-group">
+                                <?php echo $form->submit->renderViewHelper(); ?>
+
+                            </div>
+                            <?php }else{ ?>
+
+                                <div class="form-group">
+                                    <?php echo $form->idCuenta->renderViewHelper(); ?>
+                                </div>
+
+                            <div class="form-group">
+                                <?php echo $form->asunto->renderViewHelper(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->mensaje->renderViewHelper(); ?>
+                            </div>
+
+                            <div class="form-group">
+                                <?php echo $form->submit->renderViewHelper(); ?>
+
+                            </div>
+                            <?php } ?>
+                        </form>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#compose-textarea').wysihtml5({
+            locale: 'es-ES',
+            toolbar: {
+                "font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+                "emphasis": true, //Italics, bold, etc. Default true
+                "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                "html": false, //Button which allows you to edit the generated HTML. Default false
+                "link": false, //Button to insert a link. Default true
+                "image": false, //Button to insert an image. Default true,
+                "color": false, //Button to change color of font
+                "blockquote": true, //Blockquote
+                "fa": false
+            }
+        });
+
+        <?php if($rol==1){?>
+
+
+        $("#idEstablecimiento").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            placeholder_text_multiple: "Seleccione Establecimientos(Opcional):",
+            width: "550px"
+        });
+            <?php } ?>
+
+        $("#idRol").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            placeholder_text_multiple: "Seleccione Roles(Opcional):",
+            width: "550px"
+        });
+
+        $("#idCuenta").chosen({
+            no_results_text: "Búsqueda no encontrada",
+            placeholder_text_multiple: "Seleccione Destinatarios:",
+            width: "550px"
+        });
+
+
+        $('#idEstablecimiento').change(function (evt, params) {
+
+            var $s = $(this);
+
+
+            if (params.selected && params.selected == "all") {
+                $s.children('option').not(':selected').each(function () {
+                    $(this).attr('disabled', 'disabled');
+                });
+            } else if (params.deselected && params.deselected == "all") {
+                $s.children('option').each(function () {
+                    $(this).removeAttr('disabled');
+                });
+            }
+
+            if ((params.selected && params.selected != "all") || (params.deselected && params.deselected != "all")) {
+
+                if ($(this).val() != null && $(this).val() != 'all') {
+                    $(this).find('option:eq(0)').attr('disabled', 'disabled');
+
+                } else {
+                    $(this).find('option:eq(0)').removeAttr('disabled');
+
+                }
+
+            }
+            $('#idEstablecimiento').trigger('chosen:updated');
+            if ($(this).val() != null) {
+
+                var datos = $(this).val();
+
+            } else {
+                var datos = 'all';
+            }
+            $.ajax({
+                type: "GET",
+                url: "getusuarios/id/" + datos + "/r/allr",
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    var options = '';
+                    if ($s.val().length > 1) {
+                        options += '<option value="alle">Todos los Establecimientos Seleccionados</option>';
+                    } else {
+                        options += '<option value="alle">Todo el Establecimiento Seleccionado</option>';
+                    }
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].id + '">' + data[i].nombrescuenta + ' ' + data[i].paternocuenta + ' ' + data[i].maternocuenta + ' | '+data[i].nombreRol+' | '+data[i].nombreEstablecimiento+'</option>';
+                    }
+                    $('#idCuenta').html(options).trigger('chosen:updated');
+                }
+            });
+
+
+        });
+
+
+
+
+
+        $('#idRol').change(function (evt, params) {
+            var $s = $(this);
+            if (params.selected && (params.selected == "all" || params.selected == "allr")) {
+                // disable the select
+                $s.children('option').not(':selected').each(function () {
+                    $(this).attr('disabled', 'disabled');
+                });
+            } else if (params.deselected && (params.deselected == "all" || params.deselected == "allr")) {
+                // enable back
+                $s.children('option').each(function () {
+                    $(this).removeAttr('disabled');
+                });
+            }
+
+            if ((params.selected && params.selected != "allr") || (params.deselected && params.deselected != "allr")) {
+                if ($(this).val() != null && $(this).val() != 'allr') {
+                    $(this).find('option:eq(0)').attr('disabled', 'disabled');
+
+                } else {
+                    $(this).find('option:eq(0)').removeAttr('disabled');
+
+                }
+            }
+            $('#idRol').trigger('chosen:updated');
+            if ($(this).val() != null) {
+                var datos = $(this).val()
+
+            } else {
+                var datos = 'allr';
+            }
+            var est = $("#idEstablecimiento").val();
+            if (est == null) {
+
+                est = 'all';
+
+            }
+            $.ajax({
+                type: "GET",
+                url: "getusuarios/id/" + est + "/r/" + datos,
+                async: true,
+                dataType: "json",
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/j-son;charset=UTF-8");
+                    }
+                },
+                success: function (data) {
+                    if (data.length > 0) {
+                        var options = '';
+                        if ($("#idEstablecimiento").val()!=null) {
+                            if ($("#idEstablecimiento").val().length > 1) {
+                                options += '<option value="alle">Todos los Establecimientos Seleccionados</option>';
+                            } else {
+                                options += '<option value="alle">Todo el Establecimiento Seleccionado</option>';
+                            }
+                        }else{
+                            options += '<option value="alle">Todos los Usuarios </option>';
+                        }
+
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].id + '">' + data[i].nombrescuenta + ' ' + data[i].paternocuenta + ' ' + data[i].maternocuenta + ' | '+data[i].nombreRol+' | '+data[i].nombreEstablecimiento+'</option>';
+                        }
+                        $('#idCuenta').html(options).trigger('chosen:updated');
+                    } else {
+                        $('#idCuenta').html('').trigger('chosen:updated');
+                    }
+                }
+            });
+
+
+        });
+
+        $('#idCuenta').change(function (evt, params) {
+
+            var $s = $(this);
+
+
+            if (params.selected && (params.selected == "all" || params.selected == "alle")) {
+                $s.children('option').not(':selected').each(function () {
+                    $(this).attr('disabled', 'disabled');
+                });
+            } else if (params.deselected && (params.deselected == "all" || params.deselected == "alle")) {
+                $s.children('option').each(function () {
+                    $(this).removeAttr('disabled');
+                });
+            }
+
+            if ((params.selected && params.selected != "alle") || (params.deselected && params.deselected != "alle")) {
+                if ($(this).val() != null) {
+                    $(this).find('option:eq(0)').attr('disabled', 'disabled');
+
+                } else {
+                    $(this).find('option:eq(0)').removeAttr('disabled');
+
+                }
+            }
+            $('#idCuenta').trigger('chosen:updated');
+
+        });
+
+    })
+    ;
+
+</script>

@@ -1,0 +1,173 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'index'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Nombre</th>
+            <th>Establecimiento</th>
+            <th>Enseñanza</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Validar</th>
+            <th>Ver Historial</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="alt first last">
+
+            <?php $i = 1;
+            foreach ($this->paginator as $d): ?>
+
+
+
+
+            <td><?php echo $i; ?></td>
+
+
+            <td> <?php echo $d['rutAlumno']; ?> </td>
+
+            <td><?php echo $d['apaterno']; ?></td>
+
+
+            <td><?php echo $d['amaterno']; ?></td>
+
+
+            <td><?php echo $d['nombres']; ?></td>
+
+
+            <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+            <td><?php echo $d['nombreTipoEnsenanza']; ?></td>
+
+            <td><?php echo $d['nombreGrado']; ?></td>
+
+            <td><?php echo $d['letra']; ?></td>
+
+            <?php
+            $data = [
+                $d['idAlumnos'],
+                $d['idEstablecimiento'],
+                $d['idPeriodoActual'],
+                substr($d['rutAlumno'], 0, -1),
+                substr($d['rutAlumno'], -1),
+                $d['nombres'],
+                $d['apaterno'],
+                $d['amaterno']
+            ];
+            ?>
+            <td>
+                <button class="button small red"
+                        onclick="validarAlumno('<?php echo implode("', '", $data); ?>')">
+                    Validar Alumno
+                </button>
+            </td>
+
+            <td>
+                <div class="ventana">
+                    <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Sige',
+                        'action' => 'verhistorialalumno', 'id'=>$d['idAlumnos']), 'default', true); ?>"><i class="icon-eye-open"></i> Ver Historial</a>
+
+                </div>
+            </td>
+
+
+        </tr>
+
+
+        </tr>
+
+        <?php $i = $i + 1;
+        endforeach; ?>
+
+        </tbody>
+
+    </table>
+
+    <script type="text/javascript">
+        var validarAlumno = function (id, est, per,rut, dv, nombres, appaterno, apmaterno) {
+
+            $.ajax({
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../Sige/validaralumno/',
+                data: JSON.stringify({id: id, est: est, per:per,
+                    rut:rut, dv:dv, nombres:nombres, appaterno:appaterno,
+                    apmaterno:apmaterno}),
+                beforeSend: function (data) {
+                    $('#div_cliente').html('<label>Validando...</label>');
+                },
+                success: function (data) {
+                    if (parseInt(data.response) === 1) {
+                        switch(parseInt(data.status)){
+                            case 1:
+                                alert('RUN de entrada tiene FICHA SIGE y la identificación proporcionada es correcta');
+                            break;
+                            case 2:
+                                alert('RUN de entrada tiene FICHA SIGE, pero la identificación proporcionada no corresponde a la registrada.');
+                                break;
+                            case 3:
+                                alert('Este código de retorno no está operativo por el momento.');
+                                break;
+                            case 4:
+                                alert('RUN de entrada NO tiene FICHA SIGE.');
+                                break;
+                            case 5:
+                                alert('RUN de entrada NO válido.');
+                                break;
+                            case 6:
+                                alert('Semilla de operación NO válida o ha caducado (renovar semilla).');
+                                break;
+                            case 7:
+                                alert('Error interno de servicio.');
+                                break;
+
+                        }
+                    } else if (parseInt(data.response) === 0) {
+                        alert('El Alumno NO es válido!!');
+                    } else {
+                        alert('Ha ocurrido un error intente mas tarde')
+                    }
+                },
+                error: function () {
+                    alert('Ha ocurrido un error intente mas tarde')
+                }
+            });
+        }
+    </script>

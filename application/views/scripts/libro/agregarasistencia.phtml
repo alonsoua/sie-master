@@ -1,0 +1,21 @@
+<style>
+
+    .unavailable span {
+        color: green !important;
+    / / muestra rojos los festivos background-color: blue;
+    }
+
+    .unavailable {
+        background-color: blue;
+    }
+</style>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'asistenciames'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<div id="informacion"></div>
+
+<?php echo $this->form; ?>
+<script src="<?php echo $this->baseUrl; ?>/javascript/asistencia.js"></script>
+
+<div id="asistencia"></div>

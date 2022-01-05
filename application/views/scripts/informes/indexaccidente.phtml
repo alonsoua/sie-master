@@ -1,0 +1,111 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script>
+
+</script>
+<style>
+
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+
+    .center-header h4 {
+        text-align: left;
+    }
+</style>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'nuevoaccidente')); ?>">Nuevo Accidente</a>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar"><i class="icon-search"></i> Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr class="alt first last">
+
+            <th>Nº</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Nombres</th>
+            <th>Grado</th>
+            <th>Letra Curso</th>
+            <th>Establecimiento</th>
+            <th>Fecha Accidente</th>
+            <th>Ver Certificado Accidente</th>
+            <th>Adjuntar Archivo</th>
+            <th>Ver Archivo</th>
+
+
+        </tr>
+        </thead>
+
+        <?php
+            if (!empty($this->datos)) {
+                foreach ($this->datos as $d) : ?>
+
+                    <tr>
+
+                        <td><?php echo $d['numeroAccidente']; ?></td>
+
+                        <td><?php echo $d['apaterno']; ?></td>
+
+                        <td><?php echo $d['amaterno']; ?></td>
+
+                        <td><?php echo $d['nombres']; ?></td>
+
+                        <td><?php echo $d['nombreGrado']; ?></td>
+
+                        <td><?php echo $d['letra']; ?></td>
+
+                        <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+                        <td><?php echo date("d-m-Y H:i", strtotime($d['fechaAccidente']));?></td>
+
+                        <td>
+
+                            <div class="ventana">
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'certificadoaccidente', 'id' => $d['idAccidente']), 'default', true); ?>">Ver Certificado Accidente</a>
+                            </div>
+                        </td>
+                        <td>
+
+                            <div class="ventana">
+                                <a class="button small orange"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'adjuntarcertificado', 'id' => $d['idAccidente']), 'default', true); ?>">Adjuntar Certificado Accidente</a>
+                            </div>
+                        </td>
+
+                        <td style="display:-webkit-inline-flex">
+
+
+                                <?php if(empty($d['archivo'])){ ?>
+                                <a class="button small" disabled="disabled">Ver Archivo</a>
+                                    <a class="button small" disabled="disabled">Eliminar</a>
+
+                                <?php }else{ ?>
+                            <div class="ventana">
+                                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'verarchivo', 'id' => $d['idAccidente']), 'default', true); ?>">Ver Archivo</a>
+                            </div>
+                                    <a class="button small red" href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'eliminararchivo', 'id' => $d['idAccidente']), 'default', true); ?>" onclick="return confirm('¿Quiere eliminar éste Archivo?');">Eliminar</a>
+
+                                <?php } ?>
+
+                        </td>
+
+
+                    </tr>
+
+                <?php endforeach;
+            } ?>
+
+
+    </table>
+</div>

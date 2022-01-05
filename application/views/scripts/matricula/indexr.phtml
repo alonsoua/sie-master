@@ -1,0 +1,101 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action' => 'agregar'), 'default', true); ?>">Agregar Alumnos</a>
+
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action' => 'index')); ?>">Lista Alumnos Activos</a>
+
+<a class="button small red" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action' => 'indexr'), 'default', true); ?>">Lista Alumnos Retirados</a>
+
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action' => 'indexa'), 'default', true); ?>">Lista Apoderados</a>
+<a class="button small blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Alumnos',
+    'action' => 'agregarapoderado'), 'default', true); ?>">Agregar Apoderado</a>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Nombre</th>
+            <th>Establecimiento</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+            <th>Cambiar Estado</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="alt first last">
+
+            <?php $i = 1;
+            foreach ($this->paginator as $d): ?>
+
+
+            <td><?php echo $i; ?></td>
+
+            <td> <?php echo $d['rutAlumno']; ?> </td>
+
+            <td><?php echo $d['apaterno']; ?></td>
+
+            <td><?php echo $d['amaterno']; ?></td>
+
+            <td><?php echo $d['nombres']; ?></td>
+
+            <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+            <td><?php echo $d['nombreGrado']; ?></td>
+
+            <td><?php echo $d['letra']; ?></td>
+
+            <td>
+                <a class="button small green" href="<?php echo $this->url(array('controller' => 'Alumnos',
+                    'action' => 'editar', 'id' => $d->idAlumnos), 'default', true); ?>">Editar</a>
+
+            </td>
+
+            <td>
+                <a class="button small red" href="<?php echo $this->url(array('controller' => 'Alumnos',
+                    'action' => 'eliminar', 'id' => $d->idAlumnos), 'default', true); ?>">Eliminar</a>
+            </td>
+
+            <td>
+                <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Alumnos',
+                    'action' => 'estado', 'id' => $d->idAlumnosActual), 'default', true); ?>">Cambiar Estado</a>
+            </td>
+
+        </tr>
+
+
+        </tr>
+
+        <?php $i = $i + 1;
+        endforeach; ?>
+
+        </tbody>
+
+    </table>

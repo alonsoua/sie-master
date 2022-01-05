@@ -1,0 +1,50 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+
+
+<?php $fecha = $this->listaasistencia;?>
+<h4>Curso: <?php echo $this->nombrecurso; ?></h4>
+<h5>Fecha: <?php echo date("d-m-Y", strtotime($fecha[0]['fechaAsistencia'])); ?></h5>
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Rut</th>
+        <th style="text-align: center">Digito Verificador</th>
+        <th>Nombre Alumno</th>
+        <th>Asistencia</th>
+
+    </tr>
+    </thead>
+    <?php
+
+
+    $var0 = $this->listaasistencia;
+    if (!empty($var0)) {
+
+
+        ?>
+
+        <?php foreach ($this->listaasistencia as $d) : ?>
+
+
+            <tr>
+
+                <td><?php echo substr($d['rutAlumno'], 0, -1); ?></td>
+                <td style="text-align: center"><?php echo substr($d['rutAlumno'], -1); ?></td>
+
+                <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?>
+                </td>
+                <?php if ($d['valor'] == 1) { ?>
+                    <td style="background: red;">Asusente</td>
+                <?php } else { ?>
+                    <td>Presente</td>
+                <?php } ?>
+            </tr>
+
+        <?php endforeach;
+    } ?>
+
+
+</table>

@@ -1,0 +1,63 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<style>
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<a class="button medium blue"
+   href="<?php echo $this->url(array('controller' => 'Periodo', 'action' => 'calendariocurso','id' => $this->idCalendarioEstablecimiento),null, TRUE);?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue"
+   href="<?php echo $this->url(array('controller' => 'Periodo', 'action' => 'agregarevento','id'=>$this->idCalendario),null, TRUE); ?>">Crear Evento</a>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Establecimiento</th>
+            <th>Código Calendario</th>
+            <th>Descripción Calendario</th>
+            <th>Nombre Evento</th>
+            <th>Fecha del Evento</th>
+            <th>Tipo de Evento</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+
+        </tr>
+        </thead>
+        <?php foreach ($this->dato as $d) : ?>
+
+            <tr>
+                <td><?php echo $d->nombreEstablecimiento ?></td>
+
+                <td><?php echo (empty($d->codigoCalendario)) ? "Sin Calendario" : $d->codigoCalendario ?></td>
+
+                <td><?php echo (empty($d->descripcionCalendario)) ? "No Creado" : $d->descripcionCalendario ?></td>
+
+                <td><?php echo (empty($d->nombreEvento)) ? "No Creado" : $d->nombreEvento ?></td>
+
+                <td><?php echo (empty($d->fechaEvento)) ? "No Creado" : $d->fechaEvento ?></td>
+
+                <td><?php echo (empty($d->descripcionEvento)) ? "No Creado" : $d->descripcionEvento ?></td>
+
+
+                <td><a class="button small green" href="<?php echo $this->url(array('controller' => 'Periodo',
+                        'action' => 'editarevento', 'id' => $d->idCalendario, 'ide' => $d->idEvento)); ?>">Editar</a>
+                </td>
+
+                <td><a class="button small red" href="<?php echo $this->url(array('controller' => 'Periodo',
+                        'action' => 'eliminarevento',  'id' => $d->idEvento,'idc'=>$this->idCalendario,'idce'=>$this->idCalendarioEstablecimiento,'t'=>'2'),null,TRUE); ?>">Eliminar</a>
+                </td>
+
+            </tr>
+
+        <?php endforeach; ?>
+
+    </table>

@@ -1,0 +1,530 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.jquery.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/javascript/chosen_v1.7.0/chosen.css">
+<link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/jquery.datetimepicker.css" type="text/css">
+<script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/jquery.rut.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<style>
+
+
+    input, select {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px;
+        max-width: 45%;
+    }
+
+    .chzn-container {
+        margin-top: 3px;
+        margin-bottom: 3px;
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        vertical-align: middle;
+        margin-left: 20px;
+        max-width: 40%;
+    }
+
+    label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        padding-top: 3px;
+        text-align: right;
+        width: 160px;
+    }
+
+    input[type="checkbox"] + label {
+        display: inline-block;
+        *display: inline; /* for IE7*/
+        zoom: 1; /* for IE7*/
+        padding-top: 3px;
+        text-align: right;
+        width: 120px;
+    }
+
+    .botones {
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+    }
+
+
+
+    h5 {
+        margin: 0 0 10px 0;
+    }
+    #idAlumnos_chosen{
+        margin-left: 3%;
+    }
+
+    .errorinput {
+        color: red;
+    }
+
+
+</style>
+<?php $form=$this->form; ?>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#rutTestigo")
+                .rut({validateOn: 'keyup change'})
+                .on('rutInvalido', function () {
+                    $(this).addClass("errorinput")
+                })
+                .on('rutValido', function () {
+                    $(this).removeClass("errorinput")
+                });
+
+            $("#rutTestigodos")
+                .rut({validateOn: 'keyup change'})
+                .on('rutInvalido', function () {
+                    $(this).addClass("errorinput")
+                })
+                .on('rutValido', function () {
+                    $(this).removeClass("errorinput")
+                });
+
+
+
+            function noSunday(date) {
+                var day = date.getDay();
+                return [(day > 0), ''];
+            }
+
+
+            $("#fechaAccidente").datepicker({
+                <?php $periodo = new Zend_Session_Namespace('nombreperiodo');?>
+                showOn: "button",
+                buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+                buttonImageOnly: true,
+                beforeShowDay: noSunday,
+                minDate: new Date(<?php echo $periodo->nombreperiodo ?>, 1, 1),
+                maxDate: new Date(<?php echo $periodo->nombreperiodo ?>, 11, 31),
+
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                firstDay: 1,
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dateFormat: 'dd-mm-yy',
+                defaultDate: new Date(<?php echo $periodo->nombreperiodo ?>, 1, 1),
+                numberOfMonths: 3,
+
+
+            });
+
+
+            $('#idCursos').on('change', function (e) {
+                $.ajax({
+                    type: "GET",
+                    url: "getalumnos/id/" + $(this).val(),
+                    async: true,
+                    dataType: "json",
+                    beforeSend: function (x) {
+                        if (x && x.overrideMimeType) {
+                            x.overrideMimeType("application/j-son;charset=UTF-8");
+                        }
+                    },
+                    success: function (data) {
+                        var options = '';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].idAlumnos + '">' + data[i].apaterno + ' ' + data[i].amaterno+ ' '+ data[i].nombres+'</option>';
+                        }
+                        $('#idAlumnos').html(options);
+
+
+                    }
+                });
+                e.stopImmediatePropagation();
+            });
+
+            $('#idAlumnos').on('change', function (e) {
+
+                if($(this).val()!=null){
+                    $.ajax({
+                        type: "GET",
+                        url: "getalumno/id/" + $(this).val(),
+                        async: true,
+                        dataType: "json",
+                        beforeSend: function (x) {
+                            if (x && x.overrideMimeType) {
+                                x.overrideMimeType("application/j-son;charset=UTF-8");
+                            }
+                        },
+                        success: function (data) {
+                            console.log(data);
+
+                            if(data!=null || data==''){
+                                $("#calle").val(data[0].calle);
+                                $("#numeroCasa").val(data[0].numeroCasa);
+                                $("#villa").val(data[0].villa);
+                                $("#ciudadActual").val(data[0].ciudadActual);
+                            }
+                        }
+                    });
+                }
+
+                e.stopImmediatePropagation();
+            });
+
+            $('#ubicacionAccidente').on('change', function (e) {
+
+                if($(this).val()==2){
+                    console.log('aca');
+                    $('#nombreTestigo').attr('readonly','readonly');
+                    $('#rutTestigo').attr('readonly','readonly');
+                    $('#nombreTestigodos').attr('readonly','readonly');
+                    $('#rutTestigodos').attr('readonly','readonly');
+                }else{
+                    console.log('aca 2');
+                    $('#nombreTestigo').removeAttr('readonly');
+                    $('#rutTestigo').removeAttr('readonly');
+                    $('#nombreTestigodos').removeAttr('readonly');
+                    $('#rutTestigodos').removeAttr('readonly');
+                }
+
+                e.stopImmediatePropagation();
+            });
+
+
+            $(".numero").keydown(function(event) {
+                if(event.shiftKey)
+                {
+                    event.preventDefault();
+                }
+
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9  )    {
+                }
+                else {
+                    if (event.keyCode < 95) {
+                        if (event.keyCode < 48 || event.keyCode > 57) {
+                            event.preventDefault();
+                        }
+                    }
+                    else {
+                        if (event.keyCode < 96 || event.keyCode > 105) {
+                            event.preventDefault();
+                        }
+                    }
+                }
+            });
+
+            $('#guardar').click(function (e) {
+
+                var elementos = $("#accidentes").find('input,select,textarea');
+                var datos = {};
+
+                if ($('#rutTestigo').hasClass('errorinput') || $('#rutTestigodos').hasClass('errorinput')) {
+
+                    const errorss = Swal.mixin({
+                        toast: true,
+                        position: 'top',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    errorss({
+                        type: 'error',
+                        title: 'El RUT no es válido'
+                    })
+
+                    return false;
+
+                } else {
+
+                    for (var i = 0; i < elementos.length; i++) {
+                        if (elementos[i].getAttribute("id") != null) {
+                            if (elementos[i].type == "checkbox") {
+                                if (elementos[i].checked == true) {
+                                    datos[elementos[i].getAttribute("id")] = 1;
+                                }
+                                else {
+                                    datos[elementos[i].getAttribute("id")] = 2;
+                                }
+
+
+                            } else {
+                                datos[elementos[i].getAttribute("id")] = elementos[i].value;
+                            }
+
+                        }
+
+                    }
+
+                    $.ajax({
+                        cache: false,
+                        async: true,
+                        dataType: 'json',
+                        type: 'POST',
+                        contentType: 'application/x-www-form-urlencoded',
+                        url: 'guardaraccidente',
+                        data: JSON.stringify(datos),
+                        success: function (data) {
+                            if (parseInt(data.response) === 1) {
+
+                                $("#boton").find('a').replaceWith('<a target="_blank" href="' + data.url + '"  id="pdf" class="button medium"><i class="icon-print"></i> Imprimir</a>');
+
+                                Swal({
+                                    title: "Guardado",
+
+                                    type: "success"
+                                }).then(okay => {
+                                    if (okay) {
+                                        //window.location.href = data.url;
+                                        window.open(data.url,'_blank');
+                                    }
+                                });
+
+
+
+                                for (var i = 0; i < elementos.length; i++) {
+                                    if (elementos[i].getAttribute("id") != null) {
+                                        if (elementos[i].type == "checkbox") {
+                                            if (elementos[i].checked == true) {
+                                                datos[elementos[i].getAttribute("id")] = 1;
+                                            }
+                                            else {
+                                                datos[elementos[i].getAttribute("id")] = 2;
+                                            }
+
+
+                                        } else {
+                                            elementos[i].setAttribute('disabled','disabled');
+                                        }
+
+                                    }
+
+                                }
+
+
+
+
+
+                            } else if (parseInt(data.response) === 0) {
+                                switch (parseInt(data.status)) {
+                                    case 1:
+                                        const errors = Swal.mixin({
+                                            toast: true,
+                                            position: 'top',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+
+                                        errors({
+                                            type: 'error',
+                                            title: 'Reinicie su Sesión '
+                                        })
+                                        break;
+                                    case 2:
+                                        const error = Swal.mixin({
+                                            toast: true,
+                                            position: 'top',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+
+                                        error({
+                                            type: 'error',
+                                            title: 'Error al ingresar los datos '
+                                        })
+                                        break;
+
+                                    case 3:
+                                        const errorss = Swal.mixin({
+                                            toast: true,
+                                            position: 'top',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                        errorss({
+                                            type: 'error',
+                                            title: 'Complete todos los campos (*)'
+                                        })
+                                        break;
+
+                                    case 4:
+                                        const errort = Swal.mixin({
+                                            toast: true,
+                                            position: 'top',
+                                            showConfirmButton: false,
+                                            timer: 3000
+                                        });
+                                        errort({
+                                            type: 'error',
+                                            title: 'Debe Completar al menos los dos campos de Testigo'
+                                        })
+                                        break;
+
+
+                                }
+                            } else {
+                                const error = Swal.mixin({
+                                    toast: true,
+                                    position: 'top',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+
+                                error({
+                                    type: 'error',
+                                    title: 'Error al ingresar los datos '
+                                })
+                            }
+                        },
+                        error: function () {
+                            const error = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            error({
+                                type: 'error',
+                                title: 'Error al ingresar los datos '
+                            })
+                        }
+                    });
+                }
+
+
+
+
+
+                e.stopImmediatePropagation();
+            });
+
+            $("#idAlumnos").trigger("change");
+
+
+
+        });
+    </script>
+
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Informes',
+    'action' => 'indexaccidente'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<div class="col_12 column center" id="accidentes">
+
+    <div class="col_10 aligned_form" style="border: 1px solid #efefef;">
+        <div class="col_6" style="text-align: left;display: inline;">
+            <div>
+                <?php
+                echo $form->idCursos->renderLabel() . $form->idCursos->renderViewHelper();
+                ?>
+            </div>
+            <div>
+                <?php
+                echo $form->idAlumnos->renderLabel() . $form->idAlumnos->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->calle->renderLabel() . $form->calle->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->numeroCasa->renderLabel() . $form->numeroCasa->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->villa->renderLabel() . $form->villa->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->ciudadActual->renderLabel() . $form->ciudadActual->renderViewHelper();
+                ?>
+            </div>
+        </div>
+
+        <div class="col_4" style="text-align: left;display: inline;">
+            <div>
+                <?php
+                echo $form->fechaAccidente->renderLabel() . $form->fechaAccidente->renderViewHelper();
+                ?>
+            </div>
+            <div>
+                <?php
+                echo $form->horarioAccidente->renderLabel();
+                $date = new DateTime;
+
+                $horarioactual=$date->format('H:i');
+                ?>
+                <input type="time" id="horarioAccidente" name="horarioAccidente" value="<?php echo $horarioactual; ?>" />
+            </div>
+
+            <div>
+                <?php
+                echo $form->ubicacionAccidente->renderLabel() . $form->ubicacionAccidente->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->nombreTestigo->renderLabel() . $form->nombreTestigo->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->rutTestigo->renderLabel() . $form->rutTestigo->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->nombreTestigodos->renderLabel() . $form->nombreTestigodos->renderViewHelper();
+                ?>
+            </div>
+
+            <div>
+                <?php
+                echo $form->rutTestigodos->renderLabel() . $form->rutTestigodos->renderViewHelper();
+                ?>
+            </div>
+
+        </div>
+
+        <div class="col_10">
+            <h5>CIRCUNSTANCIAS DEL ACCIDENTE (DESCRIBA COMO OCURRIO-CAUSAL)</h5>
+            <div>
+                <?php
+                echo $form->descripcionAccidente->renderViewHelper();
+                ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="col_12 center">
+        <div>
+            <ul class="button-bar">
+                <li id="boton"><a id="guardar" class="button medium"><i class="icon-save"></i> Guardar</a></li>
+<!--                <li><a id="pdf" class="button medium"><i class="icon-print"></i> Imprimir</a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

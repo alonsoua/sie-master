@@ -1,0 +1,75 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+
+<style>
+    #divInfo{
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+    #divTabla{
+        
+    }
+        input[type="text"]{
+            padding: 5px;
+            width: 595px;
+        }
+</style>
+
+<div id="divTabla" style="margin-top: 20px;">
+                <label for="txtBuscar">Buscar: </label>
+                <input type="text" id="txtBuscar" autofocus placeholder="Escriba el texto que desea encontrar y presione ENTER">
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        
+        <th>Nombre del Nivel</th>
+       
+        <th>Agregar Asignatura</th>
+        <th>Mostrar Asignaturas</th>
+        
+        
+        
+        
+    </tr>
+    </thead>
+
+<!--    recorro el arreglo de datos-->
+    <?php foreach ($this->dato as $d) : ?>
+
+        <tr>
+
+          
+
+
+        <td><?php echo $d[nombreNiveles]; ?>
+        </td>
+
+        
+          <td>
+             <!--                   enlace para agregar asignatura-->
+             <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Asignaturas',
+            'action' => 'agregar', 'id' => $d[idNiveles]),'default',TRUE); ?>">Agregar Asignatura</a>
+             
+         </td>
+
+         <td>
+             <!--                   enlace para agregar asignatura-->
+             <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Asignaturas',
+            'action' => 'asignaturas', 'id' => $d[idNiveles]),'default',TRUE); ?>">Mostrar</a>
+             
+         </td>
+         
+        
+        
+        
+        
+
+        
+        
+        </tr>
+<!--    fin del for-->
+    <?php endforeach; ?>
+</table>

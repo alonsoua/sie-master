@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="content-language" content="es"/>
+<head>
+    <title><?php echo $this->title; ?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+    <link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+    <link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+    <link href="<?php echo $this->baseUrl; ?>/css/slide.css" type="text/css" rel="stylesheet"/>
+    <link href="<?php echo $this->baseUrl; ?>/css/animate.css" type="text/css" rel="stylesheet"/>
+    <script src="<?php echo $this->baseUrl; ?>/javascript/jquery-1.7.2.min.js"></script>
+    <script src="<?php echo $this->baseUrl; ?>/javascript/slide.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/prettify.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/kickstart.js"></script>
+    <link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/login.css"/>
+    <link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/css/estiloformulario.css"/>
+
+
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery-ui.min.js"></script>
+
+
+    <link rel="stylesheet" href="<?php echo $this->baseUrl; ?>/calendario/css/jquery.ui.all.css" type="text/css">
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/calendario/jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="<?php echo $this->baseUrl; ?>/javascript/jquery.blockUI.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.blockUI.defaults.message = '<h5>Procesando...</h5><img src="<?php echo $this->baseUrl; ?>/images/cargando.gif"/><br/>';
+            $(document).ajaxStart($.blockUI).ajaxStop($.unblockUI);
+        });
+    </script>
+
+
+</head>
+<body>
+
+<div id="contenedor">
+
+    <div id="toppanel">
+        <div id="panel">
+            <div class="content clearfix">
+                <div class="left">
+                    <h1>Bienvenido</h1>
+                    <h2>Datos Generales de Establecimiento</h2>
+                    <li class="grey">RBD: <?php $recuperandoes = new Zend_Session_Namespace('nombrerbd');
+                        echo $recuperandoes->nombrerbd; ?></li>
+                    <li class="grey">Nombre:<?php $recuperandonom = new Zend_Session_Namespace('nomb_establecimiento');
+                        echo $recuperandonom->nom_establecimiento ?></li>
+                    <li class="grey">Cargo:<?php $cargo = new Zend_Session_Namespace('nombrerol');
+                        echo $cargo->nombrerol ?></li>
+                </div>
+                <div class="left">
+
+
+                    <h1>Datos de Usuario</h1>
+                    <li class="grey">Nombre: <?php $recuperando = new Zend_Session_Namespace('usuario');
+                        echo $recuperando->mivalor; ?></li>
+                    <li class="grey">Periodo: <?php $recuperando2 = new Zend_Session_Namespace('nombreperiodo');
+                        ?> <span><a
+                                    href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+                                        'action' => 'cambiarperiodo'), 'default', TRUE); ?>">Cambiar Periodo</a></span>
+                    </li>
+                    <?php $cambio = new Zend_Session_Namespace('cambio');
+                    if ($cambio->cambio == 1) {
+                        ?>
+                        <li class="grey"> Cambiar Cargo: <span><a
+                                        href="<?php echo $this->url(array('controller' => 'usuarios',
+                                            'action' => 'index'), null, true); ?>">Cambiar Cargo</a></span></li>
+
+                    <?php } ?>
+                    <li class="grey"> Cambiar Contraseña:<span><a href="<?php $rut = new Zend_Session_Namespace('id');
+                            $envia = $rut->id;
+                            echo $this->url(array('controller' => 'Cuentausuario',
+                                'action' => 'cambiarpass', 'id' => $envia), 'cambiarpass', TRUE); ?>">Cambiar Contraseña</a></span>
+                    </li>
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="tab">
+            <ul class="login">
+                <li class="left">&nbsp;</li>
+                <li> | Bienvenido <?php echo $recuperando->mivalor; ?> |
+                    <span>Usted se encuentra en el Periodo <?php echo $recuperando2->nombreperiodo; ?></span>
+                </li>
+                <?php $msj = new Zend_Session_Namespace('mensaje');
+
+                if ($msj->mensaje != 0) {
+                    ?>
+
+                    <li class="animated infinite bounce slow delay-1s"><span></span><a
+                                href="<?php echo $this->url(array('controller' => 'mensaje',
+                                    'action' => 'entrada'), 'default', TRUE); ?>" title="Mensajes"><i
+                                    class="icon-envelope icon-2x"
+                                    style="line-height: unset;text-decoration: none;color:#000000;"></i></a>
+                    </li>
+
+
+                <?php } else {
+                    ?>
+                    <li><span></span><a href="<?php echo $this->url(array('controller' => 'mensaje',
+                            'action' => 'entrada'), 'default', TRUE); ?>" title="Mensajes"><i
+                                    class="icon-envelope-alt icon-2x"
+                                    style="line-height: unset;text-decoration: none;"></i></a>
+                    </li>
+                <?php }
+
+                ?>
+
+
+                <li id="toggle" style="width:30px;vertical-align: bottom;">
+                    <a id="open" title="Abrir Panel"><i class=" icon-cog icon-2x" style="line-height: unset"></i></a>
+                    <a id="close" title="Cerrar Panel" style="display: none;"><i class=" icon-cog icon-2x"></i></a>
+                </li>
+                <li class="sep">|</li>
+                <li><span><a href="<?php echo $this->url(array('controller' => 'usuarios',
+                            'action' => 'logout'), 'default', TRUE); ?>">Cerrar Sesión</a></span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <section class="navigation">
+        <nav>
+            <div class="nav-movil">
+                <a id="nav-boton" href="#!">
+                    <span></span>
+                </a>
+            </div>
+
+            <ul class="menu">
+
+                <li><a href="<?php echo $this->url(array('controller' => 'index',
+                        'action' => 'index'), 'default', TRUE); ?>">Inicio</a></li>
+                <?php
+                $cargo = new Zend_Session_Namespace('cargo');
+                $rol = $cargo->cargo;
+                if ($rol == '5') { ?>
+                    <li><a href="#">Mantenedores</a>
+                        <ul class="nav-submenu">
+                            <li><a href="<?php echo $this->url(array('controller' => 'Sige',
+                                    'action' => 'index'), 'default', TRUE); ?>"><span class="icon" data-icon="7"></span>Sige</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                <?php }
+                if ($rol == '2') { ?>
+                    <li><a href="#">Mantenedores</a>
+                        <ul class="nav-submenu">
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Alumnos', 'action' => 'index'), 'default', TRUE); ?>"><i
+                                            class="icon-user"></i> Estudiantes</a></li>
+                        </ul>
+                    </li>
+
+                <?php } ?>
+                <?php if ($rol == '1' || $rol == '3' || $rol == '4' || $rol == '6') { ?>
+                    <li><a href="#">Mantenedores</a>
+                        <ul class="nav-submenu">
+
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Sostenedor',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i>
+                                    Sostenedores</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Establecimiento',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i>
+                                    Establecimientos</a>
+                            </li>
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Cursos',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i> Cursos</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Periodo',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i>Periodos</a>
+                            </li>
+                            <li><a href="<?php echo $this->url(array('controller' => 'Periodo',
+                                    'action' => 'calendario'), 'default', TRUE); ?>"><i class="icon-archive"></i>Calendarios</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Horarios',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i>Horarios</a>
+                            </li>
+                            <li class="divider"></li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Alumnos',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-user"></i> Estudiantes y
+                                    Apoderados</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url(array('controller' => 'Cuentausuario',
+                                    'action' => 'index'), 'default', TRUE); ?>"><i class="icon-group"></i> Cuentas
+                                    Usuarios</a>
+                            </li>
+                            <?php if ($rol == '1' || $rol == '3' || $rol == '6') { ?>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Sige',
+                                        'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i>Sige</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Mensaje',
+                                        'action' => 'index'), 'default', TRUE); ?>"><i class="icon-archive"></i>Mensajes</a>
+                                </li>
+                            <?php } ?>
+
+                        </ul>
+                    </li>
+                <?php }
+                if ($rol == '1' || $rol == '2' || $rol == '3' || $rol == '4' || $rol == '6') {
+                    ?>
+
+
+                    <li><a href="<?php echo $this->url(array('controller' => 'Libro',
+                            'action' => 'index'), 'default', TRUE); ?>">Libro de Clases</a></li>
+
+                    <li><a href="#">Informes</a>
+                        <ul class="nav-submenu">
+                            <?php if ($rol == 2) { ?>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'informenotas'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Notas</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'personalidad'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Personalidad</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'ranking'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i>
+                                        Informe de Ranking</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'indexplanilla'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Planilla Curso</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'indexobservacionalumno'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Observación</a>
+                                </li>
+
+                            <?php } else { ?>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'informenotas'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Notas</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'certificadoalumno'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i>Certificado Alumnos</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'personalidad'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Personalidad</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'matriculas'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i>
+                                        Ficha Matrícula</a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'certificadomatriculas'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Certificado Matrícula</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'ranking'), 'default', TRUE); ?>"><i class="icon-bar-chart"></i>
+                                        Informe de Ranking</a>
+                                </li>
+
+                                <li><a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'indexplanilla'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Planilla Curso</a></li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'indexasistenciaalumno'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Asistencia</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'indexobservacionalumno'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Informe Observación</a>
+                                </li>
+
+                                <li>
+                                    <a href="<?php echo $this->url(array('controller' => 'Informes',
+                                        'action' => 'indexaccidente'), 'default', TRUE); ?>"><i
+                                                class="icon-bar-chart"></i> Certificado Accidente</a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+
+
+                    </li>
+
+
+                <?php } ?>
+            </ul>
+        </nav>
+    </section>
+    <div id="contenido">
+        <div class="breadcrumbs alt1">
+            <?php echo $this->navigation()->breadcrumbs()->setMinDepth(0)->render($this->navigation()->getContainer());
+            ?></div>
+
+        <h5><?php echo $this->title; ?></h5>
+
+        <?php echo $this->layout()->content; ?>
+
+    </div>
+
+    <div id="footer">Softinnova &copy; Derechos Reservados <?php echo date("Y"); ?> <br/>
+    </div>
+</div>
+<div class="modal"></div>
+</body>
+</html>

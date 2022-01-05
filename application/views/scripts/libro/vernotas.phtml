@@ -1,0 +1,125 @@
+<link href="<?php echo $this->baseUrl; ?>/font-awesome/font-awesome.css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/estilos.css" type="text/css" rel="stylesheet"/>
+<link href="<?php echo $this->baseUrl; ?>/css/kickstart.css" type="text/css" rel="stylesheet"/>
+<?php
+$codigos = new Zend_Session_Namespace('codigo');
+$codigo = $codigos->codigo;
+?>
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+
+        <th>Rut</th>
+        <th>Nombre Alumno</th>
+        <?php echo ($codigo == 10) ? "<th>Concepto</th>" : "<th>Nota</th>"; ?>
+
+    </tr>
+    </thead>
+    <?php $var0 = $this->listanotas;
+    if (!empty($var0)) {
+
+
+    if ($codigo == 10) { ?>
+
+
+        <?php foreach ($this->listanotas as $d) : ?>
+
+
+            <tr>
+
+                <td><?php echo $d['rutAlumno']; ?></td>
+
+                <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?>
+                </td>
+
+
+                <td>
+                    <?php if ($d['nota'] == '0') { ?>
+
+                        <?php echo 'Pend';
+                    } else {
+                        if ($this->tipo == 4) {
+                            if ($d['nota'] == '65') {
+                                echo '0';
+                            }
+                            if ($d['nota'] == '55') {
+                                echo '1';
+                            }
+                            if ($d['nota'] == '45') {
+                                echo '2';
+                            }
+                            if ($d['nota'] == '30') {
+                                echo '3';
+                            }
+                        } else {
+                            if ($d['nota'] == '65') {
+                                echo 'L';
+                            }
+                            if ($d['nota'] == '55') {
+                                echo 'ML';
+                            }
+                            if ($d['nota'] == '45') {
+                                echo 'VL';
+                            }
+                            if ($d['nota'] == '30') {
+                                echo 'NE';
+                            }
+                        }
+
+
+                    }
+
+                    ?>
+
+                </td>
+
+            </tr>
+        <?php endforeach; ?>
+
+    <?php } else { ?>
+
+        <?php foreach ($this->listanotas as $d) : ?>
+            <tr>
+            <td><?php echo $d['rutAlumno']; ?></td>
+            <td><?php echo $d['apaterno'] . ' ' . $d['amaterno'] . ' ' . $d['nombres']; ?></td>
+            <?php if ($d['tipoAsignatura'] == 1) { ?>
+                <?php if ($d['nota'] >= 40) { ?>
+                    <td style="color:blue">
+                <?php }
+                if ($d['nota'] >= 10 && $d['nota'] < 40) { ?>
+                    <td style="color:red">
+
+                <?php } if ($d['nota'] == '0') { ?>
+                    <td>
+                    <?php echo 'Pend';
+                } else {
+
+                    $arr1 = str_split($d['nota']);
+
+
+                    echo $arr1[0] . ',' . $arr1[1];
+                }
+
+                ?>
+
+                </td>
+            <?php } elseif ($d['tipoAsignatura'] == 5) {?>
+                <td>
+               <?php if ($d['nota'] == '0') { ?>
+
+                    <?php echo 'Pend';
+                } else {
+
+                    echo $d['nota'];
+                }
+
+                ?>
+
+                </td>
+                <?php }?>
+
+                </tr>
+                <?php endforeach;}} ?>
+
+</table>

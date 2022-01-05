@@ -1,0 +1,224 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/asignaturas.js"></script>
+
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<?php if ($this->messages) : ?>
+    <div class="error">
+        <?php foreach ($this->messages as $msg) : ?>
+            <?php echo $msg; ?>
+        <?php endforeach; ?>
+    </div>
+
+
+<?php endif; ?>
+<input type="hidden" name="" value="<?php echo $this->datocurso; ?>" id="curso">
+<a class="button medium " href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'index'), null, true);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'agregarasignatura', 'id' => $this->datocurso), 'default', true); ?>">Agregar Asignatura</a>
+
+<a class="button medium green" href="<?php echo $this->url(array('controller' => 'Cursos',
+    'action' => 'generarasignaturas', 'id' => $this->datocurso), 'default', true); ?>">Generar Asignaturas</a>
+
+<div class="ventana" style="display: inline;">
+    <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+        'action' => 'asignaturasearch', 'id' => $this->datocurso), 'default', true); ?>">Buscar Asignatura</a>
+</div>
+<?php
+    if($this->tipo==10){?>
+        <a class="button medium green" href="<?php echo $this->url(array('controller' => 'Cursos',
+            'action' => 'conceptoparvularia', 'id' => $this->datocurso), 'default', true); ?>">Conceptos</a>
+
+
+        <a class="button medium green" href="<?php echo $this->url(array('controller' => 'Cursos',
+            'action' => 'nuevosindicadores', 'id' => $this->datocurso), 'default', true); ?>">Nuevos Indicadores</a>
+    <?php }
+?>
+
+<h4>Curso: <?php echo $this->nombrecurso; ?></h4>
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Orden</th>
+            <?php echo ($this->tipo==10) ? "<th>Nombre Indicador</th><th>Nombre Ambito</th><th>Nombre Núcleo</th>":"<th>Nombre Asignatura</th>";?>
+            <th>Tipo Asignatura</th>
+            <th>Incide en Promedio</th>
+            <th>Horas Semanales Programa Estudio</th>
+            <th>Horas Semanales Asignadas</th>
+            <th>Priorizada</th>
+            <?php echo ($this->tipo==10) ? "":"   <th>Electiva</th>";?>
+            <th>Configuración</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+
+                <td><?php echo $d['orden']; ?></td>
+
+                <?php echo ($this->tipo==10) ? "<td>".$d['nombreAsignatura']."<input type='hidden'  value='".$d['idAsignaturaCurso']."' /></td><td>".$d['nombreAmbito']."</td><td>".$d['nombreNucleo']."</td>":"<td>".$d['nombreAsignatura']."<input type='hidden'  value='".$d['idAsignaturaCurso']."' /></td>";?>
+                <td>
+                    <?php
+                    if ($d['tipoAsignatura'] == 1) {
+                        $seleccionar = 'Normal';
+                    }
+                    if ($d['tipoAsignatura'] == 2) {
+                        $seleccionar = 'Taller';
+                    }
+                    if ($d['tipoAsignatura'] == 3) {
+                        $seleccionar = 'Compuesta';
+                    }
+                    if ($d['tipoAsignatura'] == 4) {
+                        $seleccionar = 'Pertenece a una Asignatura Compuesta';
+                    }
+                    if ($d['tipoAsignatura'] == 5) {
+                        $seleccionar = 'Concepto';
+                    }
+                    echo $seleccionar;
+                    ?>
+
+                </td>
+                <td>
+                    <?php
+                    if ($d['promedio'] == 1) {
+                        echo 'SI';
+                    } else {
+                        echo 'NO';
+                    }
+                    ?>
+                </td>
+
+                <td>
+                    <?php if($d['horas'] && $d['horas']>0){ ?>
+                        <input style="width: 20px;" value="<?php echo $d['horas']; ?>" type="text" maxlength="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                    <?php }else{ ?>
+                        <input style="width: 20px;" type="text" maxlength="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                    <?php } ?>
+
+                </td>
+
+                <td>
+                    <?php if($d['horasAsignadas'] && $d['horasAsignadas']>0){
+
+                        echo $d['horasAsignadas'];
+                    }else{
+                        echo "No asignadas";
+                    } ?>
+
+                </td>
+
+                <td>
+                    <?php
+
+                    if($d['prioritaria']==0){
+                        echo "<input type='checkbox' name='prioritaria' checked>";
+                    }elseif ($d['prioritaria']==1){
+                        echo "<input type='checkbox' name='prioritaria'>";
+                    }
+
+                    ?>
+                </td>
+
+                <?php
+
+                if($this->tipo!=10){ ?>
+
+                    <td>
+                        <?php
+
+                        if($d['electivo']){
+                            echo "<input type='checkbox' name='electiva' checked>";
+                        }else {
+                            echo "<input type='checkbox' name='electiva'>";
+                        }
+
+                        ?>
+                    </td>
+
+                <?php } ?>
+
+
+                <td>
+
+                    <?php
+                    if (($d['tipoAsignatura'] == 1 && !$d['electivo']) || $d['tipoAsignatura'] == 4) { ?>
+                        <a class="button small" disabled="disabled">Configuración</a>
+
+                    <?php }
+                    if ($d['tipoAsignatura'] == 2) {
+                        ?>
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+                            'action' => 'taller', 'id' => $d['idAsignaturaCurso'], 'c' => $this->datocurso), 'default', true); ?>">Configuración</a>
+
+                    <?php }
+                    if ($d['tipoAsignatura'] == 3) {
+                        ?>
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+                            'action' => 'configuraciondep', 'id' => $d['idAsignaturaCurso'], 'c' => $this->datocurso), 'default', true); ?>">Configuración</a>
+
+                    <?php }
+
+                    if ($d['tipoAsignatura'] == 5) {
+                        ?>
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+                            'action' => 'concepto', 'id' => $d['idAsignaturaCurso'], 'c' => $this->datocurso), 'default', true); ?>">Configuración</a>
+
+                    <?php }
+                    if (($d['tipoAsignatura'] == 1 && $d['electivo'])) { ?>
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Cursos',
+                            'action' => 'electivo', 'id' => $d['idAsignaturaCurso'], 'c' => $this->datocurso), 'default', true); ?>">Configuración</a>
+
+                    <?php } ?>
+                </td>
+
+
+                <td>
+
+                    <a class="button small green" href="<?php echo $this->url(array('controller' => 'Cursos',
+                        'action' => 'editarasignatura', 'id' => $d['idAsignatura'], 'c' => $this->datocurso), 'default', true); ?>">Editar</a>
+
+                </td>
+
+                <td>
+
+                    <a class="button small red" href="<?php echo $this->url(array('controller' => 'Cursos',
+                        'action' => 'eliminarasignatura', 'id' => $d['idAsignatura'], 'c' => $this->datocurso), 'default', true); ?>" onclick="return confirm('¿Quiere eliminar ésta Asignatura?');">Eliminar</a>
+
+                </td>
+
+
+
+            </tr>
+
+
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <a id="guardaasignatura" class="button medium blue"> Guardar</a>
+
+
+    <script>
+        $('tbody').sortable();
+    </script>
+
+
+
+

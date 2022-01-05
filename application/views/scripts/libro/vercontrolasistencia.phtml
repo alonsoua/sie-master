@@ -1,0 +1,117 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/sweetalert2@7.32.4/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.2/dist/sweetalert2.min.css" type="text/css">
+<style>
+
+    .unavailable span {
+        color: green !important;
+        background-color: blue;
+    }
+
+    .unavailable {
+        background-color: blue;
+    }
+
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    #divTabla input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+<a class="button medium" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'controlasistencias'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<table style="margin-top: 10px;">
+    <tbody>
+    <tr>
+        <td>Fecha Asistencia</td>
+        <td><?php echo $this->datos[0][0]['fechaControl'] ?></td>
+    </tr>
+
+    <tr>
+        <td>Asignatura</td>
+        <td><?php echo $this->datos[0][0]['nombreAsignatura'] ?></td>
+    </tr>
+
+    <tr>
+        <td>Bloque</td>
+        <td><?php echo  $this->datos[0][0]['tiempoInicio'] . '-' . $this->datos[0][0]['tiempoTermino']; ?></td>
+    </tr>
+
+    <tr>
+        <td>Presencial/Online:</td>
+        <td>
+            <?php if($this->datos[0][0]['tipoAsistencia']==1){
+               echo 'Presencial';
+            }else{
+                echo 'Online';
+            } ?>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div id="asistencia">
+    <div id="divTabla" style="margin-top: 20px;">
+                        <label for="txtBuscar">Buscar Alumno: </label>
+                        <input type="text" id="txtBuscar" autofocus
+                               placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    </div>
+
+    <input type="hidden" id="ida" value="<?php echo $this->datos[0][0]['idAsistencia']; ?>"/>
+    <input type="hidden" id="idcontrol" value="<?php echo $this->datos[0][0]['idControlAsistencia'];  ?>"/>
+
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Rut</th>
+            <th>Estudiante</th>
+            <th>Asistencia</th>
+            <th>Observación</th>
+
+        </tr>
+        </thead>
+        <tr>
+            <?php
+            $i = 1;
+            foreach ($this->datos as $d) : ?>
+            <td><?php echo $i; ?></td>
+
+            <td><?php echo substr($d[0]['rutAlumno'], 0, -1) . '-' . substr($d[0]['rutAlumno'], -1) ?></td>
+
+            <td><?php echo $d[0]['apaterno'] . ' ' . $d[0]['amaterno'] . ' ' . $d[0]['nombres']; ?></td>
+            <?php if ($d[0]['valorasistencia'] == 1) { ?>
+                <td>
+                    <p style="color: #E74C3C">Ausente</p>
+                </td>
+            <?php } ?>
+
+            <?php if ($d[0]['valorasistencia'] == 2) { ?>
+                <td>
+                    <p style="color: #4D99E0">Presente</p>
+                </td>
+            <?php } ?>
+
+            <td><?php echo $d[0]['select']; ?></td>
+
+
+        </tr>
+        <?php
+        $i++;
+        endforeach; ?>
+
+        <table>
+
+</div>

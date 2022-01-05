@@ -1,0 +1,240 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Sige',
+    'action' => 'index'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<a class="button medium blue" href="<?php $d = '';
+echo $this->url(array('controller' => 'Sige',
+    'action' => 'agregarcurso')); ?>">Agregar Curso</a>
+<style>
+    #divInfo {
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 40px;
+    }
+
+    #divTabla {
+
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+            <th>Establecimiento</th>
+            <th>Código Enseñanza</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Profesor Jefe</th>
+            <th>Curso Combinado</th>
+            <th>Número Curso Combinado</th>
+            <th>Jornada</th>
+            <th>Código Sector Económico</th>
+            <th>Código Especialidad</th>
+            <th>Código Alternativa Desarrollo Curricular</th>
+            <th>Tiene Infraestructura</th>
+
+
+            <th>Editar</th>
+            <th>Validar</th>
+            <th>Historial</th>
+
+        </tr>
+        </thead>
+
+        <?php foreach ($this->dato as $d):
+
+            if($d->idCodigoTipo==663){
+
+            ?>
+
+            <tr>
+                <td><?php echo $d->nombreEstablecimiento; ?></td>
+
+                <td><?php echo $d->idCodigoTipo ?></td>
+
+                <td><?php echo $d->nombreGrado; ?></td>
+
+                <td><?php echo $d->letra; ?></td>
+                <td>
+                    <?php
+                    if ($d->idCuentaJefe == 0 || empty($d->idCuentaJefe)) {
+                        echo 'Sin Asignar';
+                    } else {
+
+                        //echo $d->nombrescuenta . ' ' . $d->paternocuenta . ' ' . $d->maternocuenta;
+                        echo substr($d->usuario, 0, -1).'-'.substr($d->usuario, -1);
+                    } ?>
+                </td>
+
+                <td><?php
+                    if($d->combinado==1){
+                        echo 'SI';
+                    }else{
+                        echo 'No';
+                    }
+
+                    ?></td>
+                <td><?php echo $d->numeroCurso ?></td>
+
+                <td><?php
+                    if($d->tipoJornada==1){
+                        echo '(1) Mañana';
+                    }
+                    if($d->tipoJornada==2){
+                        echo '(2) Tarde';
+                    }
+                    if($d->tipoJornada==3){
+                        echo '(3) Mañana y Tarde';
+                    }
+                    if($d->tipoJornada==4){
+                        echo '(4) Vespertina/Nocturna';
+                    }
+
+                    ?></td>
+
+                <td><?php echo $d->codigoSector ?></td>
+
+                <td><?php echo $d->codigoEspecialidad ?></td>
+                <td><?php echo $d->codigoAlternativa?></td>
+                <td><?php
+                    if($d->infraestructura==1){
+                        echo 'SI';
+                    }else{
+                        echo 'No';
+                    }
+
+                    ?></td>
+
+
+
+
+                <td>
+
+                    <a class="button small green" href="<?php echo $this->url(array('controller' => 'Sige',
+                        'action' => 'editarcurso', 'id' => $d->idCursos), 'default', true); ?>">Editar</a>
+
+                </td>
+<!--                --><?php
+//                $data = [
+//                    $d->idEstablecimiento,
+//                    $d->idPeriodo,
+//                    $d->idCursos,
+//                    $d->nombrePeriodo,
+//                    $d->rbd,
+//                    $d->idCodigoTipo,
+//                    $d->idGrado,
+//                    $d->letra,
+//                    substr($d->usuario, 0, -1),
+//                    substr($d->usuario, -1),
+//                    $d->combinado,
+//                    $d->numeroCurso,
+//                    $d->tipoJornada,
+//                    $d->codigoSector,
+//                    $d->codigoEspecialidad,
+//                    $d->codigoAlternativa,
+//                    $d->infraestructura
+//
+//                ];
+//                ?>
+                <td>
+                    <button class="button small red"
+                            onclick="validarCurso('<?php echo implode("', '", $data); ?>')">
+                        Validar
+                    </button>
+                </td>
+                <td>
+                    <div class="ventana">
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Sige',
+                            'action' => 'verhistorialcurso', 'id' => $d->idCursos), 'default', true); ?>"><i
+                                    class="icon-eye-open"></i> Ver Historial</a>
+
+                    </div>
+                </td>
+
+            </tr>
+
+        <?php }endforeach; ?>
+    </table>
+
+    <script type="text/javascript">
+        var validarCurso = function (idestablecimiento, iperiodo, idcurso, nombreperiodo, rbd, codigo, grado, letra, run, dv, combinado, numero, jornada, sector, especialidad, alternativa, infraestructura) {
+
+            $.ajax({
+                cache: false,
+                async: true,
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded',
+                url: '../Sige/validarcurso/',
+                data: JSON.stringify({
+                    est: idestablecimiento,
+                    per: iperiodo,
+                    idcurso: idcurso,
+                    idperiodo: nombreperiodo,
+                    rbd: rbd,
+                    idcodigo: codigo,
+                    grado: grado,
+                    letra: letra,
+                    run: run,
+                    dv: dv,
+                    combinado: combinado,
+                    numero: numero,
+                    jornada: jornada,
+                    sector: sector,
+                    especialidad: especialidad,
+                    alternativa: alternativa,
+                    infraestructura: infraestructura
+                }),
+                beforeSend: function (data) {
+                    $('#div_cliente').html('<label>Validando...</label>');
+                },
+                success: function (data) {
+                    if (parseInt(data.response) === 1) {
+                        switch (parseInt(data.status)) {
+                            case 1:
+                                alert('Operación/Acción ejecutada exitosamente.');
+                                break;
+                            case 2:
+                                alert('Error(es) de validación(es) de Negocio.');
+                                break;
+                            case 3:
+                                alert('RBD NO tiene servicio disponible.');
+                                break;
+                            case 4:
+                                alert('Convenio NO tiene asociado el RBD.');
+                                break;
+                            case 5:
+                                alert('Servicio NO disponible.');
+                                break;
+                            case 6:
+                                alert('Semilla de operación NO válida o ha caducado (renovar semilla).');
+                                break;
+                            case 7:
+                                alert('Error interno de servicio.');
+                                break;
+
+                        }
+                    } else if (parseInt(data.response) === 0) {
+                        alert('El Curso no es Válido!!');
+                    } else {
+                        alert('Ha ocurrido un error intente mas tarde')
+                    }
+                },
+                error: function () {
+                    alert('Ha ocurrido un error intente mas tarde')
+                }
+            });
+        }
+    </script>

@@ -1,0 +1,113 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<script src="<?php echo $this->baseUrl; ?>/javascript/asignaturas.js"></script>
+
+
+
+
+<style>
+
+
+    #divInfo{
+		text-align: center;
+		padding-bottom: 10px;
+		margin-bottom: 40px;
+	}
+	#divTabla{
+		
+	}
+		input[type="text"]{
+			padding: 5px;
+			width: 595px;
+		}
+</style>
+
+ 
+<a class="button medium blue" href="<?php echo $this->url(array('controller' =>'Asignaturas',
+            'action' => 'agregar','id' => $this->dato[0][idNiveles]),'default',TRUE); ?>">Agregar Asignatura</a>
+
+            <a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Asignaturas',
+    'action' => 'index'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+ <input type="hidden" id="checkn" value="<?php echo $this->dato[0][idNiveles]; ?>" />           
+
+<div id="divTabla" style="margin-top: 20px;">
+                <label for="txtBuscar">Buscar: </label>
+                <input type="text" id="txtBuscar" autofocus placeholder="Escriba el texto que desea encontrar y presione ENTER">
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th>Orden</th>
+        <th>Nombre Asignatura</th> 
+        <th>Incide en Promedio</th> 
+        <th>Mostrar/Ocultar Asignatura</th>
+        <th>Editar</th>
+        
+        
+    </tr>
+    </thead>
+<tbody>
+
+    <?php foreach ($this->dato as $d) : ?>
+
+        <tr>
+
+          
+        <td><?php echo $d[orden]; ?>
+
+
+        <td><?php echo $d[nombreAsignatura]; ?>
+        </td>
+        <td>
+        <?php 
+            if($d[promedio]==1){
+                echo '<input type="checkbox" checked value="'.$d[idAsignatura].'" />';
+            }else{
+              echo '<input type="checkbox"  value="'.$d[idAsignatura].'" />';  
+            }
+         ?>
+         </td>
+
+
+          <td>
+        <?php 
+            if($d[estado]==1){
+                echo '<input type="checkbox" checked />';
+            }else{
+              echo '<input type="checkbox" />';  
+            }
+         ?>
+         </td>
+        
+
+        
+          <td>
+             <!--                   enlace para agregar asignatura-->
+             <a class="button small green" href="<?php echo $this->url(array('controller' => 'Asignaturas',
+            'action' => 'editar', 'id' => $d[idAsignatura]),'default',TRUE); ?>">Editar</a>
+             
+         </td>
+         
+        
+
+        
+        
+        </tr>
+        
+
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+<a id="guardaasignatura" class="button medium blue"> Guardar</a>
+
+
+
+<script>
+    $('tbody').sortable();
+</script>
+
+
+
+

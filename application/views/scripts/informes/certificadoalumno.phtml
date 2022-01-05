@@ -1,0 +1,156 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+<style>
+
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <!--creo una tabla para mostrar los datos-->
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <thead>
+        <tr>
+
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Nombre</th>
+            <th>Grado</th>
+            <th>Letra</th>
+            <th>Establecimiento</th>
+            <th>Generar</th>
+
+        </tr>
+        </thead>
+
+
+        <?php $var1 = $this->datos;
+
+        $roles = new Zend_Session_Namespace('cargo');
+        $rol = $roles->cargo;
+        if ($rol == "2") {
+
+            if ($this->variable == 1) {
+                for ($i = 0; $i < count($this->datos); $i++) {
+
+                    foreach ($this->datos[$i] as $d[$i]) : ?>
+
+
+                        <tr>
+
+                        <td><?php echo $d[$i]['apaterno']; ?></td>
+
+
+                        <td><?php echo $d[$i]['amaterno']; ?></td>
+
+
+                        <td><?php echo $d[$i]['nombres']; ?></td>
+
+                        <td><?php echo $d[$i]['nombreGrado']; ?></td>
+
+                        <td><?php echo $d[$i]['letra']; ?></td>
+
+
+                        <td><?php echo $d[$i]['nombreEstablecimiento']; ?>
+                        </td>
+
+                        <td>
+
+                            <div class="ventana">
+
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'generacertificado', 'id' => $d[$i]['idAlumnosActual']), 'default', true); ?>"><i
+                                            class="icon-hand-up"></i>Generar Informe</a>
+
+                            </div>
+                        </td>
+                    <?php endforeach;
+                }
+            } else {
+
+
+                if (!empty($var1)) {
+
+
+                    ?>
+
+                    <?php foreach ($this->datos as $d) : ?>
+
+
+                        <tr>
+
+                            <td><?php echo $d['apaterno']; ?></td>
+
+                            <td><?php echo $d['amaterno']; ?></td>
+
+                            <td><?php echo $d['nombres']; ?></td>
+
+                            <td><?php echo $d['nombreGrado']; ?></td>
+
+                            <td><?php echo $d['letra']; ?></td>
+
+                            <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+                            <td>
+
+                                <div class="ventana">
+
+                                    <a class="button small blue"
+                                       href="<?php echo $this->url(array('controller' => 'Informes',
+                                           'action' => 'generacertificado', 'id' => $d['idAlumnosActual']), 'default', true); ?>"><i
+                                                class="icon-hand-up"></i>Generar Informe</a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach;
+                }
+            }
+        }
+
+        if ($rol == "1" || $rol == "3" || $rol == "6" ) {
+            if (!empty($var1)) {
+
+                foreach ($this->datos as $d) : ?>
+
+
+                    <tr>
+                        <td><?php echo $d['apaterno']; ?></td>
+
+                        <td><?php echo $d['amaterno']; ?></td>
+
+                        <td><?php echo $d['nombres']; ?></td>
+
+                        <td><?php echo $d['nombreGrado']; ?></td>
+
+                        <td><?php echo $d['letra']; ?></td>
+
+                        <td><?php echo $d['nombreEstablecimiento']; ?></td>
+
+                        <td>
+
+                            <div class="ventana">
+
+                                <a class="button small blue"
+                                   href="<?php echo $this->url(array('controller' => 'Informes',
+                                       'action' => 'generacertificado', 'id' => $d['idAlumnosActual']), 'default', true); ?>"><i
+                                            class="icon-hand-up"></i>Generar Informe</a>
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+                <?php endforeach;
+            }
+        } ?>
+
+    </table>

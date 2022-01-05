@@ -1,0 +1,95 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+
+<style>
+    input[type="text"] {
+        padding: 5px;
+        width: 595px;
+    }
+</style>
+
+
+<div id="divTabla" style="margin-top: 20px;">
+                    <label for="txtBuscar">Buscar: </label>
+                    <input type="text" id="txtBuscar" autofocus
+                           placeholder="Escriba el texto que desea encontrar y presione ENTER">
+    <table id="tblTabla" class="striped sortable" style="margin-top: 10px">
+        <caption></caption>
+        <thead>
+        <tr>
+
+            <th scope="col">Curso</th>
+            <th scope="col">Establecimiento</th>
+            <th scope="col">Profesor Jefe</th>
+            <th scope="col">Estado</th>
+            <th colspan="2" scope="col"></th>
+
+
+        </tr>
+        </thead>
+
+        <?php foreach ($this->dato as $d): ?>
+
+            <tr>
+
+                <td><?php echo $d[0]['nombreGrado'] . ' ' . $d[0]['letra']; ?></td>
+
+
+                <td><?php echo $d[0]['nombreEstablecimiento']; ?></td>
+
+                <td>
+                    <?php
+                    if ($d[0]['idCuentaJefe'] == 0 || empty($d[0]['idCuentaJefe'])) {
+                        echo 'Sin Asignar';
+                    } else {
+
+                        echo $d[0]['nombrescuenta'] . ' ' . $d[0]['paternocuenta'] . ' ' . $d[0]['maternocuenta'];
+                    } ?>
+                </td>
+
+                <?php
+
+                if($d[0]['estadoHorario']){ ?>
+
+                    <td>Creado</td>
+
+
+                    <td>
+                        <a class="button small green" href="<?php echo $this->url(array('controller' => 'Horarios',
+                            'action' => 'horario', 'id' => $d[0]['idCursos']), 'default', true); ?>">Modificar</a>
+                    </td>
+
+                    <td>
+                        <div class="ventana">
+                            <a class="button small orange" href="<?php echo $this->url(array('controller' => 'Horarios',
+                                'action' => 'verhorario', 'id' => $d[0]['idCursos']), 'default', true); ?>">Ver Horario</a>
+                        </div>
+                    </td>
+
+
+
+                <?php }else{ ?>
+
+                    <td>No Disponible</td>
+
+
+                    <td>
+                        <a class="button small blue" href="<?php echo $this->url(array('controller' => 'Horarios',
+                            'action' => 'horario', 'id' => $d[0]['idCursos']), 'default', true); ?>">Crear</a>
+                    </td>
+
+                    <td>
+                        <div class="ventana">
+                            <a class="button small disabled" href="#">Ver Horario</a>
+                        </div>
+                    </td>
+
+
+
+                <?php } ?>
+
+
+                </tr>
+
+            <?php endforeach; ?>
+    </table>

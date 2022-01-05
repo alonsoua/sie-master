@@ -1,0 +1,258 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/buscador.js"></script>
+
+<style>
+
+
+
+    #divInfo{
+		text-align: center;
+		padding-bottom: 10px;
+		margin-bottom: 40px;
+	}
+	#divTabla{
+		
+	}
+		input[type="text"]{
+			padding: 5px;
+			width: 595px;
+		}
+        table td{
+            border: 2px solid #ddd;
+
+        }
+</style>
+<?php
+       $idcurso= new Zend_Session_Namespace('id_curso');
+       $id_curso=$idcurso->id_curso;
+       
+       $iddetallecurso= new Zend_Session_Namespace('id_detalle_curso');
+       $id_detalle_curso=$iddetallecurso->id_detalle_curso;
+       
+       $cargo = new Zend_Session_NameSpace("cargo");
+        
+           
+        
+          
+       
+       
+       ?>
+<?php if($cargo->cargo=='2'){ ?>
+<!--  Link agrega notas-->
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'agregarnotas'), null, TRUE);
+?>"> <i class="icon-plus"></i> Agregar Notas</a>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'abrir','id'=>$id_curso), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php } if($cargo->cargo=='1' || $cargo->cargo=='3' ){?>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'abrir','id'=>$id_curso), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+<?php } ?>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notas'),'default',TRUE); ?>"><span class="icon book small" data-icon="j"></span> Notas Evaluación</a>
+    
+    <div class="col_12" id="divTabla" style="margin-top: 20px;">
+                <label for="txtBuscar"><i class="icon-search"></i> Buscar:  </label>
+                <input type="text" id="txtBuscar" autofocus placeholder="Escriba el texto que desea encontrar y presione ENTER">
+
+<?php  $var0=$this->datosnotas;
+$var5=$this->contador;
+
+
+?>
+
+
+<!--creo una tabla para mostrar los datos-->
+<table id="tblTabla" class="sortable " style="margin-top: 10px; font :normal 0.8em/150% 'Arimo','Trebuchet MS', arial, verdana, sans-serif;">
+    <thead>
+    <tr>
+        
+        <th>Nº</th>
+        <th>Rut</th>
+        <th>Apellido Paterno</th>
+        <th>Apellido Materno</th>
+        <th>Nombres</th>
+        <?php 
+        //recorremos las asignaturas
+        for($i=0;$i<count($this->datosasignaturas);$i++){ 
+
+          //obtenemos cuantas notas existen en cada asignatura
+            $row=$var5[$this->datosasignaturas[$i][idAsignatura]];
+
+            //si row es distinto de cero suma uno a row para crear el promedio
+            if($row!=0){ $row=$row+1;?>
+           <th colspan="<?php echo $row; ?>" style="background-color:yellow;"><?php echo $this->datosasignaturas[$i][nombreAsignatura]; ?></th> 
+            <?php }else{
+            
+        ?>
+
+           <th style="background-color:yellow;"><?php echo $this->datosasignaturas[$i][nombreAsignatura]; ?></th>  
+
+        <?php }} ?>
+        <th>PROM</th>
+        <th>PROM</th>
+        
+        
+        
+    </tr>
+
+    <tr>
+    <th colspan="5">Nº Notas/Prom</th>
+    <?php for($i=0;$i<count($this->datosasignaturas);$i++){ 
+            $row=$var5[$this->datosasignaturas[$i][idAsignatura]];
+
+            if($row!=0){ 
+              for($j=1;$j<=$row;$j++){ 
+              
+          echo  '<th>N'.$j.'</th>'; 
+             }
+             echo  '<th style="background-color:yellow;">Prom</th>'; 
+           }else{
+            
+        
+
+           echo '<th>Sin Notas</th>' ; 
+
+         }} ?>
+         <th>Anual</th>
+         <th>Aprox</th>
+    </tr>
+    </thead> 
+<?php  $var0=$this->datosnotas;
+
+$notasalumnos=$this->datosnotasalumnos;
+$var1=$this->datosasignaturas;
+if(!empty($var0)){
+
+
+
+  ?>
+
+    <?php $r=1; for($i=0;$i<count($var0);$i++){ ?>
+
+
+        <tr>
+          
+           
+            <td><?php echo $r; ?></td>
+
+            <td><?php echo $var0[$i][rutAlumno]; ?></td>
+
+            <td><?php echo $var0[$i][apaterno]; ?></td>
+
+            <td><?php echo $var0[$i][amaterno]; ?></td>
+
+            <td><?php echo $var0[$i][nombres]; ?></td>
+
+            <?php for($j=0;$j<count($this->datosasignaturas);$j++){
+
+              $row=$var5[$this->datosasignaturas[$j][idAsignatura]];
+
+              $promedio=0;
+               if($row!=0){
+
+                $contador=0;
+                $contadorpromedio=0;
+              for($z=0;$z<count($var0[$i][test]);$z++){
+             
+                
+
+                if($this->datosasignaturas[$j][idAsignatura]==$var0[$i][test][$z][idAsignatura]){ 
+                  $contador=$contador+1;
+                  if($var0[$i][test][$z][coef]=='2'){
+                    $contador=$contador+1;
+
+                     if($var0[$i][test][$z][nota]==0){
+                    echo '<td> - </td>';
+                    echo '<td> - </td>';
+                  }else{
+                    if($var0[$i][test][$z][nota]<40){
+                      echo '<td style="color:red;">'.$var0[$i][test][$z][nota].'</td>';
+                      echo '<td style="color:red;">'.$var0[$i][test][$z][nota].'</td>';
+                    }else{
+                 echo '<td style="color:blue;">'.$var0[$i][test][$z][nota].'</td>';
+                 echo '<td style="color:blue;">'.$var0[$i][test][$z][nota].'</td>';
+               }
+               $promedio=$promedio+($var0[$i][test][$z][nota]*2);
+               $contadorpromedio=$contadorpromedio+2;
+
+                  }
+                }else{
+                
+
+                  if($var0[$i][test][$z][nota]==0){
+                    echo '<td> - </td>';
+                  }else{
+                    if($var0[$i][test][$z][nota]<40){
+                      echo '<td style="color:red;">'.$var0[$i][test][$z][nota].'</td>';
+                    }else{
+                 echo '<td style="color:blue;">'.$var0[$i][test][$z][nota].'</td>';
+               }
+               $promedio=$promedio+$var0[$i][test][$z][nota];
+               $contadorpromedio=$contadorpromedio+1;
+             }
+              
+
+               
+               
+
+               }
+                if($contador==$row ){
+                  if($contadorpromedio!=0){
+                    $promfinal[$i][$z]=intval($promedio/$contadorpromedio);
+                    if($promfinal[$i][$z]<'40'){
+                      echo '<td style="background-color:yellow; color:red;">'.$promfinal[$i][$z].'</td>';
+                    }else{
+                      echo '<td style="background-color:yellow; color:blue;">'.$promfinal[$i][$z].'</td>';
+                    }
+                    
+                  }else{
+
+                echo '<td style="background-color:yellow;">-</td>';
+              }
+               }
+                
+              }
+             }
+             
+           }else{
+            echo '<td></td>';
+           }
+          
+          
+           }
+
+           if($promfinal[$i]!=0 || empty($promfinal[$i])){
+           echo '<td style="background-color:green;">'.intval(array_sum($promfinal[$i])/count($promfinal[$i])).'</td>';
+            echo '<td style="background-color:blue;">'.round(array_sum($promfinal[$i])/count($promfinal[$i])).'</td>';
+          }else{
+            echo '<td style="background-color:green;"> - </td>';
+            echo '<td style="background-color:green;"> - </td>';
+          }
+                ?>
+
+           
+
+        
+
+        
+        
+        
+        </tr>
+
+<?php $r++;
+ 
+
+}
+
+}?>
+
+
+</table>
+        
+      
+  </div>
+
+     		

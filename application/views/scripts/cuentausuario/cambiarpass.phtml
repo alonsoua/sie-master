@@ -1,0 +1,139 @@
+<?php //if ($this->messages) {
+//    foreach ($this->messages as $msg) :
+//
+//    endforeach;
+//    if ($msg == "Contraseña incorrecta, vuelva a intentar") {
+//        ?>
+<!--        <div class="alerta">-->
+<!--            <p>-->
+<!---->
+<!---->
+<!--                --><?php //echo $msg; ?>
+<!---->
+<!---->
+<!--            </p>-->
+<!---->
+<!--        </div>-->
+<!--        --><?php //echo $this->form;
+//    } else {
+//        ?>
+<!--        <div class="alerta">-->
+<!--            <p>-->
+<!---->
+<!---->
+<!--                --><?php //echo $msg; ?>
+<!---->
+<!---->
+<!--            </p>-->
+<!---->
+<!--        </div>-->
+<!--        <a class="button small gray" href="--><?php //echo $this->url(array('controller' => 'index',
+//            'action' => 'index'), 'default', TRUE);
+//        ?><!--">Inicio</a>-->
+<!--    --><?php //}
+//} else { ?>
+<!---->
+<!---->
+<!--    --><?php //echo $this->form;
+//} ?>
+
+
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<style>
+    .breadcrumbs a{
+        text-decoration: underline;
+        color: #4D99E0;
+
+    }
+</style>
+<?php
+$form = $this->form;
+if (isset($this->message)) :?>
+
+    <div class="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-md text-red-700 bg-red-100 border border-red-300 ">
+        <div slot="avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                 class="feather feather-alert-octagon w-5 h-5 mx-2">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+        </div>
+
+        <div class="text-xl font-normal  max-w-full flex-initial">
+            <?php echo $this->message; ?>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+<div class="lg:flex justify-center ">
+    <div class="lg:w-1/2 xl:max-w-screen-sm">
+        <div class="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
+            <h2 class="text-center text-4xl font-display font-semibold lg:text-left xl:text-4xl
+                    xl:text-bold">Actualizar Contraseña</h2>
+            <div class="mt-12">
+                <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <p class="font-bold">Importante</p>
+                    <p class="text-sm">La Nueva Contraseña debe contener mínimo 8 caracteres, un número, una letra
+                        Mayúscula</p>
+                </div>
+
+                <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" name="inicio" method='post'
+                      action='<?= $this->escape($this->action); ?>'>
+                    <?php echo $form->idCuenta->renderViewHelper(); ?>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            Contraseña Actual
+                        </label>
+                        <?php echo $form->verifica->renderViewHelper();
+                        if ($form->verifica->getMessages()) { ?>
+                            <p class="text-red-500 text-xs italic"><?php echo $form->verifica->getMessages()['isEmpty']; ?></p>
+
+                        <?php } ?>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                            Nueva Contraseña
+                        </label>
+                        <?php echo $form->password->renderViewHelper();
+                        if ($form->password->getMessages()) { ?>
+                            <p class="text-red-500 text-xs italic"><?php echo $form->password->getMessages()['isEmpty']; ?></p>
+
+                        <?php } ?>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                            Repetir Contraseña Nueva
+                        </label>
+                        <?php echo $form->confirm_password->renderViewHelper();
+
+                        if ($form->confirm_password->getMessages()) {
+
+                            if (isset($form->confirm_password->getMessages()['notSame'])) { ?>
+                                <p class="text-red-500 text-xs italic">Las Contraseñas no coinciden</p>
+
+
+                            <?php } elseif (isset($form->confirm_password->getMessages()['isEmpty'])) { ?>
+
+
+                                <p class="text-red-500 text-xs italic"><?php echo $form->confirm_password->getMessages()['isEmpty']; ?></p>
+
+                            <?php }
+                        } ?>
+
+
+                    </div>
+
+
+
+                    <div class="flex items-center justify-between">
+                        <?php echo $form->submit->renderViewHelper(); ?>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

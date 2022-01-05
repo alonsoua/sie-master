@@ -1,0 +1,287 @@
+<script lang="javascript">
+    var codigos = [];
+    var conceptos = [];
+    var texto;
+    $(function () {
+
+
+        $('#idAsignatura').live('change', function (e) {
+
+            if ($(this).find(":selected").attr('class') != 'Null' && $(this).find(":selected").attr('class') == 5) {
+                $(".notas").val('');
+
+                var ajax = $.ajax({
+                    type: "GET",
+                    url: "getasignaturas/id/" + $(this).val(),
+                    async: true,
+                    dataType: "json",
+                    beforeSend: function (x) {
+                        if (x && x.overrideMimeType) {
+                            x.overrideMimeType("application/j-son;charset=UTF-8");
+                        }
+                    },
+                    success: function (data) {
+                        if (data != '') {
+                            texto = '';
+                            for (var i = 0; i < data.length; i++) {
+                                codigos[i] = data[i].concepto.charCodeAt(0);
+                                conceptos[i] = data[i].concepto + ' ';
+                                texto += 'event.which===' + data[i].concepto.charCodeAt(0) + ' || ';
+
+                            }
+                            texto = texto.slice(0, -3);
+
+
+                        }
+
+
+                    }
+                });
+
+            } else {
+                codigos = [];
+                $(".notas").val('');
+            }
+            e.stopImmediatePropagation();
+
+        });
+
+        <?php  $periodo = new Zend_Session_Namespace('nombreperiodo');
+        $idperiodo = $periodo->nombreperiodo;?>
+        var ano =<?php echo $idperiodo?>;
+
+
+        var fechain = '01-03-' + ano;
+        var fechate = '31-12-' + ano;
+
+
+        function noSunday(date) {
+            var day = date.getDay();
+            return [(day > 0), ''];
+        }
+
+        function cambiarfecha(tipo) {
+
+
+            if (tipo == '1') {
+                fechain = '01-03-' + ano;
+                fechate = '31-08-' + ano;
+            }
+
+            if (tipo == '2') {
+                fechain = '01-07-' + ano;
+                fechate = '31-12-' + ano;
+            }
+            if (tipo == '3') {
+                fechain = '01-03-' + ano;
+                fechate = '31-05-' + ano;
+            }
+            if (tipo == '4') {
+                fechain = '01-05-' + ano;
+                fechate = '30-09-' + ano;
+            }
+            if (tipo == '5') {
+                fechain = '01-09-' + ano;
+                fechate = '31-12-' + ano;
+            }
+        }
+
+        $("#tipoEvaluacionPrueba").live('change', function (e) {
+            $("#fecha").val('');
+            $('#fecha').datepicker('destroy');
+            cambiarfecha($(this).val());
+            // $('#fecha').datepicker('show');
+
+            $("#fecha").datepicker({
+                //autoSize: true,
+                showOn: "button",
+                buttonImage: "<?php echo $this->baseUrl; ?>/calendario/css/images/calendar.gif",
+                buttonImageOnly: true,
+                minDate: fechain,
+                maxDate: fechate,
+                beforeShowDay: noSunday,
+                numberOfMonths: 3,
+
+
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                dayNamesMin: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                firstDay: 1,
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true
+
+
+            });
+            e.stopImmediatePropagation();
+        });
+
+
+        $('#tipoEvaluacionPrueba').trigger("change");
+
+    });
+
+    $(document).ready(function () {
+
+
+        $('.notas').live('keyup', function (event) {
+
+            if (event.which === 40) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).next('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+
+            if (event.which === 38) {
+
+
+                var padre = $(this).closest('tr');
+
+
+                var obj = $(padre).prev('tr').find('input');
+
+                if (obj.length == 0) {
+                    return false;
+                } else {
+                    obj.focus();
+                }
+
+            }
+        });
+
+
+    });
+
+
+    function conComas(valor) {
+        var nums = new Array();
+        var simb = ","; //Éste es el separador
+        valor = valor.toString();
+        valor = valor.replace(/\D/g, "");   //Ésta expresión regular solo permitira ingresar números
+        nums = valor.split(""); //Se vacia el valor en un arreglo
+        var long = nums.length - 1; // Se saca la longitud del arreglo
+        var patron = 1; //Indica cada cuanto se ponen las comas
+        var prox = 0; // Indica en que lugar se debe insertar la siguiente coma
+        var res = "";
+
+        while (long > prox) {
+            nums.splice((long - prox), 0, simb); //Se agrega la coma
+            prox += patron; //Se incrementa la posición próxima para colocar la coma
+        }
+
+        for (var i = 0; i <= nums.length - 1; i++) {
+            res += nums[i]; //Se crea la nueva cadena para devolver el valor formateado
+        }
+
+        return res;
+    }
+
+
+    $(".notas").live('keydown', function (event) {
+
+        if (codigos.length > 0) {
+            if (eval(texto) || event.which === 40 || event.which === 38 || event.which === 8) {
+                for (var i = 0; i < codigos.length; i++) {
+
+                    eval("if(event.which === codigos[i]){if(conceptos[i].length==2){$(this).val(conceptos[i])}else{$(this).val(conceptos[i]);}}");
+
+
+                }
+
+            } else {
+                return false;
+            }
+
+        } else {
+            if ((event.which > 47 && event.which < 58) || (event.which > 95 && event.which < 106) || event.which === 40 || event.which === 38 || event.which === 8) {
+                var valActual = $(this).val();
+                var lar = valActual.length;
+                var check = parseInt(valActual);
+                if (lar == '1') {
+                    if (check > '7' || check < '1') {
+                        $(this).val('');
+                        return false;
+                    }
+                }
+
+                if (lar == '2') {
+                    if (check > '70' || check < '10') {
+                        $(this).val('');
+                        return false;
+                    }
+                }
+
+                var a2 = valActual.replace(/\./g, "");
+                a2 = parseInt(a2);
+
+
+                var nuevoValor = conComas(valActual);
+                $(this).val(nuevoValor);
+            } else {
+                return false;
+            }
+        }
+
+        event.stopImmediatePropagation();
+
+    });
+
+    $(".notas").live('focusout', function () {
+
+        if (codigos.length == 0) {
+            var valActual = $(this).val();
+            var lar = valActual.length;
+
+
+            if (lar == '1') {
+                if (valActual >= 7) {
+                    $(this).val('7,0');
+
+                } else {
+                    var valornuevo = valActual;
+                    valornuevo += ',0';
+                    $(this).val(valornuevo);
+                }
+
+            }
+            if (lar == '2') {
+                if (valActual >= 70) {
+                    $(this).val('7,0');
+
+                }
+
+            }
+        }
+
+
+    });
+
+    $("input").live('focus', function () {
+        $(this).closest('tr').css("background-color", "green");
+
+
+    });
+    $("input").live('focusout', function () {
+        $(this).closest('tr').css("background-color", "");
+    });
+
+
+</script>
+<a class="button medium blue" href="<?php echo $this->url(array('controller' => 'Libro',
+    'action' => 'notas'), null, TRUE);
+?>"><i class="icon-hand-left"></i> Volver</a>
+
+<?php echo $this->form; ?>
+<script src="<?php echo $this->baseUrl; ?>/javascript/notas.js"></script>
+
+<div id="alumnos"></div>

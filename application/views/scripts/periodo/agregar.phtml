@@ -1,0 +1,50 @@
+<script type="text/javascript">
+  $(function() {
+    $('#nombreperiodo').datepicker({
+        changeYear: true,
+
+        showButtonPanel: true,
+         currentText: 'Hoy',
+         stepMonths: '12',
+         closeText: 'Listo',
+         prevText: '<Ant',
+         nextText: 'Sig>',
+         dateFormat: 'yy',
+         altField:"#nombreperiodo",
+        onClose: function(dateText, inst) {
+
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker('setDate', new Date(year,1));
+        }
+    });
+	$(".date-picker-year").focus(function () {
+        $(".ui-datepicker-month").hide();
+    });
+});
+
+
+
+
+	</script>
+<style>
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker-month {
+        display: none;
+    }
+</style>
+
+
+<?php if ($this->messages) : ?>
+    <div class="t_a_message">
+        <ul>
+            <?php foreach ($this->messages as $msg) : ?>
+                <li><?php echo $msg; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<?php echo $this->form ?>

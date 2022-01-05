@@ -1,0 +1,87 @@
+<script src="<?php echo $this->baseUrl; ?>/javascript/cuentasrol.js"></script>
+<style>
+    ul {
+        list-style-type: none;
+    }
+
+    li {
+        padding: 1px 0;
+    }
+
+
+    input[type="radio"], input[type="checkbox"] {
+        margin: -4px 0 0 0;
+    }
+
+    ul > li > div {
+        display: none;
+    }
+
+    fieldset.group {
+        margin: 5px;
+        padding: 0;
+        margin-bottom: 1.25em;
+        padding: .125em;
+        width: 180px;
+        min-width: 180px;
+        height: 450px;
+
+        max-height: 490px;
+        float: left;
+    }
+
+    fieldset.group legend {
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+        margin-left: 20px;
+        font-size: 14px;
+        color: black;
+    }
+
+
+    ul.checkbox {
+        margin: 0;
+        padding: 0;
+        margin-left: 20px;
+        list-style: none;
+    }
+
+    ul.checkbox li input {
+        margin-right: .25em;
+    }
+
+    ul.checkbox li {
+        border: 1px transparent solid;
+        display: inline-block;
+        width: 12em;
+    }
+
+    ul.checkbox li label {
+        margin-left: 2px;
+    }
+
+    ul.checkbox li:hover,
+    ul.checkbox li.focus {
+        background-color: lightyellow;
+        border: 1px gray solid;
+        width: 12em;
+    }
+
+    .verde {
+        background-color: green;
+    }
+
+    .rojo {
+        background-color: red;
+    }
+</style>
+
+
+<?php echo $this->form; ?>
+
+
+<div id="asignatura" style="margin-top: 20px; border-top:1px solid #1D6DC1;;">
+
+</div>
+<div id="guardar" style="clear: left"></div>
